@@ -232,7 +232,7 @@ function rm {
 # Setup proxy for current session
 # default to 127.0.0.1:8889
 function proxy() {
-	export http_proxy="http://127.0.0.1:8889"
+	export http_proxy="http://127.0.0.1:8888"
 	export https_proxy=$http_proxy
 	export HTTP_PROXY=$http_proxy
 	export HTTPS_PROXY=$http_proxy
