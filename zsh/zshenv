@@ -1,0 +1,75 @@
+# Set path for this mechine
+if [[ ! :$PATH: == *:"$HOME/.local/bin":* ]]; then
+	export PATH=$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:${PATH}
+fi
+
+# zsh options
+KEYTIMEOUT=25
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+
+# silly MKL
+export MKL_DYNAMIC=FALSE
+export MKL_NUM_THREADS=12
+export KMP_AFFINITY=granularity=fine,compact,1,0
+
+# Use truecolor
+# export COLORTERM=truecolor
+# Editor
+export EDITOR='nvim'
+# Compilation flags
+export ARCHFLAGS="-arch x86_64"
+# set custom folder
+export REPO=~/src/repo
+export LAB=~/src/lab
+export PRO=~/src/projects
+export TEMPLATES=~/src/templates
+# rust 
+export RUSTFLAGS="-C prefer-dynamic"
+# gtk
+# export GTK_THEME=Materia-dark-compact
+
+# from envrioment.d
+export EDITOR='nvim'
+export MOZ_ENABLE_WAYLAND=1
+export GAMEMODERUNEXEC="env __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json"
+export MKL_DYNAMIC=FALSE
+export MKL_NUM_THREADS=12
+export KMP_AFFINITY=granularity=fine,compact,1,0
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/config
+export NPM_CONFIG_CACHE=$XDG_CACHE_HOME/npm
+export NPM_CONFIG_TMP=$XDG_RUNTIME_DIR/npm
+export KRITA_NO_STYLE_OVERRIDE=1
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORM=xcb
+export VDPAU_DRIVER=radeonsi
+export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
+export ASPELL_CONF="per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; personal $XDG_CONFIG_HOME/aspell/en.pws; repl $XDG_CONFIG_HOME/aspell.prepl"
+export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
+export STACK_ROOT="$XDG_DATA_HOME"/stack
+export GPODDER_HOME=$XDG_CONFIG_HOME/gpodder
+export GRIPHOME="$XDG_CONFIG_HOME/grip"
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export LESSHISTFILE="$XDG_DATA_HOME/less/history"
+export LESSKEY="$XDG_CONFIG_HOME/less/keys"
+export MYCLI_HISTFILE="$XDG_DATA_HOME/mycli/history"
+export MYSQL_HISTFILE="$XDG_DATA_HOME/history"
+export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/config"
+export PSQL_HISTORY="$XDG_DATA_HOME/postgresql/history"
+export PYLINTHOME="$XDG_DATA_HOME/pylint"
+export PYLINTRC="$XDG_CONFIG_HOME/pylint/pylintrc"
+export R_LIBS_USER=$HOME/.local/lib/R
+export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite/history"
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+export DOT_SAGE="$XDG_CONFIG_HOME"/sage
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+export REDISCLI_HISTFILE="$XDG_DATA_HOME"/redis/history
+export REDISCLI_RCFILE="$XDG_CONFIG_HOME"/redis/config
+export TEXMFHOME=$XDG_DATA_HOME/texmf
+export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
+export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
+export XZ_OPT="-T 0"

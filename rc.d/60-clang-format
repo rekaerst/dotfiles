@@ -1,0 +1,4 @@
+#!/bin/bash
+
+#link $HOME/src/.clang-format to ~/tmp
+ln -sf "$XDG_CONFIG_DIR/clang-format" ~/tmp

@@ -1,0 +1,67 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Load all of the scripts in $ZDOTDIR/lib that end in .zsh
+for script ($ZDOTDIR/lib/*.zsh); do
+	source $script
+done
+
+# force zinit use comfront xdg base direcotries
+ZINITHOME=$XDG_DATA_HOME/zinit
+declare -A ZINIT=( HOME_DIR			$ZINITHOME
+	BIN_DIR				$ZINITHOME/bin	
+	PLUGINS_DIR			$ZINITHOME/plugins
+	COMPLETIONS_DIR		$ZINITHOME/completions
+	SNIPPETS_DIR		$ZINITHOME/snippets
+	COMPINIT_OPTS		$ZINITHOME
+	ZCOMPDUMP_PATH    	$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}
+)
+source $ZINIT[BIN_DIR]/zinit.zsh
+
+#
+zinit ice wait
+zinit depth=1 for \
+	romkatv/powerlevel10k
+
+zinit depth=1 wait lucid light-mode for \
+	zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust \
+	OMZP::colored-man-pages \
+	OMZP::golang \
+	OMZP::nmap \
+	OMZP::npm \
+	OMZP::node
+
+# zinit depth=1 wait atinit="zicompinit; zicdreplay" light-mode for \
+# 	zdharma-continuum/fast-syntax-highlighting
+
+zinit depth=1 wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions \
+ atload"zicompinit; zicdreplay" blockf \
+    zsh-users/zsh-completions
+
+zinit snippet $ZDOTDIR/lib/snippets/*.zsh
+
+autoload -Uz compinit;compinit
+
+# script to be called after compinit
+for script ($ZDOTDIR/lib/after/*.zsh); do
+	source $script # scripts under $ZDOTDIR/lib shouldn't depends on any plugins
+done
+
+# options
+ZVM_CURSOR_STYLE_ENABLED=false
+KEYTIMEOUT=25
+tabs -4
+
+# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
+[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

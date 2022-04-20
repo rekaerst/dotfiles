@@ -1,0 +1,3 @@
+GO111MODULE=on
+GOBIN=
+GOPROXY=https://goproxy.cn,direct
