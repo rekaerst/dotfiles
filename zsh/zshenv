@@ -32,6 +32,8 @@ export TEMPLATES=~/src/templates
 export RUSTFLAGS="-C prefer-dynamic"
 # gtk
 # export GTK_THEME=Materia-dark-compact
+# DXVK
+export DXVK_CONFIG_FILE=$XDG_CONFIG_HOME/dxvk.conf
 
 # from envrioment.d
 export EDITOR='nvim'
