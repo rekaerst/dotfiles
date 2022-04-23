@@ -1,6 +1,11 @@
-# Set path for this mechine
 if [[ ! :$PATH: == *:"$HOME/.local/bin":* ]]; then
 	export PATH=$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:${PATH}
+fi
+
+if [[ -z $XDG_DATA_HOME ]]; then
+	XDG_DATA_HOME=$HOME/.local/share
+	XDG_CACHE_HOME=$HOME/.cache
+	XDG_CONFIG_HOME=$HOME/.config
 fi
 
 # zsh options
