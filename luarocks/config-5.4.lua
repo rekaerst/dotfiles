@@ -1,1 +1,1 @@
-rocks_trees = { "/home/arthur/.local" }
+rocks_trees = { os_getenv("HOME") .. "/.local" }
