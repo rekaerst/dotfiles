@@ -31,6 +31,8 @@ else
 fi
 unset color_prompt force_color_prompt
 
+eval $(dircolors "$XDG_CONFIG_HOME"/dircolors)
+
 # enable color support of ls and also add handy aliases
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
