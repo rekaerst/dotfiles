@@ -230,29 +230,26 @@ function rm {
 
 #
 # Setup proxy for current session
-# default to 127.0.0.1:8889
+# default to 127.0.0.1:8888
 function proxy() {
 	export http_proxy="http://127.0.0.1:8888"
 	export https_proxy=$http_proxy
 	export HTTP_PROXY=$http_proxy
 	export HTTPS_PROXY=$http_proxy
-	echo "use-proxy=yes" > $WGETRC
-	echo "http_proxy=$http_proxy" >> $WGETRC
-	echo "https_proxy=$http_proxy" >> $WGETRC
+
+	# git
+	export ssh_proxy='ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:1080  %h %p'
+	git config --global core.sshCommand "ssh -o '$ssh_proxy'"
 }
 
 #
 # Clear proxy for current session
 function noproxy() {
-	unset http_proxy
-	unset https_proxy
-	unset HTTP_PROXY
-	unset HTTPS_PROXY
-	unset all_proxy
-	unset ALL_PROXY
-	unset ftp_proxy
-	unset FTP_PROXY
-	:> $WGETRC
+	unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY ftp_proxy FTP_PROXY
+
+	# git
+	unset ssh_proxy
+	git config --global --unset core.sshCommand 
 }
 
 function pipupgradeall() {
