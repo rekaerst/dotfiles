@@ -1,10 +1,13 @@
 [pull]
 	rebase = false
+
 [user]
 	name = rekaerst
 	email = rekaerst@outlook.com
+
 [init]
 	defaultBranch = master
+
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 
@@ -21,6 +24,12 @@
 	conflictstyle = diff3
 	tool = vimdiff
 
+[mergetool "vimdiff"]
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[mergetool]
+	keepBackup = false
+
 [diff]
 	colorMoved = default
 
@@ -32,8 +41,5 @@
 	plus-style = syntax "#324a32"
 	line-numbers-plus-style = "#98c379"
 
-[mergetool]
-	keepBackup = false
-    
-[mergetool "vimdiff"]
-	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[include]
+	path = ~/.cache/git_proxy

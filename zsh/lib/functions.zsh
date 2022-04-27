@@ -239,7 +239,7 @@ function proxy() {
 
 	# git
 	export ssh_proxy='ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:1080  %h %p'
-	git config --global core.sshCommand "ssh -o '$ssh_proxy'"
+	git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
 }
 
 #
@@ -249,7 +249,7 @@ function noproxy() {
 
 	# git
 	unset ssh_proxy
-	git config --global --unset core.sshCommand 
+	git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
 }
 
 function pipupgradeall() {
