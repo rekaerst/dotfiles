@@ -19,6 +19,7 @@
 
 [merge]
 	conflictstyle = diff3
+	tool = vimdiff
 
 [diff]
 	colorMoved = default
@@ -31,3 +32,8 @@
 	plus-style = syntax "#324a32"
 	line-numbers-plus-style = "#98c379"
 
+[mergetool]
+	keepBackup = false
+    
+[mergetool "vimdiff"]
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
