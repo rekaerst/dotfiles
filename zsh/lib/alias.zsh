@@ -11,3 +11,4 @@ alias lsof='lsof -n'
 alias hs="python -m http.server"
 alias R="R --quiet"
 alias rename=perl-rename
+alias jitrocks="luarocks --lua-version 5.1"
