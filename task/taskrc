@@ -1,0 +1,2 @@
+data.location=~/.local/share/task
+hooks.location=~/.local/share/task/hooks
