@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Load all of the scripts in $ZDOTDIR/lib that end in .zsh
@@ -11,14 +11,15 @@ for script ($ZDOTDIR/lib/*.zsh); do
 done
 
 # force zinit use comfront xdg base directories
-ZINITHOME=$XDG_DATA_HOME/zinit
-declare -A ZINIT=( HOME_DIR			$ZINITHOME
-	BIN_DIR				$ZINITHOME/bin	
-	PLUGINS_DIR			$ZINITHOME/plugins
-	COMPLETIONS_DIR		$ZINITHOME/completions
-	SNIPPETS_DIR		$ZINITHOME/snippets
-	COMPINIT_OPTS		$ZINITHOME
-	ZCOMPDUMP_PATH    	$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}
+ZINIT_HOME=$XDG_DATA_HOME/zinit
+declare -A ZINIT=( 
+HOME_DIR			$ZINIT_HOME
+BIN_DIR				$ZINIT_HOME/bin	
+PLUGINS_DIR			$ZINIT_HOME/plugins
+COMPLETIONS_DIR		$ZINIT_HOME/completions
+SNIPPETS_DIR		$ZINIT_HOME/snippets
+COMPINIT_OPTS		$ZINIT_HOME
+ZCOMPDUMP_PATH    	$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}
 )
 source $ZINIT[BIN_DIR]/zinit.zsh
 
@@ -39,12 +40,12 @@ zinit depth=1 wait lucid light-mode for \
 # 	zdharma-continuum/fast-syntax-highlighting
 
 zinit depth=1 wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
- atload"!_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
- atload"zicompinit; zicdreplay" blockf \
-    zsh-users/zsh-completions
+	atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+	zdharma-continuum/fast-syntax-highlighting \
+	atload"!_zsh_autosuggest_start" \
+	zsh-users/zsh-autosuggestions \
+	atload"zicompinit; zicdreplay" blockf \
+	zsh-users/zsh-completions
 
 zinit snippet $ZDOTDIR/lib/snippets/*.zsh
 
