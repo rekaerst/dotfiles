@@ -4,8 +4,6 @@
 
 # Remove older command from the history if a duplicate is to be added.
 setopt hist_ignore_all_dups
-# Ignore commands that start with space
-setopt hist_ignore_space      
 
 #
 # Input/output
@@ -29,9 +27,6 @@ tabs -4
 #
 # MISC
 #
-
-# jobs
-setopt long_list_jobs
 
 # pager
 env_default 'PAGER' 'less'

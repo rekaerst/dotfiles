@@ -33,6 +33,13 @@ source $ZDOTDIR/lib/alias.zsh
 # Append `../` to your input for each `.` you type after an initial `..`
 zstyle ':zim:input' double-dot-expand yes
 
+#
+# completion
+#
+
+zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME}/zcompdump
+zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME}/zcompcache
+
 
 #
 # termtitle

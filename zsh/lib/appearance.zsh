@@ -15,6 +15,5 @@ fi
 
 export GREP_COLORS="mt=31;1"
 
-setopt auto_cd
 setopt multios
 setopt prompt_subst
