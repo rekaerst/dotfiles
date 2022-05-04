@@ -13,8 +13,7 @@ done
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 
-zinit ice wait
-zinit depth=1 for \
+zinit depth=1 light-mode for \
 	romkatv/powerlevel10k
 
 zinit depth=1 wait lucid light-mode for \
