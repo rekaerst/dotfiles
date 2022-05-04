@@ -2,6 +2,8 @@
 "\C-n":history-search-forward
 
 set colored-stats On
+set colored-completion-prefix On
+set menu-complete-display-prefix On
 set completion-ignore-case On
 set completion-prefix-display-length 3
 set mark-symlinked-directories On
