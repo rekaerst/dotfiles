@@ -1,53 +1,104 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Load all of the scripts in $ZDOTDIR/lib that end in .zsh
-for script ($ZDOTDIR/lib/*.zsh); do
-	source $script
-done
 
-ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
-source "${ZINIT_HOME}/zinit.zsh"
+source $ZDOTDIR/lib/functions.zsh
 
-zinit depth=1 light-mode for \
-	romkatv/powerlevel10k
+# -----------------
+# Zsh configuration
+# -----------------
 
-zinit depth=1 wait lucid light-mode for \
-	zdharma-continuum/zinit-annex-{'readurl','bin-gem-node','patch-dl','rust'} \
-	OMZP::colored-man-pages \
-	OMZP::golang \
-	OMZP::nmap \
-	OMZP::npm \
-	OMZP::node
+source $ZDOTDIR/lib/options.zsh
+source $ZDOTDIR/lib/appearance.zsh
+source $ZDOTDIR/lib/keybinding.zsh
+source $ZDOTDIR/lib/alias.zsh
 
-# zinit depth=1 wait atinit="zicompinit; zicdreplay" light-mode for \
-# 	zdharma-continuum/fast-syntax-highlighting
+# --------------------
+# Module configuration
+# --------------------
 
-zinit depth=1 wait lucid for \
-	atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
-	zdharma-continuum/fast-syntax-highlighting \
-	atload"!_zsh_autosuggest_start" \
-	zsh-users/zsh-autosuggestions \
-	atload"zicompinit; zicdreplay" blockf \
-	zsh-users/zsh-completions
+#
+# git
+#
 
-zinit snippet $ZDOTDIR/lib/snippets/*.zsh
+# Set a custom prefix for the generated aliases. The default prefix is 'G'.
+#zstyle ':zim:git' aliases-prefix 'g'
 
-autoload -Uz compinit;compinit
+#
+# input
+#
 
-# script to be called after compinit
-for script ($ZDOTDIR/lib/after/*.zsh); do
-	source $script # scripts under $ZDOTDIR/lib shouldn't depends on any plugins
-done
+# Append `../` to your input for each `.` you type after an initial `..`
+zstyle ':zim:input' double-dot-expand yes
 
-# options
-ZVM_CURSOR_STYLE_ENABLED=false
-KEYTIMEOUT=25
-tabs -4
+
+#
+# termtitle
+#
+
+zstyle ':zim:termtitle' hooks 'preexec' 'precmd'
+zstyle ':zim:termtitle:preexec' format '${${(A)=1}[1]}'
+
+#
+# zsh-autosuggestions
+#
+
+# Disable automatic widget re-binding on each precmd. This can be set when
+# zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+# Customize the style that the suggestions are shown with.
+# See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=243"
+
+# ------------------
+# Initialize modules
+# ------------------
+
+ZIM_HOME=/home/arthur/.local/share/zsh/zim
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+	if (( ${+commands[curl]} )); then
+		curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+			https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+	else
+		mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+			https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+	fi
+fi
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+	source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh
+
+# ------------------------------
+# Post-init module configuration
+# ------------------------------
+
+#
+# zsh-history-substring-search
+#
+
+export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="fg=white,bold,bg=59"
+zmodload -F zsh/terminfo +p:terminfo
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+unset key
+
+
+#
+# zsh
+#
+
+source $ZDOTDIR/lib/comdef.zsh
+source $ZDOTDIR/lib/keybinding.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh

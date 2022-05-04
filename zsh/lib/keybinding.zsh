@@ -1,0 +1,1 @@
+bindkey "^[OP" run-help

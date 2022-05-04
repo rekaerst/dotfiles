@@ -1,0 +1,44 @@
+#
+# History
+#
+
+# Remove older command from the history if a duplicate is to be added.
+setopt hist_ignore_all_dups
+# Ignore commands that start with space
+setopt hist_ignore_space      
+
+#
+# Input/output
+#
+
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -v
+
+# Prompt for spelling correction of commands.
+setopt correct
+
+# Customize spelling correction prompt.
+SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
+
+# Remove path separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/]}
+
+# Set tab width to size of 4 spaces
+tabs -4
+
+#
+# MISC
+#
+
+# jobs
+setopt long_list_jobs
+
+# pager
+env_default 'PAGER' 'less'
+env_default 'LESS' '-R'
+
+
+# recognize comments
+setopt interactivecomments
+# auto correct commands
+setopt correct

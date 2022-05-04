@@ -29,7 +29,7 @@ export REPO=~/src/repo
 export LAB=~/src/lab
 export PRO=~/src/projects
 export TEMPLATES=~/src/templates
-# rust 
+# rust
 export RUSTFLAGS="-C prefer-dynamic"
 # gtk
 # export GTK_THEME=Materia-dark-compact

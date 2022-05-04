@@ -13,8 +13,8 @@ if command diff --color . . &>/dev/null; then
 	alias diff='diff --color'
 fi
 
+export GREP_COLORS="mt=31;1"
+
 setopt auto_cd
 setopt multios
 setopt prompt_subst
-
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=243"

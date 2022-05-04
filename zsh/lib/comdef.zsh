@@ -1,0 +1,1 @@
+compdef _vim vi
