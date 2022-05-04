@@ -11,6 +11,7 @@ fi
 # zsh options
 KEYTIMEOUT=25
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/history"
 
 # silly MKL
 export MKL_DYNAMIC=FALSE
