@@ -10,7 +10,7 @@ for script ($ZDOTDIR/lib/*.zsh); do
 	source $script
 done
 
-# force zinit use comfront xdg base direcotries
+# force zinit use comfront xdg base directories
 ZINITHOME=$XDG_DATA_HOME/zinit
 declare -A ZINIT=( HOME_DIR			$ZINITHOME
 	BIN_DIR				$ZINITHOME/bin	
