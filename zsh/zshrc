@@ -10,20 +10,9 @@ for script ($ZDOTDIR/lib/*.zsh); do
 	source $script
 done
 
-# force zinit use comfront xdg base directories
-ZINIT_HOME=$XDG_DATA_HOME/zinit
-declare -A ZINIT=( 
-HOME_DIR			$ZINIT_HOME
-BIN_DIR				$ZINIT_HOME/bin	
-PLUGINS_DIR			$ZINIT_HOME/plugins
-COMPLETIONS_DIR		$ZINIT_HOME/completions
-SNIPPETS_DIR		$ZINIT_HOME/snippets
-COMPINIT_OPTS		$ZINIT_HOME
-ZCOMPDUMP_PATH    	$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}
-)
-source $ZINIT[BIN_DIR]/zinit.zsh
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+source "${ZINIT_HOME}/zinit.zsh"
 
-#
 zinit ice wait
 zinit depth=1 for \
 	romkatv/powerlevel10k
