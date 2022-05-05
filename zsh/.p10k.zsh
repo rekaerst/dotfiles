@@ -1698,14 +1698,15 @@
 		prompt_example
 	}
 
-	function prompt_lf() {
-		p10k segment -f 208 -i '📂' -t "$LF_LEVEL" -c "$LF_LEVEL"
-	}
-
 	# User-defined prompt segments can be customized the same way as built-in segments.
 	typeset -g POWERLEVEL9K_EXAMPLE_FOREGROUND=3
 	typeset -g POWERLEVEL9K_EXAMPLE_BACKGROUND=1
 	# typeset -g POWERLEVEL9K_EXAMPLE_VISUAL_IDENTIFIER_EXPANSION='⭐'
+	
+	####################################[ lf shell ]####################################
+	function prompt_lf() {
+		p10k segment -f 208 -i '📂' -t "$LF_LEVEL" -c "$LF_LEVEL"
+	}
 
 	# Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
 	# when accepting a command line. Supported values:
@@ -1733,6 +1734,7 @@
 	# can slow down prompt by 1-2 milliseconds, so it's better to keep it turned off unless you
 	# really need it.
 	typeset -g POWERLEVEL9K_DISABLE_HOT_RELOAD=true
+
 
 	# If p10k is already loaded, reload configuration.
 	# This works even with POWERLEVEL9K_DISABLE_HOT_RELOAD=true.
