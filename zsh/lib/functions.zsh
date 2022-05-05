@@ -137,6 +137,7 @@ function nonvidia() {
 	export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
 }
 
+
 #
 # MISC
 #
@@ -152,6 +153,57 @@ function qemu() {
 		-device virtio-vga-gl \
 		-display gtk,gl=on \
 		$@
+}
+
+# Bubblewrap sandbox
+function sandbox() {
+	if [[ "$#" == "0" ]]; then
+		echo "Usage $0 <command> [args]"
+		return
+	fi
+	bwrap \
+		--ro-bind /usr /usr \
+		--symlink /usr/lib /lib \
+		--symlink /usr/lib /lib64 \
+		--symlink /usr/bin /bin \
+		--symlink /usr/bin /sbin \
+		--ro-bind /etc /etc \
+		--ro-bind /opt /opt \
+		--tmpfs /run/user/$UID \
+		--ro-bind /run/systemd/resolve /run/systemd/resolve \
+		--ro-bind /run/user/$UID/pulse /run/user/$UID/pulse \
+		--ro-bind /run/user/$UID/pipewire-0 /run/user/$UID/pipewire-0 \
+		--ro-bind /run/user/$UID/pipewire-0.lock /run/user/$UID/pipewire-0.lock \
+		--ro-bind /run/user/$UID/wayland-0 /run/user/$UID/wayland-0 \
+		--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock \
+		--tmpfs /tmp \
+		--proc /proc \
+		--dev /dev \
+		--dev-bind /dev/dri /dev/dri \
+		--dev-bind /dev/nvidia0 /dev/nvidia0 \
+		--dev-bind /dev/nvidia-caps /dev/nvidia-caps \
+		--dev-bind /dev/nvidiactl /dev/nvidiactl \
+		--dev-bind /dev/nvidia-modeset /dev/nvidia-modeset \
+		--dev-bind /dev/nvidia-uvm /dev/nvidia-uvm \
+		--dev-bind /dev/nvidia-uvm-tools /dev/nvidia-uvm-tools \
+		--ro-bind /sys /sys \
+		--bind /home/arthur/Downloads /home/arthur/Downloads \
+		--bind /home/arthur/tmp /home/arthur/tmp \
+		--ro-bind /home/arthur/.config/zsh /home/arthur/.config/zsh \
+		--ro-bind /home/arthur/.config/dircolors /home/arthur/.config/dircolors \
+		--bind /home/arthur/.local/share/zsh /home/arthur/.local/share/zsh \
+		--bind /home/arthur/.cache /home/arthur/.cache \
+		--unshare-all \
+		--share-net \
+		--die-with-parent \
+	$@
+}
+
+# Run sandboxed shell
+function sbsh {
+	export SANDBOX=1
+	sandbox $SHELL
+	unset SANDBOX
 }
 
 function help() {

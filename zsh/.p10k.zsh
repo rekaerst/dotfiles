@@ -106,6 +106,7 @@
 		time					# current time
 		# =========================[ Line #2 ]=========================
 		newline
+		sandbox
 		# ip					# ip address and bandwidth usage for a specified network interface
 		# public_ip				# public IP address
 		# proxy					# system-wide http/https/ftp proxy
@@ -1706,6 +1707,13 @@
 	####################################[ lf shell ]####################################
 	function prompt_lf() {
 		p10k segment -f 208 -i '📂' -t "$LF_LEVEL" -c "$LF_LEVEL"
+	}
+
+	####################################[ sandbox ]####################################
+	
+	# Show sandbox when under a bubblewrap sandbox
+	function prompt_sandbox() {
+		p10k segment -f 233 -b 3 -i   -c "$SANDBOX"
 	}
 
 	# Transient prompt works similarly to the builtin transient_rprompt option. It trims down prompt
