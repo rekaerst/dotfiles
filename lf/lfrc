@@ -80,7 +80,7 @@ cmd link %{{
 }}
 map P :link
 
-# on-cd
+# git
 # '&' commands run silently in background (which is what we want here),
 # but are not connected to stdout.
 # To make sure our escape sequence still reaches stdout we pipe it to /dev/tty
@@ -107,3 +107,16 @@ map x trash
 set previewer ~/.config/lf/pv
 map i $LESSOPEN='| ~/.config/lf/pv %s' less -R "$f"
 
+# dynamically set number of clumns
+cmd recol ${{
+    w=$(tput cols)
+    if [ $w -le 80 ]; then
+        lf -remote "send $id set ratios 1:2"
+    elif [ $w -le 160 ]; then
+        lf -remote "send $id set ratios 1:2:3"
+    else
+        lf -remote "send $id set ratios 1:2:3:5"
+    fi
+}}
+
+recol
