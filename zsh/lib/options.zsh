@@ -37,3 +37,5 @@ env_default 'LESS' '-R'
 setopt interactivecomments
 # auto correct commands
 setopt correct
+# allow overwrite redirect
+setopt clobber
