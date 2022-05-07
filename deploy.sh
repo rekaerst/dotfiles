@@ -32,3 +32,6 @@ cd "$HOME" || {
 }
 
 ln -sf ".config/dotfiles/bashrc" .bashrc
+
+# systemd
+systemctl --user enable rc.service
