@@ -3,4 +3,4 @@ mpv/watch_later
 log
 history
 proxy.service
-systemd/user/default.target.wants
+systemd/user/*target.wants
