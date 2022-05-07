@@ -99,6 +99,7 @@ location:
     - /home/arthur/.cargo/registry
     - /home/arthur/.config/**/*[Cc]ache*
     - /home/arthur/.eclipse
+    - /home/arthur/.debug
     - /home/arthur/.java
     - /home/arthur/.jd
     - /home/arthur/.local/lib/R
