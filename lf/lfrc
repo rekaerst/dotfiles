@@ -1,4 +1,4 @@
-# vim:ft=conf
+# vim:ft=bash
 set icons
 set dircounts
 set info "size"
@@ -7,7 +7,21 @@ set info "size"
 map x $$f
 map X !$f
 
-# ripgrep
+#fzf jump to file
+cmd fzf_jump ${{
+    res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
+    if [ -d "$res" ] ; then
+        cmd="cd"
+    elif [ -f "$res" ] ; then
+        cmd="select"
+    else
+        exit 0
+    fi
+    lf -remote "send $id $cmd \"$res\""
+}}
+map gf :fzf_jump
+
+# ripgrep search contents of files
 cmd fzf_search ${{
     res="$( \
         RG_PREFIX="rg --column --line-number --no-heading --color=always \
@@ -90,6 +104,6 @@ cmd trash %trash-put "$fx"
 map x trash
 
 # preview
-set previewer ~/.config/lf/pv.sh
-map i $LESSOPEN='| ~/.config/lf/pv.sh %s' less -R "$f"
+set previewer ~/.config/lf/pv
+map i $LESSOPEN='| ~/.config/lf/pv %s' less -R "$f"
 
