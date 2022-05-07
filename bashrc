@@ -8,7 +8,7 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTFILE=${XDG_CONFIG_HOME}/bash/history
+HISTFILE=${XDG_DATA_HOME}/bash/history
 HISTSIZE=1000
 HISTFILESIZE=2000
 
