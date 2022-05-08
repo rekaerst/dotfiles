@@ -10,7 +10,6 @@ source $ZDOTDIR/lib/functions.zsh
 # Zsh configuration
 # -----------------
 
-source $ZDOTDIR/lib/options.zsh
 source $ZDOTDIR/lib/appearance.zsh
 source $ZDOTDIR/lib/keybinding.zsh
 source $ZDOTDIR/lib/alias.zsh
@@ -102,6 +101,7 @@ unset key
 # zsh
 #
 
+source $ZDOTDIR/lib/options.zsh
 source $ZDOTDIR/lib/comdef.zsh
 source $ZDOTDIR/lib/keybinding.zsh
 
