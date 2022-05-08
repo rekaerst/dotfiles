@@ -21,6 +21,10 @@ config_xdg=(
 )
 
 for i in "${config_xdg[@]}"; do
+	if [[ -e "$i" ]] && [[ ! -L "$i" ]]; then
+		echo "$i exists, moved to $i.old"
+		mv "$i" "$i.old"
+	fi
 	ln -sf "dotfiles/$i" .
 done
 
