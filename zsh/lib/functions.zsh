@@ -204,7 +204,6 @@ function sandbox() {
 		--bind /home/arthur/tmp /home/arthur/tmp 
 		--bind /home/arthur/.cache /home/arthur/.cache 
 		# zsh
-
 		--unshare-all 
 		--share-net 
 		--die-with-parent 
