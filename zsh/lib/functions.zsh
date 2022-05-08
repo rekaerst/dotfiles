@@ -161,48 +161,57 @@ function sandbox() {
 		echo "Usage $0 <command> [args]"
 		return
 	fi
-	bwrap \
-		--ro-bind /usr /usr \
-		--symlink /usr/lib /lib \
-		--symlink /usr/lib /lib64 \
-		--symlink /usr/bin /bin \
-		--symlink /usr/bin /sbin \
-		--ro-bind /etc /etc \
-		--ro-bind /opt /opt \
-		--tmpfs /run/user/$UID \
-		--ro-bind /run/systemd/resolve /run/systemd/resolve \
-		--ro-bind /run/user/$UID/pulse /run/user/$UID/pulse \
-		--ro-bind /run/user/$UID/pipewire-0 /run/user/$UID/pipewire-0 \
-		--ro-bind /run/user/$UID/pipewire-0.lock /run/user/$UID/pipewire-0.lock \
-		--ro-bind /run/user/$UID/wayland-0 /run/user/$UID/wayland-0 \
-		--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock \
-		--tmpfs /tmp \
-		--proc /proc \
-		--dev /dev \
-		--dev-bind /dev/dri /dev/dri \
-		--dev-bind /dev/nvidia0 /dev/nvidia0 \
-		--dev-bind /dev/nvidia-caps /dev/nvidia-caps \
-		--dev-bind /dev/nvidiactl /dev/nvidiactl \
-		--dev-bind /dev/nvidia-modeset /dev/nvidia-modeset \
-		--dev-bind /dev/nvidia-uvm /dev/nvidia-uvm \
-		--dev-bind /dev/nvidia-uvm-tools /dev/nvidia-uvm-tools \
-		--ro-bind /sys /sys \
-		--bind /home/arthur/Downloads /home/arthur/Downloads \
-		--bind /home/arthur/tmp /home/arthur/tmp \
-		--ro-bind /home/arthur/.config/zsh /home/arthur/.config/zsh \
-		--ro-bind /home/arthur/.config/dircolors /home/arthur/.config/dircolors \
-		--bind /home/arthur/.local/share/zsh /home/arthur/.local/share/zsh \
-		--bind /home/arthur/.cache /home/arthur/.cache \
-		--unshare-all \
-		--share-net \
-		--die-with-parent \
-	$@
+	args=(
+		# base system
+		--ro-bind /usr /usr 
+		--symlink /usr/lib /lib 
+		--symlink /usr/lib /lib64 
+		--symlink /usr/bin /bin 
+		--symlink /usr/bin /sbin 
+		--ro-bind /etc /etc 
+		--ro-bind /opt /opt 
+		--tmpfs /tmp 
+		--proc /proc 
+		--dev /dev 
+		--ro-bind /sys /sys 
+		# graphics
+		--dev-bind /dev/dri /dev/dri 
+		# runtime dir
+		--tmpfs /run/user/$UID 
+		--ro-bind /run/systemd/resolve /run/systemd/resolve 
+		--ro-bind /run/user/$UID/pulse /run/user/$UID/pulse 
+		--ro-bind /run/user/$UID/pipewire-0 /run/user/$UID/pipewire-0 
+		--ro-bind /run/user/$UID/pipewire-0.lock /run/user/$UID/pipewire-0.lock 
+		--ro-bind /run/user/$UID/wayland-0 /run/user/$UID/wayland-0 
+		--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock 
+		# shared folder
+		--bind /home/arthur/Downloads /home/arthur/Downloads 
+		--bind /home/arthur/tmp /home/arthur/tmp 
+		--bind /home/arthur/.cache /home/arthur/.cache 
+		# zsh
+
+		--unshare-all 
+		--share-net 
+		--die-with-parent 
+	)
+	# nvidia gpu
+	if [[ -e /dev/nvidia0 ]]; then
+		for f in /dev/nvidia*; do
+			args+=(--dev-bind $f $f)
+		done
+	fi
+
+	bwrap "${args[@]}" $@
 }
 
 # Run sandboxed shell
 function sbsh {
 	export SANDBOX=1
-	sandbox $SHELL
+	sandbox \
+		--ro-bind /home/arthur/.config/zsh /home/arthur/.config/zsh \
+		--ro-bind /home/arthur/.config/dircolors /home/arthur/.config/dircolors \
+		--bind /home/arthur/.local/share/zsh /home/arthur/.local/share/zsh \
+		$SHELL
 	unset SANDBOX
 }
 
