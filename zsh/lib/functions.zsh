@@ -144,6 +144,17 @@ function nonvidia() {
 
 # virtio-vga-gl for virgil
 function qemu() {
+	# set hugepages
+	if [[ "$@" == *"hugepages"* ]]; then
+		memsize=$(echo $@ | grep -oP "\-m\s+\K\w+")
+		if [[ -n "$memsize" ]]; then
+			pages=$(($(numfmt --to-unit=Mi --from=iec $memsize)/2))
+		else
+			pages=200
+		fi
+		sudo sysctl vm/nr_hugepages=$pages
+	fi
+
 	qemu-system-x86_64 \
 		-device ich9-intel-hda -device hda-duplex \
 		-net nic,model=e1000 -net user \
@@ -153,6 +164,10 @@ function qemu() {
 		-device virtio-vga-gl \
 		-display gtk,gl=on \
 		$@
+
+	if [[ "$@" == *"hugepages"* ]]; then
+		sudo sysctl vm/nr_hugepages=0
+	fi
 }
 
 # Bubblewrap sandbox
