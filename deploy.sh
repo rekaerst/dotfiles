@@ -14,10 +14,10 @@ cd "${XDG_CONFIG_HOME:-$HOME/.config}" || {
 }
 
 config_xdg=(
-	bat borgmatic.d environment.d fontconfig foot fsh git go jrnl Kvantum less
-	lf litecli luarocks MangoHud mpv mycli npm nvim nvtop pgcli pip pylint rc.d
-	inputrc sway systemd task tmux zsh bookmarks chrome-flags.conf clang-format
-	dircolors dxvk.conf flake8 qt5ct qt6ct btop
+	autostart bat borgmatic.d environment.d fontconfig foot fsh git go jrnl
+	Kvantum less lf litecli luarocks MangoHud mpv mycli npm nvim nvtop pgcli pip
+	pylint rc.d inputrc sway systemd task tmux zsh bookmarks chrome-flags.conf
+	clang-format dircolors dxvk.conf flake8 qt5ct qt6ct btop
 )
 
 for i in "${config_xdg[@]}"; do
