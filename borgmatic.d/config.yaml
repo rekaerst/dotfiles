@@ -94,7 +94,9 @@ location:
   exclude_patterns:
     - '*.pyc'
     - /home/arthur/.android
-    - /home/arthur/.cabal
+    - /home/arthur/.cabal/logs
+    - /home/arthur/.cabal/store
+    - /home/arthur/.cabal/packages
     - /home/arthur/.cache
     - /home/arthur/.cargo/registry
     - /home/arthur/.config/**/*[Cc]ache*
