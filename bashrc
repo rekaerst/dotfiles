@@ -1,6 +1,6 @@
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -22,13 +22,13 @@ shopt -s globstar
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color|*-kitty) color_prompt=yes;;
+xterm-color | *-256color | *-kitty) color_prompt=yes ;;
 esac
 
 if [ "$color_prompt" = yes ]; then
- 	PS1="[\033[32;1m\u@\h\033[0m \033[34;1m\W\033[0m]\$ "
+	PS1="[\[\033[32;1m\u@\h\033[0m \033[34;1m\W\033[0m]\]\$ "
 else
- 	PS1="[\u@\h \W]\$ "
+	PS1="[\u@\h \W]\$ "
 fi
 unset color_prompt force_color_prompt
 
