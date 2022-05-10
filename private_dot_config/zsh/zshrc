@@ -61,7 +61,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=243"
 # Initialize modules
 # ------------------
 
-ZIM_HOME=/home/arthur/.local/share/zsh/zim
+ZIM_HOME=${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zim
 # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
 	if (( ${+commands[curl]} )); then

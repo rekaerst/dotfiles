@@ -175,9 +175,9 @@ function qemu() {
 function sbsh {
 	export SANDBOX=1
 	sandbox \
-		--ro-bind /home/arthur/.config/zsh /home/arthur/.config/zsh \
-		--ro-bind /home/arthur/.config/dircolors /home/arthur/.config/dircolors \
-		--bind /home/arthur/.local/share/zsh /home/arthur/.local/share/zsh \
+		--ro-bind ${XDG_CONFIG_HOME:-$HOME/.config}/zsh ${XDG_CONFIG_HOME:-$HOME/.config}/zsh \
+		--ro-bind ${XDG_CONFIG_HOME:-$HOME/.config}/dircolors ${XDG_CONFIG_HOME:-$HOME/.config}/dircolors \
+		--bind ${XDG_DATA_HOME:-$HOME/.local/share}/zsh ${XDG_DATA_HOME:-$HOME/.local/share}/zsh \
 		$SHELL
 	unset SANDBOX
 }
