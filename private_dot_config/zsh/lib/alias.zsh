@@ -14,3 +14,4 @@ alias rename=perl-rename
 alias jitrocks="luarocks --lua-version 5.1"
 alias taskui="taskwarrior-tui"
 alias _='sudo '
+alias dotfiles="cd $(chezmoi source-path)"

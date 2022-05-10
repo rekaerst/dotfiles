@@ -1,6 +1,0 @@
-tmux/plugins
-mpv/watch_later
-log
-history
-proxy.service
-systemd/user/*target.wants

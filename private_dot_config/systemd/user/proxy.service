@@ -1,0 +1,8 @@
+[Unit]
+Description=V2ray Proxy
+
+[Service]
+ExecStart=/usr/bin/v2ray --config /home/arthur/.config/v2ray/config.json
+
+[Install]
+WantedBy=default.target
