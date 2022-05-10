@@ -1,0 +1,17 @@
+#!/bin/bash
+args=(
+	# nvidia
+	--setenv __NV_PRIME_RENDER_OFFLOAD 1
+	--setenv __GLX_VENDOR_LIBRARY_NAME nvidia
+	--setenv __VK_LAYER_NV_optimus NVIDIA_only
+	--setenv VK_ICD_FILENAMES /usr/share/vulkan/icd.d/nvidia_icd.json
+
+	--bind /home/arthur/Downloads /home/arthur/Downloads
+	--bind /home/arthur/Documents /home/arthur/Documents
+	--bind /home/arthur/tmp /home/arthur/tmp
+	--bind /home/arthur/opt /home/arthur/opt
+	--bind /home/arthur/.config/MangoHud /home/arthur/.config/MangoHud
+	--bind /home/arthur/.wine /home/arthur/.wine
+)
+
+exec sandbox "${args[@]}" mangohud wine "$@"
