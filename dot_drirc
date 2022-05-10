@@ -1,0 +1,8 @@
+<driconf>
+  <device screen="0" driver="radeonsi">
+    <application name="Default">
+      <option name="force_glsl_extensions_warn" value="false" />
+      <option name="mesa_glthread" value="true" />
+    </application>
+  </device>
+</driconf>
