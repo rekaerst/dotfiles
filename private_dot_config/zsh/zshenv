@@ -1,5 +1,6 @@
-if [[ ! :$PATH: == *:"$HOME/.local/bin":* ]]; then
-	export PATH=$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:${PATH}
+if (( ! ${path[(I)$HOME/.local/bin]} )); then
+	path=($HOME/.local/bin $HOME/go/bin $HOME/.cargo/bin $HOME/.cabal/bin $path)
+	export PATH
 fi
 
 if [[ -z $XDG_DATA_HOME ]]; then
