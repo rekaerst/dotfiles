@@ -170,53 +170,6 @@ function qemu() {
 	fi
 }
 
-# Bubblewrap sandbox
-function sandbox() {
-	if [[ "$#" == "0" ]]; then
-		echo "Usage $0 <command> [args]"
-		return
-	fi
-	args=(
-		# base system
-		--ro-bind /usr /usr 
-		--symlink /usr/lib /lib 
-		--symlink /usr/lib /lib64 
-		--symlink /usr/bin /bin 
-		--symlink /usr/bin /sbin 
-		--ro-bind /etc /etc 
-		--ro-bind /opt /opt 
-		--tmpfs /tmp 
-		--proc /proc 
-		--dev /dev 
-		--ro-bind /sys /sys 
-		# graphics
-		--dev-bind /dev/dri /dev/dri 
-		# runtime dir
-		--tmpfs /run/user/$UID 
-		--ro-bind /run/systemd/resolve /run/systemd/resolve 
-		--ro-bind /run/user/$UID/pulse /run/user/$UID/pulse 
-		--ro-bind /run/user/$UID/pipewire-0 /run/user/$UID/pipewire-0 
-		--ro-bind /run/user/$UID/pipewire-0.lock /run/user/$UID/pipewire-0.lock 
-		--ro-bind /run/user/$UID/wayland-0 /run/user/$UID/wayland-0 
-		--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock 
-		# shared folder
-		--bind /home/arthur/Downloads /home/arthur/Downloads 
-		--bind /home/arthur/tmp /home/arthur/tmp 
-		--bind /home/arthur/.cache /home/arthur/.cache 
-		# zsh
-		--unshare-all 
-		--share-net 
-		--die-with-parent 
-	)
-	# nvidia gpu
-	if [[ -e /dev/nvidia0 ]]; then
-		for f in /dev/nvidia*; do
-			args+=(--dev-bind $f $f)
-		done
-	fi
-
-	bwrap "${args[@]}" $@
-}
 
 # Run sandboxed shell
 function sbsh {
