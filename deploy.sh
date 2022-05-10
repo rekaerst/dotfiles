@@ -17,7 +17,7 @@ config_xdg=(
 	autostart bat borgmatic.d environment.d fontconfig foot fsh git go jrnl
 	Kvantum less lf litecli luarocks MangoHud mpv mycli npm nvim nvtop pgcli pip
 	pylint rc.d inputrc sway systemd task tmux zsh bookmarks chrome-flags.conf
-	clang-format dircolors dxvk.conf flake8 qt5ct qt6ct btop
+	clang-format dircolors dxvk.conf flake8 qt5ct qt6ct btop code-flags.conf
 )
 
 for i in "${config_xdg[@]}"; do
