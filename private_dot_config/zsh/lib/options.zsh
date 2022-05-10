@@ -5,6 +5,9 @@
 # Remove older command from the history if a duplicate is to be added.
 setopt hist_ignore_all_dups
 
+# disable confirmation of history expansions
+unsetopt hist_verify
+
 #
 # Input/output
 #
