@@ -490,7 +490,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3 # core
 .swo                  38;5;244            # Temporary files
 .tmp                  38;5;244            # Temporary files
 .sassc                38;5;244            # Temporary files
-.pacnew               38;5;33             # Undo files
+.pacnew               38;5;201            # Undo files
 .un~                  38;5;241            # Undo files
 .orig                 38;5;241            # Undo files
 .BUP                  38;5;241            # Backups
