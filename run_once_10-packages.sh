@@ -9,8 +9,7 @@ fi
 arch_linux() {
 	packages=(
 		aria2 asp at atop bat bc bear borg borgmatic btop delve duf dust fd
-		foot go lf litecli llvm make mpv neovim nmap nodejs npm nvtop pgcli
-		ripgrep sd
+		foot go lf llvm make mpv neovim nmap nvtop pgcli ripgrep sd rsync
 	)
 	sudo pacman -S --needed "${packages[@]}"
 }
