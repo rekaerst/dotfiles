@@ -1,0 +1,21 @@
+{{- $email := "" -}}
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else -}}
+{{-   $email = promptString "email" -}}
+{{- end -}}
+
+encryption = "gpg"
+
+[data]
+email = {{ $email | quote }}
+
+[gpg]
+recipient = {{ $email | quote }}
+
+[diff]
+command = "diff"
+
+[merge]
+command = "nvim"
+args = "-d"
