@@ -2,7 +2,7 @@
 Description=V2ray Proxy
 
 [Service]
-ExecStart=/usr/bin/v2ray --config /home/arthur/.config/v2ray/config.json
+ExecStart=/usr/bin/v2ray --config /home/arthur/.config/proxy/config.json
 
 [Install]
 WantedBy=default.target
