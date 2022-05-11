@@ -34,6 +34,7 @@
 	colorMoved = default
 
 [delta]
+	navigate = true
 	line-numbers = true
 	syntax-theme = OneHalfDark
 	minus-style = syntax "#4a323a"
