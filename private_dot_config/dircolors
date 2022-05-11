@@ -547,6 +547,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3 # core
 .urlview              38;5;116            # metadata
 .webloc               38;5;116            # metadata
 .asc                  38;5;192;3          # Encrypted data
+.age                  38;5;192;3          # Encrypted data
 .bfe                  38;5;192;3          # Encrypted data
 .enc                  38;5;192;3          # Encrypted data
 .gpg                  38;5;192;3          # Encrypted data
