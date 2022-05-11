@@ -5,16 +5,17 @@
 {{-   $email = promptString "email" -}}
 {{- end -}}
 
-encryption = "gpg"
+encryption = "age"
 
 [data]
 email = {{ $email | quote }}
 
-[gpg]
-recipient = {{ $email | quote }}
+[age]
+identity = "~/srv/private/chezmoi_key"
+recipient = "age1dnqnpv46e4ls6yc4dkjay6n23vmrnhqs6jka4mv0rtlmst8mpd3ss3vmy7"
 
 [diff]
-command = "diff"
+pager = "delta"
 
 [merge]
 command = "nvim"
