@@ -19,7 +19,7 @@
 	"mflags": "",
 	"sortby": "votes",
 	"searchby": "name-desc",
-	"gitflags": "--depth 1",
+	"gitflags": "",
 	"removemake": "yes",
 	"sudobin": "sudo",
 	"sudoflags": "",
