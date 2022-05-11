@@ -21,6 +21,14 @@ function default() {
 }
 
 #
+# Print error message
+#
+function err() {
+	echo >&2 -e "\e[31;1m$*\e[0m"
+}
+
+
+#
 # Set environment variable "$1" to default value "$2" if "$1" is not yet defined.
 #
 # Arguments:
