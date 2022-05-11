@@ -80,3 +80,4 @@ export TEXMFHOME=$XDG_DATA_HOME/texmf
 export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
 export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
 export XZ_OPT="-T 0"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgreprc"

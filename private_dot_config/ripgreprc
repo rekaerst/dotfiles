@@ -1,0 +1,12 @@
+# vi: ft=conf
+#
+# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
+--max-columns=200
+--max-columns-preview
+
+# web type
+--type-add
+web:*.{html,css,js,ts}*
+
+# Because who cares about case!? 
+--smart-case
