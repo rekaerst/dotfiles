@@ -104,9 +104,9 @@ function pacblame() {
 
 }
 
-# show explicitly installed packages
-function pacls() {
-	pacman -Qqe | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
+# pacman fzf preview
+function pacfzf() {
+	fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
 }
 
 #
