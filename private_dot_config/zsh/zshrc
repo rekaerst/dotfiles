@@ -105,5 +105,11 @@ source $ZDOTDIR/lib/options.zsh
 source $ZDOTDIR/lib/completion.zsh
 source $ZDOTDIR/lib/keybinding.zsh
 
+#
+# fzf
+#
+
+source $ZDOTDIR/lib/fzf.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
