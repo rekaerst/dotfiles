@@ -84,11 +84,12 @@ function noproxy() {
 
 # Update all python packages
 function pip_update() {
-	pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
-}
-
-function pip_list_outdated() {
-	pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 
+	requirements="$HOME/.local/lib/requirements.txt"
+	if [[ -f $requirements ]]; then
+		pip install -r $requirements -U
+	else
+		err "file $requirements not found"
+	fi
 }
 
 
