@@ -11,7 +11,7 @@ highlight: true
 indent_character: '|'
 journals:
   default:
-    encrypt: false
+    encrypt: true
     journal: /home/arthur/.local/share/jrnl/journal.txt
 linewrap: 79
 tagsymbols: '@'
