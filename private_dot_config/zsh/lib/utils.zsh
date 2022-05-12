@@ -170,13 +170,18 @@ function qemu() {
 		-device nec-usb-xhci,id=xhci \
 		-device usb-tablet,bus=xhci.0 \
 		-enable-kvm -cpu host \
-		-device virtio-vga-gl \
-		-display gtk,gl=on \
 		$@
 
 	if [[ "$@" == *"hugepages"* ]]; then
 		sudo sysctl vm/nr_hugepages=0
 	fi
+}
+
+function qemu-gl() {
+	qemu \
+		-device virtio-vga-gl \
+		-display gtk,gl=on \
+		$@
 }
 
 
