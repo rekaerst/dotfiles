@@ -212,7 +212,6 @@ function encrypt() {
 	fi
 
 	if [[ -z "$(ls -A $target)" ]]; then
-		mkdir "$target"
 		fscrypt encrypt "$target"
 	else
 		mkdir "$target.new"
