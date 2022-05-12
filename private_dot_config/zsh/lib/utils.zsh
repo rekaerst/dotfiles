@@ -148,7 +148,7 @@ function nonvidia() {
 
 
 #
-# MISC
+# qemu
 #
 
 # virtio-vga-gl for virgil
@@ -184,6 +184,9 @@ function qemu-gl() {
 		$@
 }
 
+#
+# sandbox
+#
 
 # Run sandboxed shell
 function sbsh {
@@ -195,6 +198,10 @@ function sbsh {
 		$SHELL
 	unset SANDBOX
 }
+
+#
+# Misc
+#
 
 function help() {
 	bash -c "help $*"
