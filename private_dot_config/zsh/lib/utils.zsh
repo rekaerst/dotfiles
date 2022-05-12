@@ -219,9 +219,9 @@ function encrypt() {
 		mv "$target" "$target.old"
 		mv "$target.new" "$target"
 		cp -aT "$target.old"  "$target"
+		hash trash 2>/dev/null && trash "$target.old" 
 	fi
 
-	hash trash 2>/dev/null && trash "$target.old" 
 }
 
 #
