@@ -11,7 +11,6 @@ source $ZDOTDIR/lib/utils.zsh
 # -----------------
 
 source $ZDOTDIR/lib/appearance.zsh
-source $ZDOTDIR/lib/keybinding.zsh
 source $ZDOTDIR/lib/alias.zsh
 source $ZDOTDIR/lib/termtitle.zsh
 
@@ -44,6 +43,8 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 
 zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME}/zcompdump
 zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME}/zcompcache
+# zsh bash completions fallback
+ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file)
 
 #
 # zsh-autosuggestions
