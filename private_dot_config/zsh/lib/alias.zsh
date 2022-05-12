@@ -15,4 +15,5 @@ alias jitrocks="luarocks --lua-version 5.1"
 alias taskui="taskwarrior-tui"
 alias _='sudo '
 alias dotfiles="cd $(chezmoi source-path)"
-alias dfgit="lazygit -p $(chezmoi source-path)"
+alias dflg="lazygit -p $(chezmoi source-path)"
+alias lg="lazygit"
