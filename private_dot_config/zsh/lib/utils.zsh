@@ -27,7 +27,6 @@ function err() {
 	echo >&2 -e "\e[31;1m$*\e[0m"
 }
 
-
 #
 # Set environment variable "$1" to default value "$2" if "$1" is not yet defined.
 #
@@ -189,7 +188,7 @@ function qemu-gl() {
 #
 
 # Run sandboxed shell
-function sbsh {
+function sbsh() {
 	export SANDBOX=1
 	sandbox \
 		--ro-bind ${XDG_CONFIG_HOME:-$HOME/.config}/zsh ${XDG_CONFIG_HOME:-$HOME/.config}/zsh \
@@ -197,6 +196,33 @@ function sbsh {
 		--bind ${XDG_DATA_HOME:-$HOME/.local/share}/zsh ${XDG_DATA_HOME:-$HOME/.local/share}/zsh \
 		$SHELL
 	unset SANDBOX
+}
+
+function encrypt() {
+	hash fscrypt 2>/dev/null || { err "fscrypt is not installed" && return }
+
+	if [[ $# -ne 1 ]]; then
+		echo "Usage $0 folder_to_encrypt"
+		return
+	fi
+
+	target=$1
+	if [[ ! -d "$target" ]]; then
+		err "target must be a folder"
+	fi
+
+	if [[ -z "$(ls -A $target)" ]]; then
+		mkdir "$target"
+		fscrypt encrypt "$target"
+	else
+		mkdir "$target.new"
+		fscrypt encrypt "$target.new"
+		mv "$target" "$target.old"
+		mv "$target.new" "$target"
+		cp -aT "$target.old"  "$target"
+	fi
+
+	hash trash 2>/dev/null && trash "$target.old" 
 }
 
 #
