@@ -11,6 +11,10 @@ map X !$f
 # trash
 cmd trash %{{ gio trash "$fx" }}
 map x trash
+
+# mkdir
+cmd mkdir %IFS=" "; mkdir -- "$*"
+map a push :mkdir<space>
 cmd fzf_jump ${{
     res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ] ; then
