@@ -1,5 +1,11 @@
 # vim:ft=bash
 
+# split words in zsh
+set shell zsh
+set shellopts '-euy'
+set ifs "\n"
+set filesep "\n"  # default already
+
 #
 # appearance
 #
