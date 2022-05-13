@@ -6,6 +6,9 @@ set shellopts '-euy'
 set ifs "\n"
 set filesep "\n"  # default already
 
+# put lf into background
+map <c-z> $ kill -STOP $PPID
+
 #
 # appearance
 #
