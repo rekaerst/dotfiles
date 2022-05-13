@@ -192,9 +192,8 @@ handle_mime() {
 
 	## Image
 	image/*)
-		## Preview as text conversion
-		# img2txt --gamma=0.6 --width="${PV_WIDTH}" -- "${FILE_PATH}" && exit 4
-		exiftool "${FILE_PATH}" && exit
+		## show information about image
+		mediainfo "${FILE_PATH}" && exit
 		exit 1
 		;;
 
