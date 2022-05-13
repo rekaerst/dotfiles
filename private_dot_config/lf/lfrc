@@ -8,6 +8,9 @@ map x $$f
 map X !$f
 
 #fzf jump to file
+# trash
+cmd trash %{{ gio trash "$fx" }}
+map x trash
 cmd fzf_jump ${{
     res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ] ; then
@@ -97,11 +100,6 @@ cmd on-cd &{{
 	printf "\033]0; $PWD\007" > /dev/tty
 }}
 on-cd
-
-
-# trash
-cmd trash %trash-put "$fx"
-map x trash
 
 # preview
 set previewer ~/.config/lf/pv
