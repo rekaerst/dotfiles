@@ -101,6 +101,11 @@ handle_extension() {
 		python -m json.tool -- "${FILE_PATH}" && exit
 		;;
 
+	## Markdown
+	md)
+		glow -s dark "${FILE_PATH}"
+		;;
+
 	## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
 	## by file(1).
 	dff | dsf | wv | wvc)
@@ -170,13 +175,13 @@ handle_mime() {
 			local pygmentize_format='terminal'
 			local highlight_format='ansi'
 		fi
+		env COLORTERM=truecolor bat --color=always --style="plain" \
+			-- "${FILE_PATH}" && exit
 		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
 			--out-format="${highlight_format}" \
 			--config-file="${XDG_CONFIG_HOME:-$HOME/.config}/lf/highlight.theme" \
 			--replace-tab=4 \
 			--force -- "${FILE_PATH}" && exit
-		env COLORTERM=8bit bat --color=always --style="plain" \
-			-- "${FILE_PATH}" && exit
 		pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" \
 			-- "${FILE_PATH}" && exit
 		exit 2
