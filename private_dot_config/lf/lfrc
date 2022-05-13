@@ -1,13 +1,41 @@
 # vim:ft=bash
+
+#
+# appearance
+#
+ 
 set icons
 set dircounts
 set info "size"
+
+# previewer
+set previewer ~/.config/lf/pv
+map i $LESSOPEN='| ~/.config/lf/pv %s' less -R "$f"
+
+# dynamically set number of clumns
+cmd recol ${{
+    w=$(tput cols)
+    if [ $w -le 80 ]; then
+        lf -remote "send $id set ratios 1:2"
+    elif [ $w -le 160 ]; then
+        lf -remote "send $id set ratios 1:2:3"
+    else
+        lf -remote "send $id set ratios 1:2:3:5"
+    fi
+}}
+recol
+
+#
+# file operation
+#
 
 # execute current file (must be executable)
 map x $$f
 map X !$f
 
-#fzf jump to file
+# toggle show hidden file <C-H>
+map <backspace> set hidden!
+
 # trash
 cmd trash %{{ gio trash "$fx" }}
 map x trash
@@ -15,6 +43,8 @@ map x trash
 # mkdir
 cmd mkdir %IFS=" "; mkdir -- "$*"
 map a push :mkdir<space>
+
+# fzf jump to file
 cmd fzf_jump ${{
     res="$(find . -maxdepth 1 | fzf --reverse --header='Jump to location' | sed 's/\\/\\\\/g;s/"/\\"/g')"
     if [ -d "$res" ] ; then
@@ -40,13 +70,9 @@ cmd fzf_search ${{
     )"
     [ ! -z "$res" ] && lf -remote "send $id select \"$res\""
 }}
-
 map gs :fzf_search
 
-# toggle show hidden file <C-H>
-map <backspace> set hidden!
-
-# copying
+# copy/paste 
 cmd paste &{{
     set -- $(cat ~/.local/share/lf/files)
     mode="$1"
@@ -65,7 +91,6 @@ cmd paste &{{
     lf -remote "send clear"
 }}
 
-# linking
 # y (select for copy) and P to paste soft-link
 # d (select for cut) and P to paste hard-link
 cmd link %{{
@@ -87,7 +112,10 @@ cmd link %{{
 }}
 map P :link
 
+#
 # git
+#
+
 # '&' commands run silently in background (which is what we want here),
 # but are not connected to stdout.
 # To make sure our escape sequence still reaches stdout we pipe it to /dev/tty
@@ -105,20 +133,4 @@ cmd on-cd &{{
 }}
 on-cd
 
-# preview
-set previewer ~/.config/lf/pv
-map i $LESSOPEN='| ~/.config/lf/pv %s' less -R "$f"
-
-# dynamically set number of clumns
-cmd recol ${{
-    w=$(tput cols)
-    if [ $w -le 80 ]; then
-        lf -remote "send $id set ratios 1:2"
-    elif [ $w -le 160 ]; then
-        lf -remote "send $id set ratios 1:2:3"
-    else
-        lf -remote "send $id set ratios 1:2:3:5"
-    fi
 }}
-
-recol
