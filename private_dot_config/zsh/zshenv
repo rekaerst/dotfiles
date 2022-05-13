@@ -19,8 +19,10 @@ export MKL_DYNAMIC=FALSE
 export MKL_NUM_THREADS=12
 export KMP_AFFINITY=granularity=fine,compact,1,0
 
-# Use truecolor
-# export COLORTERM=truecolor
+# set COLORTERM in tmux
+if [[ ! -z $TMUX ]]; then
+	export COLORTERM=truecolor
+fi
 # Editor
 export EDITOR='nvim'
 # Compilation flags
