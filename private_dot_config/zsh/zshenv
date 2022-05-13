@@ -1,3 +1,6 @@
+# suppress parameter not set error
+set +u
+
 if (( ! ${path[(I)$HOME/.local/bin]} )); then
 	path=($HOME/.local/bin $HOME/go/bin $HOME/.cargo/bin $HOME/.cabal/bin $path)
 	export PATH
@@ -20,7 +23,7 @@ export MKL_NUM_THREADS=12
 export KMP_AFFINITY=granularity=fine,compact,1,0
 
 # set COLORTERM in tmux
-if [[ ! -z $TMUX ]]; then
+if [[ ! -z "$TMUX" ]]; then
 	export COLORTERM=truecolor
 fi
 # Editor
