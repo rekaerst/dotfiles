@@ -225,6 +225,60 @@ function encrypt() {
 }
 
 #
+# Hardware
+#
+function conservation_mode {
+	usage() {
+		echo "\
+
+Usage: $0 <options>
+
+	Battery conservation mode will charge the device to 60% when charge falls
+	below 50%, extending the life of the battery.
+
+Options:
+	-e		- enable conservation mode
+	-d		- disable conservation mode
+"
+	}
+	eflag=0
+	dflag=0
+	
+	if [[ -e /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode ]]; then
+		switch="/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
+	else
+		err "conservation mode is not supported"
+	fi
+
+	while getopts 'edh' flag; do
+		case "${flag}" in
+			h) usage ;;
+			e) eflag=1;;
+			d) dflag=1;;
+		esac
+	done
+
+	if (( $OPTIND == 1 )); then
+		usage
+	fi
+
+	if (( eflag == 1 )) && (( dflag == 1 )); then
+		err "only one option is allowed"
+		return
+	fi
+
+	if (( eflag == 1)); then
+		echo 1 | sudo tee "$switch" >/dev/null &&\
+		echo "conservation mode enabled"
+	fi
+	
+	if (( dflag == 1)); then
+		echo 0 | sudo tee "$switch" >/dev/null &&\
+		echo "conservation mode disabled"
+	fi
+}
+
+#
 # Misc
 #
 
