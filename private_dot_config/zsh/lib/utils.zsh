@@ -263,6 +263,8 @@ function encrypt() {
 #
 # Hardware
 #
+
+# Manage conservation mode of ideapad
 function conservation_mode {
 	usage() {
 		echo "\
