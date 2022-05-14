@@ -39,6 +39,8 @@ export TEMPLATES=~/src/templates
 # export GTK_THEME=Materia-dark-compact
 # DXVK
 export DXVK_CONFIG_FILE=$XDG_CONFIG_HOME/dxvk.conf
+# tab size
+export LESS="-x4"
 
 # from envrioment.d
 export EDITOR='nvim'
@@ -86,3 +88,6 @@ export TEXMFVAR=$XDG_CACHE_HOME/texlive/texmf-var
 export TEXMFCONFIG=$XDG_CONFIG_HOME/texlive/texmf-config
 export XZ_OPT="-T 0"
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgreprc"
+export MAXIMA_USERDIR="$XDG_CONFIG_HOME"/maxima
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+
