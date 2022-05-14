@@ -275,10 +275,12 @@ Usage: $0 <options>
 Options:
 	-e		- enable conservation mode
 	-d		- disable conservation mode
+	-s		- status
 "
 	}
 	eflag=0
 	dflag=0
+	sflag=0
 	
 	if [[ -e /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode ]]; then
 		switch="/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
@@ -286,20 +288,34 @@ Options:
 		err "conservation mode is not supported"
 	fi
 
-	while getopts 'edh' flag; do
+	while getopts 'edsh' flag; do
 		case "${flag}" in
-			h) usage ;;
+			h) 
+				usage
+				return
+				;;
 			e) eflag=1;;
 			d) dflag=1;;
+			s) sflag=1;;
 		esac
 	done
 
 	if (( OPTIND == 1 )); then
 		usage
+		return
+	fi
+
+	if (( sflag == 1 )); then
+		if (( $(cat "$switch") == 1 )); then
+			echo "enabled"
+		else
+			echo "disabled"
+		fi
+		return
 	fi
 
 	if (( eflag == 1 )) && (( dflag == 1 )); then
-		err "only one option is allowed"
+		err "-e and -d can not be set at same time"
 		return
 	fi
 
