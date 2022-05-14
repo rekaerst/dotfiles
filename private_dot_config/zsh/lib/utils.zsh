@@ -6,7 +6,7 @@ function zsh_stats() {
 		| grep -v "./" | sort -nr | head -40 | column -c3 -s " " -t | nl
 }
 
-#
+##################################################################
 # Set variable "$1" to default value "$2" if "$1" is not yet defined.
 #
 # Arguments:
@@ -14,20 +14,19 @@ function zsh_stats() {
 #    2. val  - The default value
 # Return value:
 #    0 if the variable exists, 3 if it was set
-#
+##################################################################
 function default() {
 	(( $+parameters[$1] )) && return 0
 	typeset -g "$1"="$2"   && return 3
 }
 
-#
+
 # Print error message
-#
 function err() {
 	echo >&2 -e "\e[31;1m$*\e[0m"
 }
 
-#
+##################################################################
 # Set environment variable "$1" to default value "$2" if "$1" is not yet defined.
 #
 # Arguments:
@@ -35,28 +34,22 @@ function err() {
 #    2. val  - The default value
 # Return value:
 #    0 if the env variable exists, 3 if it was set
-#
+##################################################################
 function env_default() {
 	[[ ${parameters[$1]} = *-export* ]] && return 0
 	export "$1=$2" && return 3
-}
-
-# LOL
-function rm {
-	if [[ "$#" -eq 2 ]] && [[ "$1" = "-rf" ]] && [[ "$2" = "$HOME" ]]; then
-		echo "trying to delete home, Aborting..." 
-		return 1
-	else
-		command rm "$@"
-	fi
 }
 
 #
 # Proxy
 #
 
+##################################################################
 # Setup proxy for current session
 # default to 127.0.0.1:8888
+# Arguments:
+#	None
+##################################################################
 function proxy() {
 	export http_proxy="http://127.0.0.1:8888"
 	export https_proxy=$http_proxy
@@ -68,7 +61,11 @@ function proxy() {
 	git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
 }
 
+##################################################################
 # Clear proxy for current session
+# Arguments:
+#	None
+##################################################################
 function noproxy() {
 	unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY ftp_proxy FTP_PROXY
 
@@ -81,7 +78,11 @@ function noproxy() {
 # Python
 #
 
+##################################################################
 # Update all python packages
+# Arguments:
+#	None
+##################################################################
 function pip_update() {
 	requirements="$HOME/.local/lib/requirements.txt"
 	if [[ -f $requirements ]]; then
@@ -96,12 +97,20 @@ function pip_update() {
 # Pacman
 #
 
+##################################################################
 # list package by size
+# Arguments:
+#	None
+##################################################################
 function pacsize() {
 	pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h
 }
 
+##################################################################
 # list files in package by size
+# Arguments:
+#	1. package
+##################################################################
 function pacblame() {
 	if [[ -z $1 ]]; then
 		echo "list files in package by size"
@@ -109,24 +118,27 @@ function pacblame() {
 		return 1
 	fi
 	pacman -Qlq $1 | grep -v '/$' | xargs -r du -h | sort -h
-
 }
 
-# pacman fzf preview
-function pacfzf() {
-	fzf --preview 'pacman -Sil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
-}
 
 #
 # git
 #
 
+##################################################################
 # pull all repositories under current folder 
+# Arguments:
+#	1. package
+##################################################################
 function  pullall() {
 	ls | xargs -P100 -I{} git -C {} pull
 }
 
+##################################################################
 # Get size of github repo
+# Arguments:
+#	1. repositorie
+##################################################################
 function reposize() {
 	[[ -z $1 ]] && echo "Usage: $0 owner/reponame" && return 1
 	curl -s https://api.github.com/repos/$1 | jq '.size' | numfmt --to=iec --from-unit=1024
@@ -136,10 +148,20 @@ function reposize() {
 # Graphics
 #
 
+##################################################################
+# Make programs use nvidia gpu
+# Arguments:
+#	None
+##################################################################
 function nvidia() {
 	export __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json 
 }
 
+##################################################################
+# Do not use nvidia GPU
+# Arguments:
+#	None
+##################################################################
 function nonvidia() {
 	unset __NV_PRIME_RENDER_OFFLOAD __GLX_VENDOR_LIBRARY_NAME __VK_LAYER_NV_optimus VK_ICD_FILENAMES
 	export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
@@ -150,7 +172,7 @@ function nonvidia() {
 # qemu
 #
 
-# virtio-vga-gl for virgil
+# qemu wrapper
 function qemu() {
 	# set hugepages
 	if [[ "$@" == *"hugepages"* ]]; then
@@ -176,6 +198,7 @@ function qemu() {
 	fi
 }
 
+# with virgl
 function qemu-gl() {
 	qemu \
 		-device virtio-vga-gl \
@@ -187,17 +210,30 @@ function qemu-gl() {
 # sandbox
 #
 
+##################################################################
 # Run sandboxed shell
+# Arguments:
+#	Same as zsh
+##################################################################
 function sbsh() {
 	export SANDBOX=1
 	sandbox \
 		--ro-bind ${XDG_CONFIG_HOME:-$HOME/.config}/zsh ${XDG_CONFIG_HOME:-$HOME/.config}/zsh \
 		--ro-bind ${XDG_CONFIG_HOME:-$HOME/.config}/dircolors ${XDG_CONFIG_HOME:-$HOME/.config}/dircolors \
 		--bind ${XDG_DATA_HOME:-$HOME/.local/share}/zsh ${XDG_DATA_HOME:-$HOME/.local/share}/zsh \
-		$SHELL
+		$SHELL $*
 	unset SANDBOX
 }
 
+#
+# encryption
+#
+
+##################################################################
+# wrapper to encrypt a folder with fscrypt
+# Arguments:
+#	1. folder to encrypt
+##################################################################
 function encrypt() {
 	hash fscrypt 2>/dev/null || { err "fscrypt is not installed" && return }
 
@@ -258,7 +294,7 @@ Options:
 		esac
 	done
 
-	if (( $OPTIND == 1 )); then
+	if (( OPTIND == 1 )); then
 		usage
 	fi
 

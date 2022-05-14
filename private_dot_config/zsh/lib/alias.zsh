@@ -1,19 +1,23 @@
 #!/bin/zsh
 
-alias svn='svn --config-dir $XDG_CONFIG_HOME/subversion'
-alias info='info --vi-keys'
+# use proxy for httping
 alias httping="httping -E"
+# use sudo for alias
 alias sudo='sudo '
-alias html2pdf='wkhtmltopdf'
-alias th=trash
-alias locate='locate --regex'
-alias lsof='lsof -n'
-alias hs="python -m http.server"
-alias R="R --quiet"
-alias rename=perl-rename
-alias jitrocks="luarocks --lua-version 5.1"
+# task
 alias taskui="taskwarrior-tui"
-alias _='sudo '
-alias dotfiles="cd $(chezmoi source-path)"
+# dotfiles
 alias dflg="lazygit -p $(chezmoi source-path)"
+alias dotfiles="cd $(chezmoi source-path)"
+# git
 alias lg="lazygit"
+alias pacfzf="fzf --preview 'pacman -Sil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
+# misc
+alias html2pdf='wkhtmltopdf'
+alias info='info --vi-keys'
+alias th=trash
+alias rename=perl-rename
+alias hs="python -m http.server"
+alias locate='locate --regex'
+alias R="R --quiet"
+alias jitrocks="luarocks --lua-version 5.1"
