@@ -6,6 +6,7 @@ args=(
 	--setenv __VK_LAYER_NV_optimus NVIDIA_only
 	--setenv VK_ICD_FILENAMES /usr/share/vulkan/icd.d/nvidia_icd.json
 
+	--bind /run/media /run/media
 	--bind /home/arthur/Downloads /home/arthur/Downloads
 	--bind /home/arthur/Documents /home/arthur/Documents
 	--bind /home/arthur/tmp /home/arthur/tmp
