@@ -1,5 +1,6 @@
 # flake8: noqa
 # Configuration file for ipython.
+import sys
 
 # ------------------------------------------------------------------------------
 # InteractiveShellApp(Configurable) configuration
@@ -55,7 +56,7 @@
 #  'wx', 'gtk2', 'qt4').
 #  Choices: any of ['asyncio', 'glut', 'gtk', 'gtk2', 'gtk3', 'gtk4', 'osx', 'pyglet', 'qt', 'qt4', 'qt5', 'qt6', 'tk', 'wx', 'gtk2', 'qt4'] (case-insensitive) or None
 #  Default: None
-c.InteractiveShellApp.gui = None
+# c.InteractiveShellApp.gui = None
 
 ## Should variables loaded at startup (by startup files, exec_lines, etc.)
 #          be hidden from tools like %who?
@@ -599,8 +600,10 @@ c.TerminalInteractiveShell.editor = "nvim"
 ## The name or class of a Pygments style to use for syntax
 #          highlighting. To see available styles, run `pygmentize -L styles`.
 #  Default: traitlets.Undefined
-
-c.TerminalInteractiveShell.highlighting_style = "onedarkpro"
+if "sage" not in sys.argv[0]:
+    c.TerminalInteractiveShell.highlighting_style = "onedarkpro"
+else:
+    c.TerminalInteractiveShell.highlighting_style = "one-dark"
 
 ## Override highlighting format for specific tokens
 #  Default: {}
