@@ -1,8 +1,11 @@
 [Unit]
 Description=V2ray Proxy
+After=network.target nss-lookup.target
 
 [Service]
-ExecStart=/usr/bin/v2ray --config /home/arthur/.config/proxy/config.json
+ExecStart=/usr/bin/v2ray --config ${HOME}/.config/proxy/config.json
+Restart=on-failure
+RestartPreventExitStatus=23
 
 [Install]
 WantedBy=default.target
