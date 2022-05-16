@@ -154,6 +154,8 @@ Arguments:
 		for envar in "${proxy_env[@]}"; do
 			export $envar=$server_url
 		done
+		all_proxy="socks://$socks_address"
+		ALL_PROXY="socks://$socks_address"
 		# git
 		if ((git_flag == 1)); then
 			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $socks_address  %h %p"
@@ -177,6 +179,7 @@ Arguments:
 		;;
 	off)
 		unset "${proxy_env[@]}"
+		unset all_proxy ALL_PROXY
 		#git
 		if ((git_flag == 1)); then
 			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
