@@ -50,7 +50,118 @@ function env_default() {
 # Arguments:
 #	None
 ##################################################################
+function proxyctl() {
+	usage() {
+		echo "\
+
+Usage:
+  proxyctl COMMAND [arguments]
+
+Commands:
+  on		- turn on proxy
+  off		- turn off proxy
+  status	- show status
+  help		- show help
+
+Arguments:
+-s server		specific server to use (default to http://127.0.0.1:8888)
+-e				change desktop environment proxy settings
+-g				change git ssh proxy
+"
+	}
+	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+
+	local proxy_env=(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY rsync_proxy RSYNC_PROXY)
+	local server_url= 	# -s
+	local de_flag=0		# -e
+	local git_flag=0	# -g
+	local cmd=
+	local url_regex='(https?|socks([0-9]))://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+	
+	# parsing
+	if (($# == 0)); then
+		echo "$0: no command was specified"
+		usage
+		return
+	fi
+
+	case "$1" in
+	on)
+		cmd="on"
+		shift
+		;;
+	off)
+		cmd="off"
+		shift
+		;;
+	status)
+		cmd="status"
+		shift
+		;;
+	help)
+		usage
+		return
+		;;
+	*)
+		err "Invalid command $1."
+		usage
+		return 1
+		;;
+	esac
+
+	while getopts ":s:eg" opt; do
+		case "$opt" in
+		s)
+			server_url="$OPTARG"
+			;;
+		e)
+			de_flag=1
+			;;
+		g)
+			git_flag=1
+			;;
+		:)
+			err "option requires an argument."
+			usage
+			return 1
+			;;
+		?) 
+			err "Invalid command option."
+			usage
+			return 1
+			;;
+		esac
+	done
+
+	
+	if [[ -z $server_url ]]; then
+		# default server_url
+		server_url="http://127.0.0.1:8888/"
+	elif [[ ! "$server_url" =~ "$url_regex" ]] then
+		# check address syntax
+		err "Invalid server url"
+		return 1
+	fi
+
+	case "$cmd" in
+	on)
+		;;
+	off)
+		;;
+	status)
+		;;
+	esac
+
+	echo "
+cmd=$cmd
+server_url=$server_url
+de_flag=$de_flag
+git_flag=$git_flag
+	"
+}
 function proxy() {
+	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+	
 	export http_proxy="http://127.0.0.1:8888"
 	export https_proxy=$http_proxy
 	export HTTP_PROXY=$http_proxy
@@ -84,7 +195,7 @@ function noproxy() {
 #	None
 ##################################################################
 function pip_update() {
-	requirements="$HOME/.local/lib/requirements.txt"
+	local requirements="$HOME/.local/lib/requirements.txt"
 	if [[ -f $requirements ]]; then
 		pip install -r $requirements -U
 	else
@@ -175,6 +286,8 @@ function nonvidia() {
 # qemu wrapper
 function qemu() {
 	# set hugepages
+	local memsize pages
+
 	if [[ "$@" == *"hugepages"* ]]; then
 		memsize=$(echo $@ | grep -oP "\-m\s+\K\w+")
 		if [[ -n "$memsize" ]]; then
@@ -281,9 +394,9 @@ Options:
 	-s		- status
 "
 	}
-	eflag=0
-	dflag=0
-	sflag=0
+	local enable_flag=0
+	local disable_flag=0
+	local status_flag=0
 	
 	if [[ -e /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode ]]; then
 		switch="/sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode"
@@ -291,15 +404,20 @@ Options:
 		err "conservation mode is not supported"
 	fi
 
-	while getopts 'edsh' flag; do
-		case "${flag}" in
+	while getopts ':edsh' opt; do
+		case "${opt}" in
 			h) 
 				usage
 				return
 				;;
-			e) eflag=1;;
-			d) dflag=1;;
-			s) sflag=1;;
+			e) enable_flag=1;;
+			d) disable_flag=1;;
+			s) status_flag=1;;
+			?) 
+				err "Invalid option."
+				usage
+				return 
+				;;
 		esac
 	done
 
@@ -308,7 +426,7 @@ Options:
 		return
 	fi
 
-	if (( sflag == 1 )); then
+	if (( status_flag == 1 )); then
 		if (( $(cat "$switch") == 1 )); then
 			echo "enabled"
 		else
@@ -317,17 +435,17 @@ Options:
 		return
 	fi
 
-	if (( eflag == 1 )) && (( dflag == 1 )); then
+	if (( enable_flag == 1 )) && (( disable_flag == 1 )); then
 		err "-e and -d can not be set at same time"
 		return
 	fi
 
-	if (( eflag == 1)); then
+	if (( enable_flag == 1)); then
 		echo 1 | sudo tee "$switch" >/dev/null &&\
 		echo "conservation mode enabled"
 	fi
 	
-	if (( dflag == 1)); then
+	if (( disable_flag == 1)); then
 		echo 0 | sudo tee "$switch" >/dev/null &&\
 		echo "conservation mode disabled"
 	fi
