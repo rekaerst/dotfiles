@@ -1,6 +1,6 @@
 #
 # Show most used command
-function zsh_stats() {
+zsh_stats() {
 	fc -l 1 \
 		| awk '{ CMD[$2]++; count++; } END { for (a in CMD) print CMD[a] " " CMD[a]*100/count "% " a }' \
 		| grep -v "./" | sort -nr | head -40 | column -c3 -s " " -t | nl
@@ -15,14 +15,14 @@ function zsh_stats() {
 # Return value:
 #    0 if the variable exists, 3 if it was set
 ##################################################################
-function default() {
+default() {
 	(( $+parameters[$1] )) && return 0
 	typeset -g "$1"="$2"   && return 3
 }
 
 
 # Print error message
-function err() {
+err() {
 	echo >&2 -e "\e[31;1m$*\e[0m"
 }
 
@@ -35,7 +35,7 @@ function err() {
 # Return value:
 #    0 if the env variable exists, 3 if it was set
 ##################################################################
-function env_default() {
+env_default() {
 	[[ ${parameters[$1]} = *-export* ]] && return 0
 	export "$1=$2" && return 3
 }
@@ -45,12 +45,9 @@ function env_default() {
 #
 
 ##################################################################
-# Setup proxy for current session
-# default to 127.0.0.1:8888
-# Arguments:
-#	None
+# Manage proxy settings
 ##################################################################
-function proxyctl() {
+proxyctl() {
 	usage() {
 		echo "\
 
@@ -66,17 +63,19 @@ Commands:
 Arguments:
 -s server		specific server to use (default to http://127.0.0.1:8888)
 -e				change desktop environment proxy settings
--g				change git ssh proxy
+-g				change git ssh socks proxy, optionally specific address,
+-a server		specific socks proxy address (default to 127.0.0.1:1080)
 "
 	}
-	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
+	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
 
 	local proxy_env=(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY rsync_proxy RSYNC_PROXY)
-	local server_url= 	# -s
-	local de_flag=0		# -e
-	local git_flag=0	# -g
+	local server_url="http://127.0.0.1:8888"
+	local socks_address="127.0.0.1:1080"
+	local de_flag=0 git_flag=0
 	local cmd=
 	local url_regex='(https?|socks([0-9]))://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+	local addr_regex='^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))(:([0-9])+)?$'
 	
 	# parsing
 	if (($# == 0)); then
@@ -109,7 +108,7 @@ Arguments:
 		;;
 	esac
 
-	while getopts ":s:eg" opt; do
+	while getopts ":s:ega:" opt; do
 		case "$opt" in
 		s)
 			server_url="$OPTARG"
@@ -119,6 +118,9 @@ Arguments:
 			;;
 		g)
 			git_flag=1
+			;;
+		a)
+			socks_address="$OPTARG"
 			;;
 		:)
 			err "option requires an argument."
@@ -133,56 +135,76 @@ Arguments:
 		esac
 	done
 
-	
-	if [[ -z $server_url ]]; then
-		# default server_url
-		server_url="http://127.0.0.1:8888/"
-	elif [[ ! "$server_url" =~ "$url_regex" ]] then
-		# check address syntax
-		err "Invalid server url"
+	# valid url and address
+	if [[ ! "$server_url" =~ "$url_regex" ]] || [[ ! "$socks_address" =~ "$addr_regex" ]]; then
+		err "Invalid server url or address"
 		return 1
 	fi
+	
+	# extract host and port
+	local host="$(echo $server_url | awk -F'[/:]' '{print $4}')"
+	local port="$(echo $server_url | awk -F':' '{print $3}')"
+	[[ -z "$port" ]] && port=22
+	local socks_host=$(echo $socks_address | awk -F':' '{print $1}')
+	local socks_port=$(echo $socks_address | awk -F':' '{print $2}')
+	[[ -z "$socks_port" ]] && socks_port=1080
 
-	case "$cmd" in
+	case "$cmd" in 
 	on)
+		for envar in "${proxy_env[@]}"; do
+			export $envar=$server_url
+		done
+		# git
+		if ((git_flag == 1)); then
+			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $socks_address  %h %p"
+			git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
+		fi
+		# desktop environment
+		if ((de_flag == 1)); then
+			if [[ -f /usr/bin/gsettings ]]; then
+				gsettings set org.gnome.system.proxy mode 'manual'
+				gsettings set org.gnome.system.proxy.http host "$host"
+				gsettings set org.gnome.system.proxy.http port "$port"
+				gsettings set org.gnome.system.proxy.ftp host "$host"
+				gsettings set org.gnome.system.proxy.ftp port "$port"
+				gsettings set org.gnome.system.proxy.https host "$host"
+				gsettings set org.gnome.system.proxy.https port "$port"
+				gsettings set org.gnome.system.proxy.socks host "$socks_host" 
+				gsettings set org.gnome.system.proxy.socks port "$socks_port"
+				gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '10.0.0.0/8', '192.168.0.0/16', '172.16.0.0/12' , '*.localdomain.com' ]"
+			fi
+		fi
 		;;
 	off)
+		unset "${proxy_env[@]}"
+		#git
+		if ((git_flag == 1)); then
+			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
+		fi
+		# desktop environment
+		if ((de_flag == 1)); then
+			if [[ -f /usr/bin/gsettings ]]; then
+				gsettings set org.gnome.system.proxy mode 'none'
+			fi
+		fi
 		;;
 	status)
+		if [[ ! -z "$http_proxy" ]]; then
+			echo "proxy environment variable is set to $http_proxy"
+		fi
+		#git
+		local ssh_cmd=$(git config -f /home/arthur/.cache/git_proxy --get core.sshCommand)
+		if [[ ! -z "$ssh_cmd" ]]; then
+			echo "git ssh proxy is set to $(echo $ssh_cmd | sed -n 's/.*proxy //p;' | sed 's/ .*//g')"
+		fi
+		# desktop environment
+		if [[ -f /usr/bin/gsettings ]]; then
+			if [[ "$(gsettings get org.gnome.system.proxy mode)" != "'none'" ]]; then
+				echo "gnome proxy enabled"
+			fi
+		fi
 		;;
 	esac
-
-	echo "
-cmd=$cmd
-server_url=$server_url
-de_flag=$de_flag
-git_flag=$git_flag
-	"
-}
-function proxy() {
-	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com"
-	
-	export http_proxy="http://127.0.0.1:8888"
-	export https_proxy=$http_proxy
-	export HTTP_PROXY=$http_proxy
-	export HTTPS_PROXY=$http_proxy
-
-	# git
-	export ssh_proxy='ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:1080  %h %p'
-	git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
-}
-
-##################################################################
-# Clear proxy for current session
-# Arguments:
-#	None
-##################################################################
-function noproxy() {
-	unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY all_proxy ALL_PROXY ftp_proxy FTP_PROXY
-
-	# git
-	unset ssh_proxy
-	git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
 }
 
 #
@@ -194,7 +216,7 @@ function noproxy() {
 # Arguments:
 #	None
 ##################################################################
-function pip_update() {
+pip_update() {
 	local requirements="$HOME/.local/lib/requirements.txt"
 	if [[ -f $requirements ]]; then
 		pip install -r $requirements -U
@@ -213,7 +235,7 @@ function pip_update() {
 # Arguments:
 #	None
 ##################################################################
-function pacsize() {
+pacsize() {
 	pacman -Qi | awk '/^Name/{name=$3} /^Installed Size/{print $4$5, name}' | sort -h
 }
 
@@ -222,7 +244,7 @@ function pacsize() {
 # Arguments:
 #	1. package
 ##################################################################
-function pacblame() {
+pacblame() {
 	if [[ -z $1 ]]; then
 		echo "list files in package by size"
 		echo "Usage: pacblame package"
@@ -241,7 +263,7 @@ function pacblame() {
 # Arguments:
 #	1. package
 ##################################################################
-function  pullall() {
+ pullall() {
 	ls | xargs -P100 -I{} git -C {} pull
 }
 
@@ -250,7 +272,7 @@ function  pullall() {
 # Arguments:
 #	1. repositorie
 ##################################################################
-function reposize() {
+reposize() {
 	[[ -z $1 ]] && echo "Usage: $0 owner/reponame" && return 1
 	curl -s https://api.github.com/repos/$1 | jq '.size' | numfmt --to=iec --from-unit=1024
 }
@@ -264,7 +286,7 @@ function reposize() {
 # Arguments:
 #	None
 ##################################################################
-function nvidia() {
+nvidia() {
 	export __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/nvidia_icd.json 
 }
 
@@ -273,7 +295,7 @@ function nvidia() {
 # Arguments:
 #	None
 ##################################################################
-function nonvidia() {
+nonvidia() {
 	unset __NV_PRIME_RENDER_OFFLOAD __GLX_VENDOR_LIBRARY_NAME __VK_LAYER_NV_optimus VK_ICD_FILENAMES
 	export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
 }
@@ -284,7 +306,7 @@ function nonvidia() {
 #
 
 # qemu wrapper
-function qemu() {
+qemu() {
 	# set hugepages
 	local memsize pages
 
@@ -312,7 +334,7 @@ function qemu() {
 }
 
 # with virgl
-function qemu-gl() {
+qemu-gl() {
 	qemu \
 		-device virtio-vga-gl \
 		-display gtk,gl=on \
@@ -328,7 +350,7 @@ function qemu-gl() {
 # Arguments:
 #	Same as zsh
 ##################################################################
-function sbsh() {
+sbsh() {
 	export SANDBOX=1
 	sandbox \
 		--ro-bind /run/media /run/media \
@@ -348,8 +370,10 @@ function sbsh() {
 # Arguments:
 #	1. folder to encrypt
 ##################################################################
-function encrypt() {
-	hash fscrypt 2>/dev/null || { err "fscrypt is not installed" && return }
+encrypt() {
+	if ! hash fscrypt 2>/dev/null; then
+		 err "fscrypt is not installed" && return
+	fi
 
 	if [[ $# -ne 1 ]]; then
 		echo "Usage $0 folder_to_encrypt"
@@ -371,7 +395,6 @@ function encrypt() {
 		cp -aT "$target.old"  "$target"
 		hash trash 2>/dev/null && trash "$target.old" 
 	fi
-
 }
 
 #
@@ -379,7 +402,7 @@ function encrypt() {
 #
 
 # Manage conservation mode of ideapad
-function conservation_mode {
+conservation_mode() {
 	usage() {
 		echo "\
 
@@ -455,14 +478,14 @@ Options:
 # Misc
 #
 
-function help() {
+help() {
 	bash -c "help $*"
 }
 
-function french() {
+french() {
 	export LC_ALL=fr_FR.UTF-8
 }
 
-function english() {
+english() {
 	export LC_ALL=en_US.UTF-8
 }
