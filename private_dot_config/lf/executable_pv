@@ -175,7 +175,7 @@ handle_mime() {
 			local pygmentize_format='terminal'
 			local highlight_format='ansi'
 		fi
-		env COLORTERM=truecolor bat --color=always --style="plain" \
+		env COLORTERM=truecolor bat --color=always --style="plain" --tabs=4 \
 			-- "${FILE_PATH}" && exit
 		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
 			--out-format="${highlight_format}" \
