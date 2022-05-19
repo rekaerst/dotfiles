@@ -28,15 +28,11 @@ if [[ ! -z "$TMUX" ]]; then
 fi
 # Editor
 export EDITOR='nvim'
-# Compilation flags
-export ARCHFLAGS="-arch x86_64"
 # set custom folder
 export REPO=~/src/repo
 export LAB=~/src/lab
 export PRO=~/src/projects
 export TEMPLATES=~/src/templates
-# gtk
-# export GTK_THEME=Materia-dark-compact
 # DXVK
 export DXVK_CONFIG_FILE=$XDG_CONFIG_HOME/dxvk.conf
 # tab size
@@ -55,8 +51,6 @@ export NPM_CONFIG_TMP=$XDG_RUNTIME_DIR/npm
 export KRITA_NO_STYLE_OVERRIDE=1
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_QPA_PLATFORM=xcb
-export VDPAU_DRIVER=radeonsi
-export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
 export ASPELL_CONF="per-conf $XDG_CONFIG_HOME/aspell/aspell.conf; personal $XDG_CONFIG_HOME/aspell/en.pws; repl $XDG_CONFIG_HOME/aspell.prepl"
 export GNUPGHOME="$XDG_CONFIG_HOME/gnupg"
 export STACK_ROOT="$XDG_DATA_HOME"/stack
