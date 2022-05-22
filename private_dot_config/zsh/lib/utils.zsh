@@ -61,7 +61,7 @@ Commands:
   help		- show help
 
 Arguments:
--s server		specific server to use (default to http://127.0.0.1:8888)
+-s server		specific server to use (default to http://127.0.0.1:3128)
 -e				change desktop environment proxy settings
 -g				change git ssh socks proxy, optionally specific address,
 -a server		specific socks proxy address (default to 127.0.0.1:1080)
@@ -70,7 +70,7 @@ Arguments:
 	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
 
 	local proxy_env=(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY rsync_proxy RSYNC_PROXY)
-	local server_url="http://127.0.0.1:8888"
+	local server_url="http://127.0.0.1:3128"
 	local socks_address="127.0.0.1:1080"
 	local de_flag=0 git_flag=0
 	local cmd=
