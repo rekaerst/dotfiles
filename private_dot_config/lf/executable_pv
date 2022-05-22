@@ -13,11 +13,11 @@ FILE_EXTENSION="${FILE_PATH##*.}"
 FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 
 ## Settings
-HIGHLIGHT_SIZE_MAX=262143 # 256KiB
-HIGHLIGHT_TABWIDTH="${HIGHLIGHT_TABWIDTH:-8}"
-HIGHLIGHT_STYLE="${HIGHLIGHT_STYLE:-pablo}"
+HIGHLIGHT_SIZE_MAX=4194288 # 4MiB
+HIGHLIGHT_TABWIDTH="${HIGHLIGHT_TABWIDTH:-4}"
+HIGHLIGHT_STYLE="${HIGHLIGHT_STYLE:-onedark}"
 HIGHLIGHT_OPTIONS="--replace-tabs=${HIGHLIGHT_TABWIDTH} --style=${HIGHLIGHT_STYLE} ${HIGHLIGHT_OPTIONS:-}"
-PYGMENTIZE_STYLE="${PYGMENTIZE_STYLE:-autumn}"
+PYGMENTIZE_STYLE="${PYGMENTIZE_STYLE:-one-dark}"
 
 handle_extension() {
 	case "${FILE_EXTENSION_LOWER}" in
@@ -165,7 +165,7 @@ handle_mime() {
 	text/* | */xml)
 		## Syntax highlight
 		# highlight -t 4 -O truecolor --force --config-file="${XDG_CONFIG_HOME:-$HOME/.config}/lf/highlight.theme" "$1"
-		if [[ "$(stat --printf='%s' -- "${FILE_PATH}")" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
+		if [[ "$(stat --printf='%s' -- "${FILE_PATH}")" -gt "${HIGHLIGHT_SIZE_MAX}" ]] && hash bat 2>/dev/null; then
 			exit 2
 		fi
 		if [[ "$(tput colors)" -ge 256 ]]; then
@@ -180,7 +180,6 @@ handle_mime() {
 		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
 			--out-format="${highlight_format}" \
 			--config-file="${XDG_CONFIG_HOME:-$HOME/.config}/lf/highlight.theme" \
-			--replace-tab=4 \
 			--force -- "${FILE_PATH}" && exit
 		pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" \
 			-- "${FILE_PATH}" && exit
