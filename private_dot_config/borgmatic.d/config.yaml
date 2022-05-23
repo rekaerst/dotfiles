@@ -125,6 +125,12 @@ location:
     - /home/arthur/src/lab
     - /home/arthur/src/repo
     - /home/arthur/srv/private
+    - /home/arthur/srv/vm
+    - /home/arthur/srv/archives
+    - /home/arthur/srv/build/pkg
+    - /home/arthur/srv/build/src
+    - /home/arthur/srv/build/repo/*/pkg
+    - /home/arthur/srv/build/repo/*/src
     - /home/arthur/tmp
     - '*/.vim*.tmp'
 
