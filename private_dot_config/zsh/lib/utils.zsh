@@ -181,7 +181,7 @@ Arguments:
 			if [[ -f /usr/bin/resolvectl ]]; then
 				sudo systemctl restart systemd-resolved
 			fi
-			rm /tmp/use_proxy_dns
+			rm -f /tmp/use_proxy_dns
 		fi
 		# git
 		if ((git_flag == 1)); then
