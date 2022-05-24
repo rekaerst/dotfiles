@@ -1,27 +1,13 @@
 {
-	"dns": {
-		"hosts": {
-			"domain:googleapis.cn": "googleapis.com"
-		},
-		"servers": [
-			"1.1.1.1",
-			"8.8.8.8",
-			"8.8.4.4"
-		]
-	},
-	"fakedns": {
-		"ipPool": "198.18.0.0/15",
-		"poolSize": 65535
-	},
 	"inbounds": [
 		{
+			"tag": "socks",
 			"listen": "127.0.0.1",
 			"port": 1080,
 			"protocol": "socks",
 			"settings": {
 				"auth": "noauth",
-				"udp": true,
-				"userLevel": 8
+				"udp": true
 			},
 			"sniffing": {
 				"destOverride": [
@@ -29,19 +15,16 @@
 					"tls"
 				],
 				"enabled": true
-			},
-			"tag": "socks"
+			}
 		},
 		{
+			"tag": "http",
 			"listen": "127.0.0.1",
 			"port": 3128,
-			"protocol": "http",
-			"settings": {
-				"userLevel": 8
-			},
-			"tag": "http"
+			"protocol": "http"
 		},
 		{
+			"tag": "dns-in",
 			"listen": "127.0.0.1",
 			"port": 10853,
 			"protocol": "dokodemo-door",
@@ -49,13 +32,9 @@
 				"address": "1.1.1.1",
 				"network": "tcp,udp",
 				"port": 53
-			},
-			"tag": "dns-in"
+			}
 		}
 	],
-	"log": {
-		"loglevel": "warning"
-	},
 	"outbounds": [
 		{
 			"protocol": "vmess",
@@ -107,78 +86,84 @@
 		},
 		{
 			"protocol": "dns",
-			"tag": "dns-out"
-		}
-	],
-	"policy": {
-		"levels": {
-			"8": {
-				"connIdle": 300,
-				"downlinkOnly": 1,
-				"handshake": 4,
-				"uplinkOnly": 1
+			"tag": "dns-out",
+			"proxySettings": {
+				"tag": "proxy"
 			}
 		}
+	],
+	"dns": {
+		"hosts": {
+			"domain:googleapis.cn": "googleapis.com"
+		},
+		"servers": [
+			"1.1.1.1",
+			"8.8.8.8",
+			"8.8.4.4"
+		]
 	},
 	"routing": {
 		"domainMatcher": "mph",
 		"domainStrategy": "IPIfNonMatch",
 		"rules": [
 			{
+				"outboundTag": "dns-out",
 				"inboundTag": [
 					"dns-in"
 				],
-				"outboundTag": "dns-out",
+				"port": 53,
 				"type": "field"
 			},
 			{
+				"outboundTag": "proxy",
 				"domain": [
 					"domain:googleapis.cn"
 				],
+				"type": "field"
+			},
+			{
 				"outboundTag": "proxy",
-				"type": "field"
-			},
-			{
-				"domain": [
-					"geosite:category-ads-all"
-				],
-				"outboundTag": "block",
-				"type": "field"
-			},
-			{
-				"domain": [
-					"geosite:private",
-					"geosite:cn"
-				],
-				"outboundTag": "direct",
-				"type": "field"
-			},
-			{
-				"protocol": [
-					"bittorrent"
-				],
-				"outboundTag": "direct",
-				"type": "field"
-			},
-			{
 				"ip": [
 					"1.1.1.1",
 					"8.8.8.8",
 					"8.8.4.4"
 				],
-				"outboundTag": "proxy",
 				"port": "53",
 				"type": "field"
 			},
 			{
+				"outboundTag": "block",
+				"protocol": [
+					"bittorrent"
+				],
+				"type": "field"
+			},
+			{
+				"outboundTag": "direct",
+				"domain": [
+					"geosite:private",
+					"geosite:cn"
+				],
 				"ip": [
 					"geoip:cn",
 					"geoip:private"
 				],
-				"outboundTag": "direct",
+				"type": "field"
+			},
+			{
+				"outboundTag": "block",
+				"domain": [
+					"geosite:category-ads-all"
+				],
+				"protocol": [
+					"bittorrent"
+				],
 				"type": "field"
 			}
 		]
 	},
-	"stats": {}
+	"stats": {},
+	"log": {
+		"loglevel": "warning"
+	}
 }
