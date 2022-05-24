@@ -146,9 +146,9 @@ Arguments:
 		export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
 		# dns
 		if ((dns_proxy == 1)); then
-			if [[ -f /usr/bin/systemd-resolve ]]; then
-				sudo systemd-resolve --interface=wlp4s0 --set-dns=127.0.0.1:10853
-				sudo systemd-resolve --interface=eno1 --set-dns=127.0.0.1:10853
+			if [[ -f /usr/bin/resolvectl ]]; then
+				sudo resolvectl dns wlp4s0 127.0.0.1:10853
+				sudo resolvectl dns eno1 127.0.0.1:10853
 			fi
 		fi
 		# git
@@ -177,7 +177,7 @@ Arguments:
 		unset "${proxy_env[@]}" all_proxy ALL_PROXY
 		# dns
 		if ((dns_proxy == 1)); then
-			if [[ -f /usr/bin/systemd-resolve ]]; then
+			if [[ -f /usr/bin/resolvectl ]]; then
 				sudo systemctl restart systemd-resolved
 			fi
 		fi
