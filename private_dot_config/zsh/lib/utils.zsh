@@ -150,6 +150,7 @@ Arguments:
 				sudo resolvectl dns wlp4s0 127.0.0.1:10853
 				sudo resolvectl dns eno1 127.0.0.1:10853
 			fi
+			touch /tmp/use_proxy_dns
 		fi
 		# git
 		if ((git_flag == 1)); then
@@ -180,6 +181,7 @@ Arguments:
 			if [[ -f /usr/bin/resolvectl ]]; then
 				sudo systemctl restart systemd-resolved
 			fi
+			rm /tmp/use_proxy_dns
 		fi
 		# git
 		if ((git_flag == 1)); then

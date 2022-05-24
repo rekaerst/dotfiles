@@ -4,6 +4,7 @@ After=network.target nss-lookup.target
 
 [Service]
 ExecStart=/usr/bin/v2ray --config ${HOME}/.config/proxy/config.json
+ExecStartPost=/usr/bin/touch /tmp/use_proxy_dns
 Restart=on-failure
 RestartPreventExitStatus=23
 
