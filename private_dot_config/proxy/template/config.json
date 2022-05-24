@@ -21,7 +21,14 @@
 			"tag": "http",
 			"listen": "127.0.0.1",
 			"port": 3128,
-			"protocol": "http"
+			"protocol": "http",
+			"sniffing": {
+				"destOverride": [
+					"http",
+					"tls"
+				],
+				"enabled": true
+			}
 		},
 		{
 			"tag": "dns-in",
@@ -155,6 +162,13 @@
 				"domain": [
 					"geosite:category-ads-all"
 				],
+				"protocol": [
+					"bittorrent"
+				],
+				"type": "field"
+			},
+			{
+				"outboundTag": "block",
 				"protocol": [
 					"bittorrent"
 				],
