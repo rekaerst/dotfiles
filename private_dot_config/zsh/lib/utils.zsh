@@ -64,15 +64,17 @@ Arguments:
 -h host			server (default to 127.0.0.1)
 -p port			http proxy port (default to 3128)
 -s port			socks proxy port (default to 1080)
+-d				use proxy for dns
+-D				dns port (default to 10853)
 -S				use socks for http_proxy environment variable
 -e				set desktop environment proxy
 -g				set git proxy
 "
 	}
 	local proxy_env=(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY rsync_proxy RSYNC_PROXY)
-	local host="127.0.0.1" http_port="3128" socks_port="1080"
+	local host="127.0.0.1" http_port="3128" socks_port="1080" dns_port="10853"
 
-	local de_flag=0 git_flag=0 use_socks=0
+	local de_flag=0 git_flag=0 use_socks=0 dns_proxy=0
 	local cmd=
 	
 	# parsing
@@ -106,11 +108,13 @@ Arguments:
 		;;
 	esac
 
-	while getopts ":h:p:s:Seg" opt; do
+	while getopts ":h:p:s:D:dSeg" opt; do
 		case "$opt" in
 		h) host="$OPTARG" ;;
 		p) http_port="$OPTARG" ;;
 		s) socks_port="$OPTARG" ;;
+		D) dns_port="$OPTARG" ;;
+		d) dns_proxy=1 ;;
 		S) use_socks=1 ;;
 		e) de_flag=1 ;;
 		g) git_flag=1 ;;
@@ -140,6 +144,11 @@ Arguments:
 		export all_proxy="socks://$host:$socks_port/"
 		export ALL_PROXY=$all_proxy
 		export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
+		# dns
+		if ((dns_proxy == 1)); then
+			sudo unlink /etc/resolv.conf
+			echo "nameserver 127.0.0.1" | sudo tee >/dev/null /etc/resolv.conf
+		fi
 		# git
 		if ((git_flag == 1)); then
 			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $host:$socks_port  %h %p"
@@ -164,7 +173,11 @@ Arguments:
 		;;
 	off)
 		unset "${proxy_env[@]}" all_proxy ALL_PROXY
-		#git
+		# dns
+		if ((dns_proxy == 1)); then
+			sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+		fi
+		# git
 		if ((git_flag == 1)); then
 			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
 		fi
@@ -179,7 +192,7 @@ Arguments:
 		if [[ ! -z "$http_proxy" ]]; then
 			echo "proxy environment variable is set to $http_proxy"
 		fi
-		#git
+		# git
 		local ssh_cmd=$(git config -f /home/arthur/.cache/git_proxy --get core.sshCommand)
 		if [[ ! -z "$ssh_cmd" ]]; then
 			echo "git ssh proxy is set to $(echo $ssh_cmd | sed -n 's/.*proxy //p;' | sed 's/ .*//g')"
