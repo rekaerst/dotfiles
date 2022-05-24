@@ -61,21 +61,19 @@ Commands:
   help		- show help
 
 Arguments:
--s server		specific server to use (default to http://127.0.0.1:3128)
--e				change desktop environment proxy settings
--g				change git ssh socks proxy, optionally specific address,
--a server		specific socks proxy address (default to 127.0.0.1:1080)
+-h host			server (default to 127.0.0.1)
+-p port			http proxy port (default to 3128)
+-s port			socks proxy port (default to 1080)
+-S				use socks for http_proxy environment variable
+-e				set desktop environment proxy
+-g				set git proxy
 "
 	}
-	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
-
 	local proxy_env=(http_proxy https_proxy HTTP_PROXY HTTPS_PROXY rsync_proxy RSYNC_PROXY)
-	local server_url="http://127.0.0.1:3128"
-	local socks_address="127.0.0.1:1080"
-	local de_flag=0 git_flag=0
+	local host="127.0.0.1" http_port="3128" socks_port="1080"
+
+	local de_flag=0 git_flag=0 use_socks=0
 	local cmd=
-	local url_regex='(https?|socks([0-9]))://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
-	local addr_regex='^(([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))\.){3}([1-9]?[0-9]|1[0-9][0-9]|2([0-4][0-9]|5[0-5]))(:([0-9])+)?$'
 	
 	# parsing
 	if (($# == 0)); then
@@ -108,20 +106,14 @@ Arguments:
 		;;
 	esac
 
-	while getopts ":s:ega:" opt; do
+	while getopts ":h:p:s:Seg" opt; do
 		case "$opt" in
-		s)
-			server_url="$OPTARG"
-			;;
-		e)
-			de_flag=1
-			;;
-		g)
-			git_flag=1
-			;;
-		a)
-			socks_address="$OPTARG"
-			;;
+		h) host="$OPTARG" ;;
+		p) http_port="$OPTARG" ;;
+		s) socks_port="$OPTARG" ;;
+		S) use_socks=1 ;;
+		e) de_flag=1 ;;
+		g) git_flag=1 ;;
 		:)
 			err "option requires an argument."
 			usage
@@ -135,51 +127,43 @@ Arguments:
 		esac
 	done
 
-	# valid url and address
-	if [[ ! "$server_url" =~ "$url_regex" ]] || [[ ! "$socks_address" =~ "$addr_regex" ]]; then
-		err "Invalid server url or address"
-		return 1
-	fi
-	
-	# extract host and port
-	local host="$(echo $server_url | awk -F'[/:]' '{print $4}')"
-	local port="$(echo $server_url | awk -F':' '{print $3}')"
-	[[ -z "$port" ]] && port=22
-	local socks_host=$(echo $socks_address | awk -F':' '{print $1}')
-	local socks_port=$(echo $socks_address | awk -F':' '{print $2}')
-	[[ -z "$socks_port" ]] && socks_port=1080
-
 	case "$cmd" in 
 	on)
+		# environment variables
 		for envar in "${proxy_env[@]}"; do
-			export $envar=$server_url
+			if ((use_socks == 0)); then
+				export $envar="http://$host:$http_port/"
+			else
+				export $envar="socks://$host:$socks_port/"
+			fi
 		done
-		all_proxy="socks://$socks_address"
-		ALL_PROXY="socks://$socks_address"
+		export all_proxy="socks://$host:$socks_port/"
+		export ALL_PROXY=$all_proxy
+		export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
 		# git
 		if ((git_flag == 1)); then
-			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $socks_address  %h %p"
+			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $host:$socks_port  %h %p"
 			git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
 		fi
 		# desktop environment
 		if ((de_flag == 1)); then
+			# gnome
 			if [[ -f /usr/bin/gsettings ]]; then
 				gsettings set org.gnome.system.proxy mode 'manual'
 				gsettings set org.gnome.system.proxy.http host "$host"
-				gsettings set org.gnome.system.proxy.http port "$port"
+				gsettings set org.gnome.system.proxy.http port "$http_port"
 				gsettings set org.gnome.system.proxy.ftp host "$host"
-				gsettings set org.gnome.system.proxy.ftp port "$port"
+				gsettings set org.gnome.system.proxy.ftp port "$http_port"
 				gsettings set org.gnome.system.proxy.https host "$host"
-				gsettings set org.gnome.system.proxy.https port "$port"
-				gsettings set org.gnome.system.proxy.socks host "$socks_host" 
+				gsettings set org.gnome.system.proxy.https port "$http_port"
+				gsettings set org.gnome.system.proxy.socks host "$host" 
 				gsettings set org.gnome.system.proxy.socks port "$socks_port"
 				gsettings set org.gnome.system.proxy ignore-hosts "['localhost', '127.0.0.0/8', '10.0.0.0/8', '192.168.0.0/16', '172.16.0.0/12' , '*.localdomain.com' ]"
 			fi
 		fi
 		;;
 	off)
-		unset "${proxy_env[@]}"
-		unset all_proxy ALL_PROXY
+		unset "${proxy_env[@]}" all_proxy ALL_PROXY
 		#git
 		if ((git_flag == 1)); then
 			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
@@ -201,6 +185,7 @@ Arguments:
 			echo "git ssh proxy is set to $(echo $ssh_cmd | sed -n 's/.*proxy //p;' | sed 's/ .*//g')"
 		fi
 		# desktop environment
+		# gnome
 		if [[ -f /usr/bin/gsettings ]]; then
 			if [[ "$(gsettings get org.gnome.system.proxy mode)" != "'none'" ]]; then
 				echo "gnome proxy enabled"
