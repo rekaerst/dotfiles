@@ -157,6 +157,8 @@ Arguments:
 			export ssh_proxy="ProxyCommand ncat --proxy-type socks5 --proxy $host:$socks_port  %h %p"
 			git config -f $XDG_CACHE_HOME/git_proxy core.sshCommand "ssh -o '$ssh_proxy'"
 		fi
+		# ssh
+		alias ssh="ssh -o 'ProxyCommand ncat --proxy-type socks5 --proxy $host:$socks_port  %h %p' "
 		# desktop environment
 		if ((de_flag == 1)); then
 			# gnome
@@ -187,6 +189,8 @@ Arguments:
 		if ((git_flag == 1)); then
 			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
 		fi
+		# ssh
+		unalias ssh
 		# desktop environment
 		if ((de_flag == 1)); then
 			if [[ -f /usr/bin/gsettings ]]; then

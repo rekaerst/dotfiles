@@ -2,6 +2,11 @@
 
 # use proxy for httping
 alias httping="httping -E"
+# use proxy for ssh
+if [[ ! -z "$all_proxy" ]]; then
+	alias ssh="ssh -o 'ProxyCommand ncat --proxy-type socks5 --proxy $(echo $all_proxy | cut -d'/' -f3)  %h %p'"
+fi
+alias ssh="ssh -o 'ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:1080  %h %p'"
 # use sudo for alias
 alias sudo='sudo '
 # task
