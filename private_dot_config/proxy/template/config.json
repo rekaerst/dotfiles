@@ -137,21 +137,23 @@
 				"type": "field"
 			},
 			{
-				"outboundTag": "block",
-				"protocol": [
-					"bittorrent"
+				"outboundTag": "direct",
+				"domain": [
+					"geosite:cn"
 				],
 				"type": "field"
 			},
 			{
 				"outboundTag": "direct",
-				"domain": [
-					"geosite:private",
-					"geosite:cn"
-				],
 				"ip": [
-					"geoip:cn",
 					"geoip:private"
+				],
+				"type": "field"
+			},
+			{
+				"outboundTag": "block",
+				"protocol": [
+					"bittorrent"
 				],
 				"type": "field"
 			},
@@ -159,16 +161,6 @@
 				"outboundTag": "block",
 				"domain": [
 					"geosite:category-ads-all"
-				],
-				"protocol": [
-					"bittorrent"
-				],
-				"type": "field"
-			},
-			{
-				"outboundTag": "block",
-				"protocol": [
-					"bittorrent"
 				],
 				"type": "field"
 			}
