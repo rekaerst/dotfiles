@@ -42,3 +42,5 @@ setopt interactivecomments
 setopt correct
 # allow overwrite redirect
 setopt clobber
+# check jobs
+setopt checkjobs
