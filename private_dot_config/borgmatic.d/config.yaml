@@ -106,6 +106,9 @@ location:
     - /home/arthur/.jd
     - /home/arthur/.local/lib/R
     - /home/arthur/.local/lib/node_modules
+    - /home/arthur/.local/share/torbrowser
+    - /home/arthur/.config/torbrowser
+    - /home/arthur/.cache/torbrowser
     - /home/arthur/.local/lib/python3.10
     - /home/arthur/.local/share/Steam
     - /home/arthur/.local/share/Trash
@@ -313,7 +316,7 @@ retention:
   # keep_daily: 7
 
   # Number of weekly archives to keep.
-  keep_weekly: 4
+  keep_weekly: 2
 
   # Number of monthly archives to keep.
   # keep_monthly: 6
