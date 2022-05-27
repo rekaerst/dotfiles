@@ -1,4 +1,5 @@
 README.md
+key.age
 
 {{ if not .trusted -}}
 .ssh
