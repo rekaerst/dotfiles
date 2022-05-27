@@ -1,1 +1,9 @@
 README.md
+
+{{if not .encrypted -}}
+.ssh
+.pypirc
+.config/gh
+.config/proxy
+.srv/private
+{{ end -}}

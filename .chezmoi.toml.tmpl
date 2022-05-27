@@ -1,11 +1,6 @@
 {{- $email := "" -}}
 {{- $name := "" -}}
-
-{{- if hasKey . "email" -}}
-{{-   $email = .email -}}
-{{- else -}}
-{{-   $email = promptString "email" -}}
-{{- end -}}
+{{- $encrypted := false -}}
 
 {{- if hasKey . "name" -}}
 {{-   $name = .name -}}
@@ -13,15 +8,32 @@
 {{-   $name = promptString "name" -}}
 {{- end -}}
 
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else -}}
+{{-   $email = promptString "email" -}}
+{{- end -}}
+
+{{- if hasKey . "encrypted" -}}
+{{-   $encrypted = .encrypted -}}
+{{- else -}}
+{{-   if eq $name "rekaerst" -}}
+{{-     $encrypted = promptBool "include encrypted files" -}}
+{{-   end -}}
+{{- end -}}
+
 encryption = "age"
 
 [data]
 email = {{ $email | quote }}
 name = {{ $name | quote }}
+encrypted = {{ $encrypted }}
 
+{{ if $encrypted -}}
 [age]
 identity = "~/.config/chezmoi/chezmoi_key"
 recipient = "age1dnqnpv46e4ls6yc4dkjay6n23vmrnhqs6jka4mv0rtlmst8mpd3ss3vmy7"
+{{- end }}
 
 [diff]
 pager = "delta"
@@ -29,3 +41,4 @@ pager = "delta"
 [merge]
 command = "nvim"
 args = "-d"
+

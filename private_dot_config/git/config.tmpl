@@ -8,8 +8,10 @@
 [init]
 	defaultBranch = master
 
+{{if .encrypted -}}
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+{{- end }}
 
 [core]
 	pager = delta
