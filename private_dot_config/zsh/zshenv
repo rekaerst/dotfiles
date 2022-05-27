@@ -2,6 +2,14 @@
 set +u
 setopt extendedglob
 
+# xdg fallback
+if [[ -z "$XDG_CONFIG_HOME" ]]; then
+	export XDG_CONFIG_HOME="$HOME/.config"
+	export XDG_DATA_HOME="$HOME/.local/share"
+	export XDG_STATE_HOME="$HOME/.local/state"
+	export XDG_CACHE_HOME="$HOME/.cache"
+fi
+
 if (( ! ${path[(I)$HOME/.local/bin]} )); then
 	path=($HOME/.local/bin $HOME/go/bin $HOME/.cargo/bin $HOME/.cabal/bin $path)
 	export PATH
