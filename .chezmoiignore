@@ -1,7 +1,7 @@
 README.md
 key.age
 
-{{ if not .trusted -}}
+{{ if (not .trusted) -}}
 .ssh
 .pypirc
 .config/gh
