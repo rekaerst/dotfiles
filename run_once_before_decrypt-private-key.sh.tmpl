@@ -1,9 +1,13 @@
 #!/bin/bash
 {{ if .trusted }}
 KEY_PATH="${XDG_CONFIG_DIR:-$HOME/.config}/chezmoi/key"
+SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 
 if [[ ! -f "$KEY_PATH" ]]; then
-	age -d -o "$KEY_PATH" "{{ .chezmoi.sourceDir }}/key.age"
+	age -d -o "$KEY_PATH" "$SOURCE_DIR/key.age"
 	chmod 600 "$KEY_PATH"
 fi
+age -d -o "$HOME/.ssh/id_rsa" -i "$KEY_PATH" "$SOURCE_DIR/private_dot_ssh/encrypted_id_rsa.age"
+age -d -o "$HOME/.ssh/id_rsa.pub" -i "$KEY_PATH" "$SOURCE_DIR/private_dot_ssh/encrypted_id_rsa.pub.age"
+
 {{ end }}
