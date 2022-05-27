@@ -12,8 +12,10 @@ alias sudo='sudo '
 # task
 alias taskui="taskwarrior-tui"
 # dotfiles
-alias dflg="lazygit -p $(chezmoi source-path)"
-alias dotfiles="cd $(chezmoi source-path)"
+if hash chezmoi 2>/dev/null; then
+	alias dflg="lazygit -p $(chezmoi source-path)"
+	alias dotfiles="cd $(chezmoi source-path)"
+fi
 # git
 alias lg="lazygit"
 alias pacfzf="fzf --preview 'pacman -Sil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
