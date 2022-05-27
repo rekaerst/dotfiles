@@ -1,6 +1,6 @@
 {{- $email := "" -}}
 {{- $name := "" -}}
-{{- $encrypted := false -}}
+{{- $trusted := false -}}
 
 {{- if hasKey . "name" -}}
 {{-   $name = .name -}}
@@ -14,11 +14,11 @@
 {{-   $email = promptString "email" -}}
 {{- end -}}
 
-{{- if hasKey . "encrypted" -}}
-{{-   $encrypted = .encrypted -}}
+{{- if hasKey . "trusted" -}}
+{{-   $trusted = .trusted -}}
 {{- else -}}
 {{-   if eq $name "rekaerst" -}}
-{{-     $encrypted = promptBool "include encrypted files" -}}
+{{-     $trusted = promptBool "is this machine trusted" -}}
 {{-   end -}}
 {{- end -}}
 
@@ -27,9 +27,9 @@ encryption = "age"
 [data]
 email = {{ $email | quote }}
 name = {{ $name | quote }}
-encrypted = {{ $encrypted }}
+trusted = {{ $trusted }}
 
-{{ if $encrypted -}}
+{{ if $trusted -}}
 [age]
 identity = "~/.config/chezmoi/chezmoi_key"
 recipient = "age1dnqnpv46e4ls6yc4dkjay6n23vmrnhqs6jka4mv0rtlmst8mpd3ss3vmy7"

@@ -1,6 +1,6 @@
 README.md
 
-{{ if not .encrypted -}}
+{{ if not .trusted -}}
 .ssh
 .pypirc
 .config/gh
