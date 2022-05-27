@@ -22,7 +22,7 @@ zmodule jeffreytse/zsh-vi-mode
 # Prompt
 #
 
-zmodule romkatv/powerlevel10k
+zmodule romkatv/powerlevel10k --use degit
 
 #
 # Completion
