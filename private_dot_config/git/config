@@ -2,8 +2,8 @@
 	rebase = false
 
 [user]
-	name = rekaerst
-	email = rekaerst@outlook.com
+	name = {{ .name }}
+	email = {{ .email }}
 
 [init]
 	defaultBranch = master
