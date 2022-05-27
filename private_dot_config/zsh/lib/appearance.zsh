@@ -3,8 +3,9 @@ autoload -U colors && colors
 
 ls --color -d . &>/dev/null && alias ls='ls --color=tty' || { ls -G . &>/dev/null && alias ls='ls -G' }
 
-eval $(dircolors "$XDG_CONFIG_HOME"/dircolors)
-
+if [[ -f "$XDG_CONFIG_HOME/dircolors" ]]; then
+	eval $(dircolors "$XDG_CONFIG_HOME"/dircolors)
+fi
 # Take advantage of $LS_COLORS for completion as well.
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
