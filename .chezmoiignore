@@ -6,5 +6,5 @@ key.age
 .pypirc
 .config/gh
 .config/proxy
-.srv/private
+srv/private
 {{ end -}}
