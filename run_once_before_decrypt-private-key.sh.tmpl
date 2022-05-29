@@ -1,4 +1,5 @@
 #!/bin/bash
+# vi:ft=sh
 {{ if .trusted }}
 KEY_PATH="${XDG_CONFIG_DIR:-$HOME/.config}/chezmoi/key"
 OS_ID="{{ .chezmoi.osRelease.id }}"
