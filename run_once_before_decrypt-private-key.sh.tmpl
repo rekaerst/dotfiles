@@ -10,7 +10,7 @@ SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 if ! hash age 2>/dev/null; then
 	case "$OS_ID" in
 	arch)
-		sudo pacman -S age --no-confirm
+		sudo pacman -S age --noconfirm
 		;;
 	esac
 fi
