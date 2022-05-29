@@ -397,10 +397,10 @@ encrypt() {
 	fi
 
 	if [[ -z "$(ls -A $target)" ]]; then
-		fscrypt encrypt "$target"
+		sudo fscrypt encrypt --user=$USER "$target"
 	else
 		mkdir "$target.new"
-		fscrypt encrypt "$target.new"
+		sudo fscrypt encrypt --user=$USER "$target.new"
 		mv "$target" "$target.old"
 		mv "$target.new" "$target"
 		cp -aT "$target.old"  "$target"
