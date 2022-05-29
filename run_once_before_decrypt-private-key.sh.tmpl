@@ -5,19 +5,19 @@ KEY_PATH="${XDG_CONFIG_DIR:-$HOME/.config}/chezmoi/key"
 OS_ID="{{ .chezmoi.osRelease.id }}"
 SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 
-if [[ ! -f "$KEY_PATH" ]]; then
-	age -d -o "$KEY_PATH" "$SOURCE_DIR/key.age"
-	chmod 600 "$KEY_PATH"
-fi
-
 [[ -d "$HOME/.ssh" ]] || mkdir "$HOME/.ssh"
 
 if ! hash age 2>/dev/null; then
 	case "$OS_ID" in
 	arch)
 		sudo pacman -S age --no-confirm
-	;;
+		;;
 	esac
+fi
+
+if [[ ! -f "$KEY_PATH" ]]; then
+	age -d -o "$KEY_PATH" "$SOURCE_DIR/key.age"
+	chmod 600 "$KEY_PATH"
 fi
 
 age -d -o "$HOME/.ssh/id_rsa" -i "$KEY_PATH" "$SOURCE_DIR/private_dot_ssh/encrypted_private_id_rsa.age"
