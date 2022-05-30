@@ -24,6 +24,9 @@ SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 # Remove path separator from WORDCHARS.
 WORDCHARS=${WORDCHARS//[\/]}
 
+# vi keybinding timeout
+KEYTIMEOUT=25
+
 # Set tab width to size of 4 spaces
 tabs -4
 

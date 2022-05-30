@@ -118,8 +118,11 @@ function zvm_after_init() {
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 # first time configuration
-FIRST_TIME=${XDG_CACHE_HOME:-$HOME/.cache}/zsh_first_time
+FIRST_TIME="$XDG_CACHE_HOME/zsh_first_time"
 if [[ ! -f "$FIRST_TIME" ]]; then
 	fast-theme XDG:onedark
+	mkdir -p "$ZSH_CACHE_DIR"
+	mkdir -p "$XDG_DATA_HOME/zsh"
+	[[ -z "$WGETRC" ]] || touch $WGETRC
 	touch "$FIRST_TIME"
 fi
