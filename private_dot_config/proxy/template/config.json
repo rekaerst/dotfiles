@@ -120,20 +120,26 @@
 				"type": "field"
 			},
 			{
-				"outboundTag": "proxy",
-				"domain": [
-					"domain:googleapis.cn"
+				"outboundTag": "block",
+				"protocol": [
+					"bittorrent"
 				],
 				"type": "field"
 			},
 			{
-				"outboundTag": "proxy",
-				"ip": [
-					"1.1.1.1",
-					"8.8.8.8",
-					"8.8.4.4"
+				"outboundTag": "block",
+				"domain": [
+					"geosite:category-ads-all",
+					"uploadhaven.com",
+					"geosite:steamunlocked",
+					"geosite:3dm",
+					"geosite:1337x",
+					"geosite:btdig",
+					"geosite:demonoid",
+					"geosite:nyaa",
+					"geosite:piratebay",
+					"geosite:rarbg"
 				],
-				"port": "53",
 				"type": "field"
 			},
 			{
@@ -153,17 +159,20 @@
 				"type": "field"
 			},
 			{
-				"outboundTag": "block",
-				"protocol": [
-					"bittorrent"
+				"outboundTag": "proxy",
+				"domain": [
+					"domain:googleapis.cn"
 				],
 				"type": "field"
 			},
 			{
-				"outboundTag": "block",
-				"domain": [
-					"geosite:category-ads-all"
+				"outboundTag": "proxy",
+				"ip": [
+					"1.1.1.1",
+					"8.8.8.8",
+					"8.8.4.4"
 				],
+				"port": "53",
 				"type": "field"
 			}
 		]
