@@ -2,7 +2,7 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
+[[ -d "$ZSH_CACHE_DIR" ]] || mkdir -p "$ZSH_CACHE_DIR"
 
 source $ZDOTDIR/lib/utils.zsh
 
@@ -41,8 +41,8 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 # completion
 #
 
-zstyle ':zim:completion' dumpfile ${XDG_CACHE_HOME}/zcompdump
-zstyle ':completion::complete:*' cache-path ${XDG_CACHE_HOME}/zcompcache
+zstyle ':zim:completion' dumpfile ${ZSH_CACHE_DIR}/zcompdump
+zstyle ':completion::complete:*' cache-path ${ZSH_CACHE_DIR}/zcompcache
 # zsh bash completions fallback
 ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine)
 
@@ -118,11 +118,9 @@ function zvm_after_init() {
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
 
 # first time configuration
-FIRST_TIME="$XDG_CACHE_HOME/zsh_first_time"
+FIRST_TIME="$ZSH_CACHE_DIR/first_time"
 if [[ ! -f "$FIRST_TIME" ]]; then
 	fast-theme XDG:onedark
-	mkdir -p "$ZSH_CACHE_DIR"
-	mkdir -p "$XDG_DATA_HOME/zsh"
 	[[ -z "$WGETRC" ]] || touch $WGETRC
 	touch "$FIRST_TIME"
 fi
