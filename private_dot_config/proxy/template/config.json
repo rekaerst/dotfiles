@@ -145,6 +145,7 @@
 			{
 				"outboundTag": "direct",
 				"domain": [
+					"geosite:private",
 					"geosite:cn",
 					"goproxy.io",
 					"gosum.io"
@@ -154,7 +155,8 @@
 			{
 				"outboundTag": "direct",
 				"ip": [
-					"geoip:private"
+					"geoip:private",
+					"geoip:cn"
 				],
 				"type": "field"
 			},
