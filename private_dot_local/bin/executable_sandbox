@@ -34,9 +34,9 @@ args=(
 	--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock
 
 	# shared folder
-	--bind /home/arthur/Downloads /home/arthur/Downloads
-	--bind /home/arthur/tmp /home/arthur/tmp
-	--bind /home/arthur/.cache /home/arthur/.cache
+	--bind "$HOME/Downloads" "$HOME/Downloads"
+	--bind "$HOME/tmp" "$HOME/tmp"
+
 	# zsh
 	--unshare-all
 	--share-net
