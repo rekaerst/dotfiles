@@ -68,6 +68,7 @@ fi
 
 
 export GREP_COLORS="mt=31;1"
+export CHTSH_QUERY_OPTIONS="style=paraiso-dark"
 
 setopt multios
 setopt prompt_subst
