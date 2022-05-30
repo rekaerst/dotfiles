@@ -105,6 +105,7 @@ unset key
 source $ZDOTDIR/lib/options.zsh
 source $ZDOTDIR/lib/completion.zsh
 source $ZDOTDIR/lib/keybinding.zsh
+[[ -z "$SANDBOX" ]] || source $ZDOTDIR/lib/sandbox.zsh
 
 #
 # fzf
