@@ -368,7 +368,8 @@ sbsh() {
 		--ro-bind $XDG_CONFIG_HOME/zsh $XDG_CONFIG_HOME/zsh \
 		--ro-bind $XDG_CONFIG_HOME/fsh $XDG_CONFIG_HOME/fsh \
 		--ro-bind $XDG_CONFIG_HOME/dircolors $XDG_CONFIG_HOME/dircolors \
-		--bind $XDG_DATA_HOME/zsh $XDG_DATA_HOME/zsh \
+		--ro-bind $XDG_DATA_HOME/zsh/zim $XDG_DATA_HOME/zsh/zim \
+		--ro-bind $XDG_CONFIG_HOME/tmux $XDG_CONFIG_HOME/tmux \
 		--bind $XDG_CACHE_HOME/git_proxy $XDG_CACHE_HOME/git_proxy \
 		--bind $ZSH_CACHE_DIR $ZSH_CACHE_DIR \
 		--bind $XDG_CACHE_HOME/fsh $XDG_CACHE_HOME/fsh \
