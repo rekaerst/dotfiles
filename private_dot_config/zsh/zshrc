@@ -44,7 +44,7 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 zstyle ':zim:completion' dumpfile ${ZSH_CACHE_DIR}/zcompdump
 zstyle ':completion::complete:*' cache-path ${ZSH_CACHE_DIR}/zcompcache
 # zsh bash completions fallback
-ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine)
+ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine 7z)
 
 #
 # zsh-autosuggestions
