@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
+if (($# == 0)); then
+	echo "error: file path was not provided"
+	exit
+fi
 
 set -o noclobber -o noglob -o nounset -o pipefail
 IFS=$'\n'
 
 ## Script arguments
 FILE_PATH="${1}" # Full path of the highlighted file
-PV_WIDTH="${2}"  # Width of the preview pane (number of fitting characters)
+if (($# == 1)); then
+	PV_WIDTH=$(tput cols) # Width of the preview pane (number of fitting characters)
+else
+	PV_WIDTH="${2}"
+fi
+
 ## shellcheck disable=SC2034 # PV_HEIGHT is provided for convenience and unused
 PV_IMAGE_ENABLED="True" # 'True' if image previews are enabled, 'False' otherwise.
 
