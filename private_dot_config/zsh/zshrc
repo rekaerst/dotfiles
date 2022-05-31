@@ -3,27 +3,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 [[ -d "$ZSH_CACHE_DIR" ]] || mkdir -p "$ZSH_CACHE_DIR"
-
-source $ZDOTDIR/lib/utils.zsh
-
-# -----------------
-# Zsh configuration
-# -----------------
-
-source $ZDOTDIR/lib/appearance.zsh
-source $ZDOTDIR/lib/alias.zsh
-source $ZDOTDIR/lib/termtitle.zsh
-
 # --------------------
 # Module configuration
 # --------------------
-
-#
-# git
-#
-
-# Set a custom prefix for the generated aliases. The default prefix is 'G'.
-#zstyle ':zim:git' aliases-prefix 'g'
 
 #
 # input
@@ -41,8 +23,6 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 # completion
 #
 
-zstyle ':zim:completion' dumpfile ${ZSH_CACHE_DIR}/zcompdump
-zstyle ':completion::complete:*' cache-path ${ZSH_CACHE_DIR}/zcompcache
 # zsh bash completions fallback
 ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine 7z)
 
@@ -53,9 +33,7 @@ ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine 7z)
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-
 # Customize the style that the suggestions are shown with.
-# See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=243"
 
 # ------------------
@@ -85,30 +63,7 @@ source ${ZIM_HOME}/init.zsh
 # ------------------------------
 
 #
-# zsh-history-substring-search
-#
-
-export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND="fg=white,bold,bg=59"
-zmodload -F zsh/terminfo +p:terminfo
-# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
-for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
-for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
-for key ('k') bindkey -M vicmd ${key} history-substring-search-up
-for key ('j') bindkey -M vicmd ${key} history-substring-search-down
-unset key
-
-
-#
-# zsh
-#
-
-source $ZDOTDIR/lib/options.zsh
-source $ZDOTDIR/lib/completion.zsh
-source $ZDOTDIR/lib/keybinding.zsh
-[[ -z "$SANDBOX" ]] || source $ZDOTDIR/lib/sandbox.zsh
-
-#
-# fzf
+# zvm
 #
 
 function zvm_after_init() {

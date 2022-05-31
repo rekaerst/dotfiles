@@ -1,8 +1,7 @@
 #  vi: ft=zsh
-#
-# Modules
-#
 
+# Prompt
+zmodule romkatv/powerlevel10k --use degit
 # Sets sane Zsh built-in environment options.
 zmodule environment
 # Provides handy git aliases and functions.
@@ -17,28 +16,17 @@ zmodule archive
 zmodule fzf
 # zsh vi keybinding
 zmodule jeffreytse/zsh-vi-mode
-
-#
-# Prompt
-#
-
-zmodule romkatv/powerlevel10k --use degit
-
-#
-# Completion
-#
-
-# Enables and configures smart and extensive tab completion.
-# completion must be sourced after all modules that add completion definitions.
-zmodule completion
-zmodule 3v1n0/zsh-bash-completions-fallback
-
-#
-# Modules that must be initialized last
-#
-
-zmodule zdharma-continuum/fast-syntax-highlighting
+# 🐠 ZSH port of Fish history search (up arrow)
 zmodule zsh-users/zsh-history-substring-search
+# Feature-rich Syntax Highlighting for Zsh. 
+zmodule zdharma-continuum/fast-syntax-highlighting
+
+# Configurations (compinit)
+zmodule $ZDOTDIR/lib
+# NOTE: completion must be sourced after all modules that add completion definitions.
+zmodule Aloxaf/fzf-tab
+
+# use bash completion as fallback if no zsh completion is found
+zmodule 3v1n0/zsh-bash-completions-fallback
 # always put this in the end of zimrc
 zmodule zsh-users/zsh-autosuggestions
-

@@ -222,6 +222,12 @@ handle_mime() {
 		readelf -WCa "${FILE_PATH}" && exit
 		exit 1
 		;;
+
+	## Inodes
+	inode/*)
+		ls --color=always "${FILE_PATH}" 2>/dev/null && exit
+		;;
+
 	esac
 }
 

@@ -1,4 +1,23 @@
 # Use fd (https://github.com/sharkdp/fd) instead of the default find
+
+#######################################
+# fzf options
+#######################################
+
+export FZF_DEFAULT_OPTS="\
+	--bind 'ctrl-u:preview-page-up'
+	--bind 'ctrl-d:preview-page-down'
+	--bind 'ctrl-b:page-up'
+	--bind 'ctrl-f:page-down'
+	--bind 'alt-b:backward-char'
+	--bind 'alt-f:forward-char'
+	--ansi
+"
+
+#######################################
+# shell integration
+#######################################
+
 _fzf_compgen_path() {
   fd --hidden --follow --exclude ".git" . "$1"
 }
@@ -16,3 +35,74 @@ if [[ -d /usr/share/fzf ]]; then
 	}
 fi
 
+#######################################
+# fzf-tab
+#######################################
+
+if [[ ! -z "$FZF_TAB_HOME" ]]; then
+	# disable sort when completing `git checkout`
+	zstyle ':completion:*:git-checkout:*' sort false
+	# set descriptions format to enable group support
+	zstyle ':completion:*:descriptions' format '[%d]'
+	# switch group using `,` and `.`
+	zstyle ':fzf-tab:*' switch-group ',' '.'
+	# manual page completion
+	zstyle ':completion:*:manuals' separate-sections true
+	zstyle ':completion:*:manuals.(^1*)' insert-sections true
+	# enable group
+	zstyle ':completion:*' group-name ''
+	# enable tmux popup in tmux session
+	if [[ ! -z "$TMUX" ]]; then
+		zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+		zstyle ':fzf-tab:*' popup-pad 50 0
+		zstyle ':fzf-tab:*:options' popup-pad 0 0
+	fi
+	
+	#
+	# preview
+	#
+	
+	# files
+	zstyle ':fzf-tab:complete:*:*' fzf-preview \
+		'if [[ "$group" == "[file]" ]]; then
+			~/.config/lf/pv ${(Q)realpath} $FZF_PREVIEW_COLUMNS
+		fi'
+	# disable preview for command options and subcommands	
+	zstyle ':fzf-tab:complete:*:options' fzf-preview 
+	zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
+
+	# command
+	zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
+	  '(out=$(MANWIDTH=$FZF_PREVIEW_COLUMNS man "$word") 2>/dev/null && echo $out) \
+	  || (out=$(which "$word") && echo $out) || echo "${(P)word}"'
+
+	# directory's content with ls when completing cd
+	zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
+
+	# systemd unit status
+	zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+
+	# environment variable
+	zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' \
+	fzf-preview 'echo ${(P)word}'
+
+	# git
+	zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview \
+		'git diff $word | delta'
+	zstyle ':fzf-tab:complete:git-log:*' fzf-preview \
+		'git log --color=always $word'
+	zstyle ':fzf-tab:complete:git-help:*' fzf-preview \
+		'git help $word | bat -plman --color=always'
+	zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
+		'case "$group" in
+		"commit tag") git show --color=always $word ;;
+	*) git show --color=always $word | delta ;;
+		esac'
+	zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
+		'case "$group" in
+		"modified file") git diff $word | delta ;;
+		"recent commit object name") git show --color=always $word | delta ;;
+		*) git log --color=always $word ;;
+		esac'
+	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word'
+fi

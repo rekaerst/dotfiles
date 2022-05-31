@@ -12,8 +12,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # enable applications color
 alias diff='diff --color'
 
-# coloriser
-
+# grc coloriser
 if [[ -n "$TERM" ]] && [[ ! "$TERM" == "dumb" ]] && (( $+commands[grc] )); then
 	cmds=(
 		blkid
@@ -56,13 +55,11 @@ if [[ -n "$TERM" ]] && [[ ! "$TERM" == "dumb" ]] && (( $+commands[grc] )); then
 	)
 	for cmd in $cmds ; do
 		if (( $+commands[$cmd] )) ; then
-			# $cmd() {
-			# 	grc --colour=auto ${commands[$0]} "$@"
-			# }
-			
 			alias $cmd="grc $cmd"
 		fi
 	done
+	alias l='grc ls -al --color=always'
+	alias ll='grc ls -l --color=always'
 	unset cmd cmds
 fi
 
