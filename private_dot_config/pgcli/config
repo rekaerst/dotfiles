@@ -133,7 +133,7 @@ less_chatty = False
 # eg: prompt = '\x1b[35m\u@\x1b[32m\h:\x1b[36m\d>'
 prompt = '\x1b[34mpostgresql \u \n\x1b[0m\x1b[34m>>>\x1b[0m '
 # Number of lines to reserve for the suggestion menu
-min_num_menu_lines = 4
+min_num_menu_lines = 14
 
 # Character used to left pad multi-line queries to match the prompt size.
 multiline_continuation_char = ' '
