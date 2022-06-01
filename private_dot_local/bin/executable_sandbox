@@ -4,6 +4,17 @@ if [[ "$#" == "0" ]]; then
 	exit
 fi
 
+bind() {
+	if [[ -e "$1" ]]; then
+		args+=(--bind "$1" "$1")
+	fi
+}
+
+ro-bind() {
+	if [[ -e "$1" ]]; then
+		args+=(--ro-bind "$1" "$1")
+	fi
+}
 args=(
 	# base system
 	--ro-bind /usr /usr
@@ -23,25 +34,25 @@ args=(
 
 	# runtime dir
 	--tmpfs /run/user/$UID
-	# dns
-	--ro-bind /run/systemd/resolve /run/systemd/resolve
-	# audio
-	--ro-bind /run/user/$UID/pulse /run/user/$UID/pulse
-	--ro-bind /run/user/$UID/pipewire-0 /run/user/$UID/pipewire-0
-	--ro-bind /run/user/$UID/pipewire-0.lock /run/user/$UID/pipewire-0.lock
-	# display
-	--ro-bind /run/user/$UID/wayland-0 /run/user/$UID/wayland-0
-	--ro-bind /run/user/$UID/wayland-0.lock /run/user/$UID/wayland-0.lock
-
-	# shared folder
-	--bind "$HOME/Downloads" "$HOME/Downloads"
-	--bind "$HOME/tmp" "$HOME/tmp"
 
 	# zsh
 	--unshare-all
 	--share-net
 	--die-with-parent
 )
+# dns
+ro-bind /run/systemd/resolve
+# audio
+ro-bind /run/user/$UID/pulse
+ro-bind /run/user/$UID/pipewire-0
+ro-bind /run/user/$UID/pipewire-0.lock
+# display
+ro-bind /run/user/$UID/wayland-0
+ro-bind /run/user/$UID/wayland-0.lock
+# shared folders
+bind "$HOME/Download"
+bind "$HOME/tmp"
+
 # nvidia gpu
 if [[ -e /dev/nvidia0 ]]; then
 	for f in /dev/nvidia*; do

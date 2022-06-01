@@ -12,7 +12,7 @@ indent_character: '|'
 journals:
   default:
     encrypt: true
-    journal: /home/arthur/.local/share/jrnl/journal.txt
+    journal: {{ .chezmoi.homeDir }}/.local/share/jrnl/journal.txt
 linewrap: 79
 tagsymbols: '@'
 template: false

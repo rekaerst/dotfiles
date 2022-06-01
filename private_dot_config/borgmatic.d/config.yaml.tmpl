@@ -1,3 +1,4 @@
+# vi:ft=yaml
 # Where to look for files to backup, and where to store those backups.
 # See https://borgbackup.readthedocs.io/en/stable/quickstart.html and
 # https://borgbackup.readthedocs.io/en/stable/usage/create.html
@@ -6,7 +7,7 @@ location:
   # List of source directories to backup (required). Globs and
   # tildes are expanded. Do not backslash spaces in path names.
   source_directories:
-    - /home/arthur
+    - {{ .chezmoi.homeDir }}
 
   # Paths to local or remote repositories (required). Tildes are
   # expanded. Multiple repositories are backed up to in
@@ -16,7 +17,7 @@ location:
   # is used, then add local repository paths in the systemd
   # service file to the ReadWritePaths list.
   repositories:
-    - /run/media/arthur/nix/backup/user
+    - /run/media/{{ .chezmoi.username }}/nix/backup/user
 
   # Working directory for the "borg create" command. Tildes are
   # expanded. Useful for backing up using relative paths. See
@@ -74,10 +75,6 @@ location:
   # value if it contains leading punctuation, so it parses
   # correctly.
   # patterns:
-    # - R /
-    # - '- /home/*/.cache'
-    # - + /home/susan
-    # - '- /home/*'
 
   # Read include/exclude patterns from one or more separate
   # named files, one pattern per line. Note that Borg considers
@@ -93,49 +90,55 @@ location:
   # of "borg help patterns" for more details.
   exclude_patterns:
     - '*.pyc'
-    - /home/arthur/.android
-    - /home/arthur/.cabal/logs
-    - /home/arthur/.cabal/store
-    - /home/arthur/.cabal/packages
-    - /home/arthur/.cache
-    - /home/arthur/.cargo/registry
-    - /home/arthur/.config/**/*[Cc]ache*
-    - /home/arthur/.eclipse
-    - /home/arthur/.debug
-    - /home/arthur/.java
-    - /home/arthur/.jd
-    - /home/arthur/.local/lib/R
-    - /home/arthur/.local/lib/node_modules
-    - /home/arthur/.local/share/torbrowser
-    - /home/arthur/.config/torbrowser
-    - /home/arthur/.cache/torbrowser
-    - /home/arthur/.local/lib/python3.10
-    - /home/arthur/.local/share/Steam
-    - /home/arthur/.local/share/Trash
-    - /home/arthur/.local/share/Zeal
-    - /home/arthur/.local/share/godot/templates
-    - /home/arthur/.local/share/gradle
-    - /home/arthur/.local/share/krita/resourcecache.sqlite*
-    - /home/arthur/.local/share/nvim
-    - /home/arthur/.m2
-    - /home/arthur/.vispy
-    - /home/arthur/.vscode
-    - /home/arthur/Downloads
-    - /home/arthur/Videos/Movies
-    - /home/arthur/go/pkg
-    - /home/arthur/opt/Android
-    - /home/arthur/opt/games
-    - /home/arthur/src/lab
-    - /home/arthur/src/repo
-    - /home/arthur/srv/private
-    - /home/arthur/srv/vm
-    - /home/arthur/srv/archives
-    - /home/arthur/srv/build/pkg
-    - /home/arthur/srv/build/src
-    - /home/arthur/srv/build/repo/*/pkg
-    - /home/arthur/srv/build/repo/*/src
-    - /home/arthur/tmp
     - '*/.vim*.tmp'
+    - '{{ .chezmoi.homeDir }}/.android'
+    - '{{ .chezmoi.homeDir }}/.cabal/bin'
+    - '{{ .chezmoi.homeDir }}/.cabal/logs'
+    - '{{ .chezmoi.homeDir }}/.cabal/packages'
+    - '{{ .chezmoi.homeDir }}/.cabal/store'
+    - '{{ .chezmoi.homeDir }}/.cache'
+    - '{{ .chezmoi.homeDir }}/.cache/torbrowser'
+    - '{{ .chezmoi.homeDir }}/.cargo/registry'
+    - '{{ .chezmoi.homeDir }}/.config/**/*[Cc]ache*'
+    - '{{ .chezmoi.homeDir }}/.config/Code/logs'
+    - '{{ .chezmoi.homeDir }}/.config/gpodder/Downloads'
+    - '{{ .chezmoi.homeDir }}/.config/torbrowser'
+    - '{{ .chezmoi.homeDir }}/.debug'
+    - '{{ .chezmoi.homeDir }}/.eclipse'
+    - '{{ .chezmoi.homeDir }}/.java'
+    - '{{ .chezmoi.homeDir }}/.jd'
+    - '{{ .chezmoi.homeDir }}/.local/lib'
+    - '{{ .chezmoi.homeDir }}/.local/share/**/*[Cc]ache*'
+    - '{{ .chezmoi.homeDir }}/.local/share/CKAN/downloads'
+    - '{{ .chezmoi.homeDir }}/.local/share/QtProject/Assistant'
+    - '{{ .chezmoi.homeDir }}/.local/share/Steam'
+    - '{{ .chezmoi.homeDir }}/.local/share/Trash'
+    - '{{ .chezmoi.homeDir }}/.local/share/Zeal'
+    - '{{ .chezmoi.homeDir }}/.local/share/godot/templates'
+    - '{{ .chezmoi.homeDir }}/.local/share/gradle'
+    - '{{ .chezmoi.homeDir }}/.local/share/nvim'
+    - '{{ .chezmoi.homeDir }}/.local/share/torbrowser'
+    - '{{ .chezmoi.homeDir }}/.local/state'
+    - '{{ .chezmoi.homeDir }}/.m2'
+    - '{{ .chezmoi.homeDir }}/.vispy'
+    - '{{ .chezmoi.homeDir }}/.vscode'
+    - '{{ .chezmoi.homeDir }}/Downloads'
+    - '{{ .chezmoi.homeDir }}/Pictures/apod'
+    - '{{ .chezmoi.homeDir }}/Videos/Movies'
+    - '{{ .chezmoi.homeDir }}/go/pkg'
+    - '{{ .chezmoi.homeDir }}/library/doc/godot'
+    - '{{ .chezmoi.homeDir }}/opt/Android'
+    - '{{ .chezmoi.homeDir }}/opt/games'
+    - '{{ .chezmoi.homeDir }}/src/lab'
+    - '{{ .chezmoi.homeDir }}/src/repo'
+    - '{{ .chezmoi.homeDir }}/srv/archives'
+    - '{{ .chezmoi.homeDir }}/srv/build/pkg'
+    - '{{ .chezmoi.homeDir }}/srv/build/repo/*/pkg'
+    - '{{ .chezmoi.homeDir }}/srv/build/repo/*/src'
+    - '{{ .chezmoi.homeDir }}/srv/build/src'
+    - '{{ .chezmoi.homeDir }}/srv/private'
+    - '{{ .chezmoi.homeDir }}/srv/vm'
+    - '{{ .chezmoi.homeDir }}/tmp'
 
   # Read exclude patterns from one or more separate named files,
   # one pattern per line. See the output of "borg help patterns"

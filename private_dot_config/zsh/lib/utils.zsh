@@ -203,7 +203,7 @@ Arguments:
 			echo "proxy environment variable is set to $http_proxy"
 		fi
 		# git
-		local ssh_cmd=$(git config -f /home/arthur/.cache/git_proxy --get core.sshCommand)
+		local ssh_cmd=$(git config -f $XDG_CACHE_HOME/git_proxy --get core.sshCommand)
 		if [[ ! -z "$ssh_cmd" ]]; then
 			echo "git ssh proxy is set to $(echo $ssh_cmd | sed -n 's/.*proxy //p;' | sed 's/ .*//g')"
 		fi

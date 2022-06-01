@@ -1,4 +1,10 @@
 #!/bin/bash
+bind() {
+	if [[ -e "$1" ]]; then
+		args+=(--bind "$1" "$1")
+	fi
+}
+
 args=(
 	# nvidia
 	--setenv __NV_PRIME_RENDER_OFFLOAD 1
@@ -6,13 +12,14 @@ args=(
 	--setenv __VK_LAYER_NV_optimus NVIDIA_only
 	--setenv VK_ICD_FILENAMES /usr/share/vulkan/icd.d/nvidia_icd.json
 
-	--bind /run/media /run/media
-	--bind /home/arthur/Downloads /home/arthur/Downloads
-	--bind /home/arthur/Documents /home/arthur/Documents
-	--bind /home/arthur/tmp /home/arthur/tmp
-	--bind /home/arthur/opt /home/arthur/opt
-	--bind /home/arthur/.config/MangoHud /home/arthur/.config/MangoHud
-	--bind /home/arthur/.wine /home/arthur/.wine
 )
+
+bind /run/media
+bind "$HOME/Downloads"
+bind "$HOME/Documents"
+bind "$HOME/tmp"
+bind "$HOME/opt"
+bind "$HOME/.config/MangoHud"
+bind "$HOME/.wine"
 
 exec sandbox "${args[@]}" mangohud wine "$@"
