@@ -77,9 +77,10 @@ if [[ -n "$FZF_TAB_HOME" ]]; then
 	zstyle ':fzf-tab:complete:pacman:*' fzf-preview \
 		'localf=(/var/lib/pacman/local/${word}*(N))
 		if [[ -n "${localf[1]}" ]]; then
-			pacman -Qi $word
+			echo "\033[36;1m[installed]\033[0m"
+			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Qi $word 
 		else
-			pacman -Si $word
+			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Si $word
 		fi
 		'
 
