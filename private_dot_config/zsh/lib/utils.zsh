@@ -195,7 +195,7 @@ Arguments:
 			git config -f $XDG_CACHE_HOME/git_proxy --unset core.sshCommand 
 		fi
 		# ssh
-		unalias ssh
+		unalias ssh 2> /dev/null
 		# desktop environment
 		if ((de_flag == 1)); then
 			if [[ -f /usr/bin/gsettings ]]; then
