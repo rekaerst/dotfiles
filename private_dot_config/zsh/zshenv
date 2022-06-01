@@ -30,7 +30,7 @@ export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 export HISTFILE="$XDG_DATA_HOME/zsh/history"
 
 # set COLORTERM in tmux
-if [[ ! -z "$TMUX" ]]; then
+if [[ -n "$TMUX" ]]; then
 	export COLORTERM=truecolor
 fi
 # Editor

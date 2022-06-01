@@ -199,12 +199,12 @@ Arguments:
 		fi
 		;;
 	status)
-		if [[ ! -z "$http_proxy" ]]; then
+		if [[ -n "$http_proxy" ]]; then
 			echo "proxy environment variable is set to $http_proxy"
 		fi
 		# git
 		local ssh_cmd=$(git config -f $XDG_CACHE_HOME/git_proxy --get core.sshCommand)
-		if [[ ! -z "$ssh_cmd" ]]; then
+		if [[ -n "$ssh_cmd" ]]; then
 			echo "git ssh proxy is set to $(echo $ssh_cmd | sed -n 's/.*proxy //p;' | sed 's/ .*//g')"
 		fi
 		# desktop environment
@@ -513,8 +513,11 @@ clearcache() {
 	go clean -modecache
 	go clean -cache
 	npm cache clean --force
-	if [[ ! -z "$XDG_CACHE_HOME" ]]; then
+	if [[ -n "$XDG_CACHE_HOME" ]]; then
 		rm -rf "$XDG_CACHE_HOME/winetricks"
 		rm -rf "$XDG_CACHE_HOME/mesa_shader_cache"
+	fi
+	if hash yay 2>/dev/null; then
+		yes | yay -Scc
 	fi
 }

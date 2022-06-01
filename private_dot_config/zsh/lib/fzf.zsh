@@ -39,7 +39,7 @@ fi
 # fzf-tab
 #######################################
 
-if [[ ! -z "$FZF_TAB_HOME" ]]; then
+if [[ -n "$FZF_TAB_HOME" ]]; then
 	# disable sort when completing `git checkout`
 	zstyle ':completion:*:git-checkout:*' sort false
 	# set descriptions format to enable group support
@@ -52,7 +52,7 @@ if [[ ! -z "$FZF_TAB_HOME" ]]; then
 	# enable group
 	zstyle ':completion:*' group-name ''
 	# enable tmux popup in tmux session
-	if [[ ! -z "$TMUX" ]]; then
+	if [[ -n "$TMUX" ]]; then
 		zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 		zstyle ':fzf-tab:*' popup-pad 50 0
 		zstyle ':fzf-tab:*:options' popup-pad 0 0
@@ -62,14 +62,24 @@ if [[ ! -z "$FZF_TAB_HOME" ]]; then
 	# preview
 	#
 	
-	# files
+	# generic
 	zstyle ':fzf-tab:complete:*:*' fzf-preview \
 		'if [[ "$group" == "[file]" ]]; then
 			~/.config/lf/pv ${(Q)realpath} $FZF_PREVIEW_COLUMNS
+		else
+			echo $group
 		fi'
 	# disable preview for command options and subcommands	
 	zstyle ':fzf-tab:complete:*:options' fzf-preview 
 	zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
+
+	# pacman
+	zstyle ':fzf-tab:complete:pacman:*' fzf-preview \
+		'if [[ -d "/var/lib/pacman/local/${word}*" ]]; then
+			echo exists
+		else
+			echo lol
+		fi'
 
 	# command
 	zstyle ':fzf-tab:complete:-command-:*' fzf-preview \

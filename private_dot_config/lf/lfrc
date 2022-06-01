@@ -78,7 +78,7 @@ cmd fzf_search ${{
             --ansi --layout=reverse --header 'Search in files' \
             | cut -d':' -f1
     )"
-    [ ! -z "$res" ] && lf -remote "send $id select \"$res\""
+    [ -n "$res" ] && lf -remote "send $id select \"$res\""
 }}
 map gs :fzf_search
 
