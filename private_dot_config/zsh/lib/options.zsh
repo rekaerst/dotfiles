@@ -38,6 +38,9 @@ tabs -4
 env_default 'PAGER' 'less'
 env_default 'LESS' '-R'
 
+# zsh run-help
+unalias run-help 2>/dev/null
+autoload run-help
 
 # recognize comments
 setopt interactivecomments

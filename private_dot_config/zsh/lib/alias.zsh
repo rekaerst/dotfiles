@@ -19,6 +19,7 @@ fi
 # git
 alias lg="lazygit"
 # misc
+alias help=run-help
 alias html2pdf='wkhtmltopdf'
 alias info='info --vi-keys'
 alias th=trash

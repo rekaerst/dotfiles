@@ -545,11 +545,6 @@ Options:
 #
 # Misc
 #
-
-help() {
-	bash -c "help $*"
-}
-
 french() {
 	export LC_ALL=fr_FR.UTF-8
 }
