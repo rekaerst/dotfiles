@@ -75,11 +75,13 @@ if [[ -n "$FZF_TAB_HOME" ]]; then
 
 	# pacman
 	zstyle ':fzf-tab:complete:pacman:*' fzf-preview \
-		'if [[ -d "/var/lib/pacman/local/${word}*" ]]; then
-			echo exists
+		'localf=(/var/lib/pacman/local/${word}*(N))
+		if [[ -n "${localf[1]}" ]]; then
+			pacman -Qi $word
 		else
-			echo lol
-		fi'
+			pacman -Si $word
+		fi
+		'
 
 	# command
 	zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
