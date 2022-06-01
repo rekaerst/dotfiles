@@ -26,6 +26,11 @@ err() {
 	echo >&2 -e "\e[31;1m$*\e[0m"
 }
 
+# puase
+pause() {
+	read -sk $'?Press any key to continue.\n'
+}
+
 ##################################################################
 # Set environment variable "$1" to default value "$2" if "$1" is not yet defined.
 #
@@ -264,6 +269,52 @@ pacblame() {
 	pacman -Qlq $1 | grep -v '/$' | xargs -r du -h | sort -h
 }
 
+##################################################################
+# browse pacman packages with fzf
+# Arguments:
+# 	all arguments will be passed to pacman
+##################################################################
+pacls() {
+	local fzf_args=() pv remove options \
+		remove_cmd install_cmd listfiles_cmd
+
+	if (($#>=1)); then
+		options="${1}q"
+		shift
+	else
+		options="-Qq"
+	fi
+	pv='localf=(/var/lib/pacman/local/{}*(N))
+		if [[ ${a::1} == "/" ]]; then
+			$XDG_CONFIG_HOME/lf/pv {} $FZF_PREVIEW_COLUMNS
+		elif [[ -n "${localf[1]}" ]]; then
+			echo "\033[36;1m[installed]\033[0m"
+			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Qil {}
+		else
+			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Si {}
+		fi'
+	remove_cmd="sudo pacman -Rns {} \
+		|| read -sk \$'?Press any key to continue.\n'"
+	install_cmd="sudo pacman -S {} \
+		|| read -sk \$'?Press any key to continue.\n'"
+
+	if [[ "$options" =~ "Q" ]]; then
+		if [[ "$options" =~ "l" ]]; then
+			pv="$XDG_CONFIG_HOME/lf/pv {} \$FZF_PREVIEW_COLUMNS"
+		else
+			fzf_args+=(--bind "ctrl-r:execute($remove_cmd)")
+		fi
+	elif [[ "$options" =~ "S" ]]; then 
+		fzf_args+=(--bind "ctrl-r:execute($install_cmd)")
+	fi
+
+	fzf_args+=(
+		--preview "COLUMNS=\$FZF_PREVIEW_COLUMNS $pv"
+		--bind "enter:execute($pv {} | less)"
+		--layout=reverse
+	)
+	pacman $options $@ | fzf ${fzf_args[@]}
+}
 
 #
 # git

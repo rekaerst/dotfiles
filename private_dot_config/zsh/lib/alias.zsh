@@ -18,7 +18,6 @@ if hash chezmoi 2>/dev/null; then
 fi
 # git
 alias lg="lazygit"
-alias pacfzf="fzf --preview 'pacman -Sil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 # misc
 alias html2pdf='wkhtmltopdf'
 alias info='info --vi-keys'
