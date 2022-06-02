@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+
+# arch linux
+if hash yay 2>/dev/null; then
+	yay
+elif hash pacman 2>/dev/null; then
+	sudo pacman -Syu
+fi
+# python
+PYLIBS=(
+	taichi
+	vispy
+	litecli
+	pyxel
+	manim
+	pip
+)
+pip install "${PYLIBS[@]}" -U
+# nodejs
+npm -g up
