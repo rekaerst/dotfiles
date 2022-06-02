@@ -20,7 +20,7 @@ set info "size"
 # previewer
 set previewer ~/.config/lf/pv
 map i $LESSOPEN='| ~/.config/lf/pv %s' less -R "$f"
-map i $~/.config/lf/pv "$f" $(tput cols) | less -R
+map i $~/.config/lf/pv "$f" $(tput cols) $(tput lines) | less -R
 
 # dynamically set number of clumns
 cmd recol ${{

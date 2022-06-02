@@ -65,7 +65,7 @@ if [[ -n "$FZF_TAB_HOME" ]]; then
 	# generic
 	zstyle ':fzf-tab:complete:*:*' fzf-preview \
 		'if [[ "$group" == "[file]" ]] || [[ "$group" == "[files]" ]]; then
-			~/.config/lf/pv ${(Q)realpath} $FZF_PREVIEW_COLUMNS
+			~/.config/lf/pv ${(Q)realpath} $FZF_PREVIEW_COLUMNS $FZF_PREVIEW_LINES 2>/dev/null
 		else
 			echo $group
 		fi'

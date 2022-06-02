@@ -11,8 +11,10 @@ IFS=$'\n'
 FILE_PATH="${1}" # Full path of the highlighted file
 if (($# == 1)); then
 	PV_WIDTH=$(tput cols) # Width of the preview pane (number of fitting characters)
+	PV_HEIGHT=$(tput lines)
 else
 	PV_WIDTH="${2}"
+	PV_HEIGHT="${3}"
 fi
 
 ## shellcheck disable=SC2034 # PV_HEIGHT is provided for convenience and unused
@@ -128,7 +130,7 @@ handle_image() {
 	local mimetype="${1}"
 	case "${mimetype}" in
 	image/*)
-		chafa "${FILE_PATH}" -s "${PV_WIDTH}x"
+		chafa "${FILE_PATH}" -s "${PV_WIDTH}x${PV_HEIGHT}"
 		;;
 	esac
 }
