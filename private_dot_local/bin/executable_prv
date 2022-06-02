@@ -108,7 +108,7 @@ handle_extension() {
 
 	## Jupyter Notebooks
 	ipynb)
-		jupyter nbconvert --to markdown "${FILE_PATH}" --stdout | env COLORTERM=8bit bat --color=always --style=plain --language=markdown && exit
+		glow <(jupyter nbconvert --to markdown "${FILE_PATH}" --stdout) && exit
 		jupyter nbconvert --to markdown "${FILE_PATH}" --stdout && exit
 		jq --color-output . "${FILE_PATH}" && exit
 		python -m json.tool -- "${FILE_PATH}" && exit
@@ -189,7 +189,13 @@ handle_mime() {
 			local pygmentize_format='terminal'
 			local highlight_format='ansi'
 		fi
-		env COLORTERM=truecolor bat --color=always --style="plain" --tabs=4 \
+		env COLORTERM=truecolor bat \
+			--paging never \
+			--wrap character \
+			--terminal-width "$PV_WIDTH" \
+			--color always \
+			--style numbers \
+			--tabs 4 \
 			-- "${FILE_PATH}" && exit
 		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
 			--out-format="${highlight_format}" \
