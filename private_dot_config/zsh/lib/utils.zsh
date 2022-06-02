@@ -300,7 +300,7 @@ pacls() {
 
 	if [[ "$options" =~ "Q" ]]; then
 		if [[ "$options" =~ "l" ]]; then
-			pv="prv {} \$FZF_PREVIEW_COLUMNS"
+			pv="prv {} \$FZF_PREVIEW_COLUMNS \$FZF_PREVIEW_LINES"
 		else
 			fzf_args+=(--bind "ctrl-r:execute($remove_cmd)")
 		fi
