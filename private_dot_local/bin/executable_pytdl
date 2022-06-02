@@ -1,0 +1,16 @@
+#!/bin/bash
+
+usage() {
+	echo "usage: $0 <format> <url>,[url],..."
+}
+
+if (($# < 2)); then
+	usage
+	exit
+fi
+
+format=$1
+shift
+urls=$*
+
+echo "$urls" | xargs -n1 -P12 yt-dlp -S "$format"
