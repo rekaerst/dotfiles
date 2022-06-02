@@ -72,7 +72,8 @@ handle_extension() {
 		## Preview as text conversion
 		odt2txt "${FILE_PATH}" && exit
 		## Preview as markdown conversion
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit
+		glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
 		exit 1
 		;;
 	ods | odp)
@@ -95,7 +96,8 @@ handle_extension() {
 		w3m -dump "${FILE_PATH}" && exit
 		lynx -dump -- "${FILE_PATH}" && exit
 		elinks -dump "${FILE_PATH}" && exit
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit
+		glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
 		;;
 
 	## JSON
@@ -114,7 +116,7 @@ handle_extension() {
 
 	## Markdown
 	md)
-		glow -s dark "${FILE_PATH}"
+		glow -w "${PV_WIDTH}" -s dark "${FILE_PATH}"
 		;;
 
 	## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
@@ -152,7 +154,8 @@ handle_mime() {
 	## uncommented other methods to preview those formats
 	*wordprocessingml.document | */epub+zip | */x-fictionbook+xml)
 		## Preview as markdown conversion
-		pandoc -s -t markdown -- "${FILE_PATH}" && exit
+		glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
 		exit 1
 		;;
 
