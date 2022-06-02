@@ -6,5 +6,7 @@ source $SRC/termtitle.zsh
 source $SRC/options.zsh
 source $SRC/completion.zsh
 source $SRC/keybinding.zsh
-[[ -z "$SANDBOX" ]] || source $SRC/sandbox.zsh
+source $SRC/fzf.zsh
+[[ -f "$SRC/secrets.zsh" ]] && source $SRC/secrets.zsh
+[[ -n "$SANDBOX" ]] && source $SRC/sandbox.zsh
 unset SRC
