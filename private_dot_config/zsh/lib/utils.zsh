@@ -286,7 +286,7 @@ pacls() {
 	fi
 	pv='localf=(/var/lib/pacman/local/{}*(N))
 		if [[ ${a::1} == "/" ]]; then
-			$XDG_CONFIG_HOME/lf/pv {} $FZF_PREVIEW_COLUMNS
+			prv {} $FZF_PREVIEW_COLUMNS
 		elif [[ -n "${localf[1]}" ]]; then
 			echo "\033[36;1m[installed]\033[0m"
 			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Qil {}
@@ -300,7 +300,7 @@ pacls() {
 
 	if [[ "$options" =~ "Q" ]]; then
 		if [[ "$options" =~ "l" ]]; then
-			pv="$XDG_CONFIG_HOME/lf/pv {} \$FZF_PREVIEW_COLUMNS"
+			pv="prv {} \$FZF_PREVIEW_COLUMNS"
 		else
 			fzf_args+=(--bind "ctrl-r:execute($remove_cmd)")
 		fi
