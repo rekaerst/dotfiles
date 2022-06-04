@@ -53,10 +53,7 @@
 						"users": [
 							{
 								"alterId": 0,
-								"encryption": "",
-								"flow": "",
 								"id": "replace-me",
-								"level": 8,
 								"security": "auto"
 							}
 						]
