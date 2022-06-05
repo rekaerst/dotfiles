@@ -37,18 +37,10 @@ fzf_bindkey() {
 	fi
 }
 
-if [[ -d "$ZIM_HOME/modules/zsh-vi-mode" ]]; then
-	function zvm_after_init() {
-		fzf_bindkey
-	}
-else
-	fzf_bindkey
-fi
 #######################################
 # fzf-tab
 #######################################
-
-if [[ -n "$FZF_TAB_HOME" ]]; then
+fzf_tab_config() {
 	# disable sort when completing `git checkout`
 	zstyle ':completion:*:git-checkout:*' sort false
 	# set descriptions format to enable group support
@@ -127,4 +119,7 @@ if [[ -n "$FZF_TAB_HOME" ]]; then
 		*) git log --color=always $word ;;
 		esac'
 	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word'
-fi
+}
+
+fzf_bindkey
+fzf_tab_config

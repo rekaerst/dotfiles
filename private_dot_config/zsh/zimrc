@@ -24,8 +24,9 @@ zmodule zdharma-continuum/fast-syntax-highlighting
 # Configurations (compinit)
 zmodule $ZDOTDIR/lib
 # NOTE: completion must be sourced after all modules that add completion definitions.
-zmodule Aloxaf/fzf-tab
 
+# Replace zsh's default completion selection menu with fzf
+zmodule Aloxaf/fzf-tab
 # use bash completion as fallback if no zsh completion is found
 zmodule 3v1n0/zsh-bash-completions-fallback
 # always put this in the end of zimrc

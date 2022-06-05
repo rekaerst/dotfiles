@@ -58,14 +58,6 @@ fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
-# ------------------------------
-# Post-init module configuration
-# ------------------------------
-
-
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f "$ZDOTDIR/lib/p10k.zsh" ]] || source $ZDOTDIR/lib/p10k.zsh
-
 # first time configuration
 FIRST_TIME="$ZSH_CACHE_DIR/first_time"
 if [[ ! -f "$FIRST_TIME" ]]; then

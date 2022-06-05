@@ -1,6 +1,7 @@
 SRC="$(dirname "$0")"
 source $SRC/utils.zsh
 source $SRC/appearance.zsh
+source $SRC/p10k.zsh
 source $SRC/alias.zsh
 source $SRC/termtitle.zsh
 source $SRC/options.zsh
