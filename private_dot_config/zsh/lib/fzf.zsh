@@ -29,6 +29,9 @@ fzf_bindkey() {
 	if [[ -d /usr/share/fzf ]]; then
 		source /usr/share/fzf/completion.zsh
 		source /usr/share/fzf/key-bindings.zsh 
+		bindkey -M emacs '\ed' fzf-cd-widget
+		bindkey -M vicmd '\ed' fzf-cd-widget
+		bindkey -M viins '\ed' fzf-cd-widget
 		fzf_zsh_help() {
 			echo "\e[33;1mC-t\e[0m list files+folders in current directory, (e.g., type \e[34mgit add\e[0m , press \e[33;1mC-t\e[0m, select a few files using \e[33;1mTab\e[0m, finally \e[33;1mEnter\e[0m)"
 			echo "\e[33;1mC-r\e[0m search history of shell commands"
@@ -45,8 +48,6 @@ fzf_tab_config() {
 	zstyle ':completion:*:git-checkout:*' sort false
 	# set descriptions format to enable group support
 	zstyle ':completion:*:descriptions' format '[%d]'
-	# switch group using `,` and `.`
-	zstyle ':fzf-tab:*' switch-group ',' '.'
 	# manual page completion
 	zstyle ':completion:*:manuals' separate-sections true
 	zstyle ':completion:*:manuals.(^1*)' insert-sections true
