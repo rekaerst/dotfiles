@@ -18,6 +18,10 @@ export FZF_DEFAULT_OPTS="\
 # shell integration
 #######################################
 
+FZF_CTRL_T_OPTS='
+	--preview "COLUMNS=$FZF_PREVIEW_COLUMNS prv {} $FZF_PREVIEW_COLUMNS $FZF_PREVIEW_LINES"
+'
+
 _fzf_compgen_path() {
   command fd --hidden --follow --exclude ".git" . "$1"
 }
@@ -122,5 +126,12 @@ fzf_tab_config() {
 	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word'
 }
 
-fzf_bindkey
-fzf_tab_config
+if [[ -n "$ZVM_VERSION" ]]; then
+	zvm_after_init() {
+		fzf_bindkey
+		fzf_tab_config
+	}
+else
+	fzf_bindkey
+	fzf_tab_config
+fi
