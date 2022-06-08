@@ -61,7 +61,7 @@ source ${ZIM_HOME}/init.zsh
 # first time configuration
 FIRST_TIME="$ZSH_CACHE_DIR/first_time"
 if [[ ! -f "$FIRST_TIME" ]]; then
-	fast-theme XDG:onedark
+	fast-theme -q base16
 	[[ -z "$WGETRC" ]] || touch $WGETRC
 	touch "$FIRST_TIME"
 fi
