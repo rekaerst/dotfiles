@@ -7,6 +7,6 @@ key.age
 .config/gh
 .config/proxy
 .config/systemd/user/proxy.service
-.config/zsh/secrets.zsh
+.config/zsh/lib/secrets.zsh
 srv/private
 {{ end -}}
