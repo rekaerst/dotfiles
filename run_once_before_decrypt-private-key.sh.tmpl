@@ -1,8 +1,13 @@
+{{- if eq .chezmoi.os "android" -}}
+#!/data/data/com.termux/files/usr/bin/bash
+{{- else -}}
 #!/bin/bash
-# vi:ft=sh
+{{- end }}
 {{ if .trusted }}
 KEY_PATH="${XDG_CONFIG_DIR:-$HOME/.config}/chezmoi/key"
+{{ if hasKey .chezmoi.osRelease "id" -}}
 OS_ID="{{ .chezmoi.osRelease.id }}"
+{{- end}}
 SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 
 [[ -d "$HOME/.ssh" ]] || mkdir "$HOME/.ssh"
