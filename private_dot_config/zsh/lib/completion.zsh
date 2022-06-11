@@ -78,6 +78,7 @@ compdef _command sandbox
 compdef _grc grc
 compdef _pacman_completions_installed_packages pacblame
 compdef _zsh sbsh
+compdef _pkg-config pkgconf
 # NOTE: play framework conflicts with sox
 compdef -d play
 
