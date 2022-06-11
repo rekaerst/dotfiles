@@ -311,7 +311,6 @@ pacls() {
 	fzf_args+=(
 		--preview "COLUMNS=\$FZF_PREVIEW_COLUMNS $pv"
 		--bind "enter:execute($pv {} | less)"
-		--layout=reverse
 	)
 	pacman $options $@ | fzf ${fzf_args[@]}
 }
