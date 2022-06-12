@@ -150,12 +150,16 @@ Arguments:
 		export ALL_PROXY=$all_proxy
 		export no_proxy="localhost,127.0.0.1,localaddress,.localdomain.com,192.168.0.0/16"
 		# dns
+		local inf
 		if ((dns_proxy == 1)); then
 			if [[ -f /usr/bin/resolvectl ]]; then
-				sudo resolvectl dns wlp4s0 127.0.0.1:10853
-				sudo resolvectl dns eno1 127.0.0.1:10853
+				for f in /sys/class/net/*; do
+					inf="${f##*/}"
+					if [[ "$inf" =~ (eno|wlp) ]]; then
+						sudo resolvectl dns "$inf" "$host:$dns_port"
+					fi
+				done
 			fi
-			touch /tmp/use_proxy_dns
 		fi
 		# git
 		if ((git_flag == 1)); then
@@ -188,7 +192,6 @@ Arguments:
 			if [[ -f /usr/bin/resolvectl ]]; then
 				sudo systemctl restart systemd-resolved
 			fi
-			rm -f /tmp/use_proxy_dns
 		fi
 		# git
 		if ((git_flag == 1)); then
