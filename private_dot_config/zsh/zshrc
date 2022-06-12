@@ -23,9 +23,6 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 # completion
 #
 
-# zsh bash completions fallback
-ZSH_BASH_COMPLETIONS_FALLBACK_BLACKLIST=(file wine 7z gio)
-
 #
 # zsh-autosuggestions
 #

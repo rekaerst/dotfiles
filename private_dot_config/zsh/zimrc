@@ -27,7 +27,5 @@ zmodule $ZDOTDIR/lib
 
 # Replace zsh's default completion selection menu with fzf
 zmodule Aloxaf/fzf-tab
-# use bash completion as fallback if no zsh completion is found
-zmodule 3v1n0/zsh-bash-completions-fallback
 # always put this in the end of zimrc
 zmodule zsh-users/zsh-autosuggestions
