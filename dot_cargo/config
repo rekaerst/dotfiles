@@ -1,0 +1,11 @@
+[build]
+jobs = 6
+
+[profile.release]
+lto = true
+opt-level = 3
+debug = 0
+
+[profile.dev]
+lto = false
+# rustflags = ["-C", "prefer-dynamic", "-C", "link-arg=-fuse-ld=mold"] # unstable
