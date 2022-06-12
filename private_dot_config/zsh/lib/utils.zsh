@@ -427,7 +427,8 @@ sbsh() {
 		--bind $ZSH_CACHE_DIR $ZSH_CACHE_DIR \
 		--bind $XDG_CACHE_HOME/fsh $XDG_CACHE_HOME/fsh \
 		--bind $XDG_CACHE_HOME/gitstatus $XDG_CACHE_HOME/gitstatus \
-	 	$SHELL $*
+		$* \
+	 	$SHELL 
 	unset SANDBOX
 }
 
