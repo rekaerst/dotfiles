@@ -72,6 +72,11 @@ zstyle '*' single-ignored show
 zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
 zstyle ':completion:*:rm:*' file-patterns '*:all-files'
 
+# custom completion
+
+# heroku autocomplete setup
+HEROKU_AC_ZSH_SETUP_PATH=/home/arthur/.cache/heroku/autocomplete/zsh_setup && test -f $HEROKU_AC_ZSH_SETUP_PATH && source $HEROKU_AC_ZSH_SETUP_PATH;
+
 # compdef
 compdef _vim vi
 compdef _command sandbox
@@ -83,3 +88,4 @@ compdef _pkg-config pkgconf
 compdef -d play
 
 }
+
