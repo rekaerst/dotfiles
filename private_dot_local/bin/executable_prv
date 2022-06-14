@@ -236,6 +236,7 @@ handle_mime() {
 
 	## Inodes
 	inode/*)
+		exa --color=always "${FILE_PATH}" 2>/dev/null && exit
 		ls --color=always "${FILE_PATH}" 2>/dev/null && exit
 		;;
 
