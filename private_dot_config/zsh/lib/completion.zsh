@@ -86,6 +86,5 @@ compdef _zsh sbsh
 compdef _pkg-config pkgconf
 # NOTE: play framework conflicts with sox
 compdef -d play
-
 }
 

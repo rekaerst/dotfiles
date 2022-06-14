@@ -12,7 +12,7 @@ alias sudo='sudo '
 # task
 alias taskui="taskwarrior-tui"
 # dotfiles
-if hash chezmoi 2>/dev/null; then
+if (($+commands[chezmoi])); then
 	alias dflg="lazygit -p $(chezmoi source-path)"
 	alias dotfiles="cd $(chezmoi source-path)"
 fi

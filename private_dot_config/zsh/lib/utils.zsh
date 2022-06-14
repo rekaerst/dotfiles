@@ -442,7 +442,7 @@ sbsh() {
 #	1. folder to encrypt
 ##################################################################
 encrypt() {
-	if ! hash fscrypt 2>/dev/null; then
+	if ! (($+commands[fscrypt])); then
 		 err "fscrypt is not installed" && return
 	fi
 
@@ -464,7 +464,8 @@ encrypt() {
 		mv "$target" "$target.old"
 		mv "$target.new" "$target"
 		cp -aT "$target.old"  "$target"
-		hash trash 2>/dev/null && trash "$target.old" 
+		(($+commands[trash])) && trash "$target.old" && exit
+		(($+commands[gio])) && gio trash "$target.old" && exit
 	fi
 }
 
@@ -566,7 +567,7 @@ clearcache() {
 		rm -rf "$XDG_CACHE_HOME/winetricks"
 		rm -rf "$XDG_CACHE_HOME/mesa_shader_cache"
 	fi
-	if hash yay 2>/dev/null; then
+	if (($+commands[yay])); then
 		yes | yay -Scc
 	fi
 }
