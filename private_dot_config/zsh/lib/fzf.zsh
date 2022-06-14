@@ -70,7 +70,7 @@ fzf_tab_config() {
 	
 	# generic
 	zstyle ':fzf-tab:complete:*:*' fzf-preview \
-		'if [[ "$group" == "[file]" ]] || [[ "$group" == "[files]" ]]; then
+		'if [[ "$group" =~ "file" ]] || [[ "$group" == "[files]" ]]; then
 			prv ${(Q)realpath} $FZF_PREVIEW_COLUMNS $FZF_PREVIEW_LINES 2>/dev/null
 		else
 			echo $group
