@@ -714,7 +714,7 @@ else:
 ## The time in milliseconds that is waited for a mapped key
 #         sequence to complete.
 #  Default: 0.5
-# c.TerminalInteractiveShell.timeoutlen = 0.5
+c.TerminalInteractiveShell.timeoutlen = 0
 
 ## Use 24bit colors instead of 256 colors in prompt highlighting.
 #          If your terminal supports true color, the following command should
