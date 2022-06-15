@@ -1,12 +1,4 @@
 #!/usr/bin/bash
-
-# arch linux
-if hash yay 2>/dev/null; then
-	yay
-elif hash pacman 2>/dev/null; then
-	sudo pacman -Syu
-fi
-# python
 PYLIBS=(
 	taichi
 	vispy
@@ -14,7 +6,66 @@ PYLIBS=(
 	pyxel
 	manim
 	pip
+	fake-bpy-module-latest
 )
-pip install "${PYLIBS[@]}" -U
-# nodejs
-npm -g up
+
+#flags
+all=0
+system=0
+pip_=0
+npm_=0
+
+if (($# == 0)); then
+	all=1
+fi
+
+while getopts ":aspnh" opt; do
+	case "$opt" in
+	a) all=1 ;;
+	s) system=1 ;;
+	p) pip_=1 ;;
+	n) npm_=1 ;;
+	h | ?)
+		echo "\
+Usage: $0 [options]
+
+Options:
+-a		all
+-s		system package
+-p		python package
+-n		npm
+"
+		exit
+		;;
+	esac
+done
+
+package() {
+	if hash yay 2>/dev/null; then
+		yay
+	elif hash pacman 2>/dev/null; then
+		sudo pacman -Syu
+	fi
+}
+pip_update() {
+	pip install "${PYLIBS[@]}" -U
+}
+npm_update() {
+	npm -g up
+}
+
+if ((all == 1)); then
+	system=1
+	pip_=1
+	npm_=1
+fi
+
+if ((system == 1)); then
+	package
+fi
+if ((pip_ == 1)); then
+	pip_update
+fi
+if ((npm_ == 1)); then
+	npm_update
+fi
