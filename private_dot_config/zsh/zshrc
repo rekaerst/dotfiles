@@ -26,7 +26,7 @@ ZVM_VI_HIGHLIGHT_BACKGROUND=59
 #
 # zsh-autosuggestions
 #
-
+POWERLEVEL9K_PROMPT_CHAR_OVERWRITE_STATE=false
 # Disable automatic widget re-binding on each precmd. This can be set when
 # zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
