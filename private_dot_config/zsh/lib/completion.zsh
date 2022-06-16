@@ -4,11 +4,10 @@ fpath+=($ZDOTDIR/lib/functions)
 autoload -U $ZDOTDIR/lib/functions/*(.:t)
 
 # init
-local zdumpfile
 zmodload -i zsh/complist
-autoload -Uz compinit && compinit -C -d ${zdumpfile}
+autoload -Uz compinit && compinit -C -d ${ZSH_CACHE_DIR}/zcompdump
 
-# completion cache
+# cache
 if [[ ! ${zdumpfile}.zwc -nt ${zdumpfile} ]] zcompile ${zdumpfile}
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path ${ZSH_CACHE_DIR}/zcompcache
