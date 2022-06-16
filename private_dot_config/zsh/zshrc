@@ -58,7 +58,7 @@ source ${ZIM_HOME}/init.zsh
 # first time configuration
 FIRST_TIME="$ZSH_CACHE_DIR/first_time"
 if [[ ! -f "$FIRST_TIME" ]]; then
-	fast-theme -q base16
+	fast-theme -q base16 > /dev/null 2>&1
 	[[ -z "$WGETRC" ]] || touch $WGETRC
 	touch "$FIRST_TIME"
 fi
