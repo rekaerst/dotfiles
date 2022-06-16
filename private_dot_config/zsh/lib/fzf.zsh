@@ -123,7 +123,7 @@ fzf_tab_config() {
 		"recent commit object name") git show --color=always $word | delta ;;
 		*) git log --color=always $word ;;
 		esac'
-	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word'
+	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word 2> /dev/null'
 }
 
 if [[ -n "$ZVM_VERSION" ]]; then
