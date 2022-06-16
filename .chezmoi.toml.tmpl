@@ -14,10 +14,10 @@
 {{-   $email = promptString "email" -}}
 {{- end -}}
 
-{{- if hasKey . "trusted" -}}
-{{-   $trusted = .trusted -}}
-{{- else -}}
-{{-   if eq $name "rekaerst" -}}
+{{- if eq $name "rekaerst" -}}
+{{-   if hasKey . "trusted" -}}
+{{-     $trusted = .trusted -}}
+{{-   else -}}
 {{-     $trusted = promptBool "is this machine trusted" -}}
 {{-   end -}}
 {{- end -}}

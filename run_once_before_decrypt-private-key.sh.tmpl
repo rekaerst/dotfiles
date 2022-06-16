@@ -7,6 +7,8 @@
 KEY_PATH="${XDG_CONFIG_DIR:-$HOME/.config}/chezmoi/key"
 {{ if hasKey .chezmoi.osRelease "id" -}}
 OS_ID="{{ .chezmoi.osRelease.id }}"
+{{- else -}}
+OS_ID=
 {{- end}}
 SOURCE_DIR="{{ .chezmoi.sourceDir }}"
 
@@ -16,6 +18,11 @@ if ! hash age 2>/dev/null; then
 	case "$OS_ID" in
 	arch)
 		sudo pacman -S age --noconfirm
+		;;
+	*)
+		echo "age not found"
+		echo "press any key to continue after installed age..."
+		read -n1 -r -p "Press any key to continue..." key
 		;;
 	esac
 fi
