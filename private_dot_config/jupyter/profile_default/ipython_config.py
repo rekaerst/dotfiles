@@ -1,6 +1,12 @@
 # flake8: noqa
 # Configuration file for ipython.
 import sys
+import os
+
+# NOTE: fix could not find style module installed in user site-packages
+USER_LIB = f"{os.getenv('HOME')}/.local/lib/python{str(sys.version_info.major)}.{str(sys.version_info.minor)}/site-packages"
+if USER_LIB not in sys.path:
+    sys.path.append(USER_LIB)
 
 # ------------------------------------------------------------------------------
 # InteractiveShellApp(Configurable) configuration
@@ -194,7 +200,7 @@ import sys
 # TerminalIPythonApp(BaseIPythonApplication, InteractiveShellApp) configuration
 # ------------------------------------------------------------------------------
 #  See also: BaseIPythonApplication.add_ipython_dir_to_sys_path
-# c.TerminalIPythonApp.add_ipython_dir_to_sys_path = False
+c.TerminalIPythonApp.add_ipython_dir_to_sys_path = True
 
 ## Execute the given command string.
 #  See also: InteractiveShellApp.code_to_run
@@ -600,10 +606,9 @@ c.TerminalInteractiveShell.editor = "nvim"
 ## The name or class of a Pygments style to use for syntax
 #          highlighting. To see available styles, run `pygmentize -L styles`.
 #  Default: traitlets.Undefined
-if "sage" not in sys.argv[0]:
-    c.TerminalInteractiveShell.highlighting_style = "onedarkpro"
-else:
-    c.TerminalInteractiveShell.highlighting_style = "one-dark"
+
+
+c.TerminalInteractiveShell.highlighting_style = "onedarkpro"
 
 ## Override highlighting format for specific tokens
 #  Default: {}
