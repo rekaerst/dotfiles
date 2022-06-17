@@ -1,0 +1,8 @@
+{{- $ccache_bin := "/usr/lib/ccache/bin" -}}
+{{- $PATH := "$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$PATH" -}}
+
+{{- if glob $ccache_bin -}}
+PATH="{{ $ccache_bin }}:{{ $PATH }}"
+{{- else -}}
+PATH="{{ $PATH }}"
+{{- end }}
