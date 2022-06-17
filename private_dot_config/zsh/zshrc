@@ -55,10 +55,11 @@ fi
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
-# first time configuration
-FIRST_TIME="$ZSH_CACHE_DIR/first_time"
-if [[ ! -f "$FIRST_TIME" ]]; then
-	fast-theme -q base16 > /dev/null 2>&1
+# first time Initialization
+FIRST_INIT="$ZSH_CACHE_DIR/first_time"
+if [[ ! -f "$FIRST_INIT" ]]; then
+	fast-theme -q base16 &> /dev/null &!
+	bat cache --build  &> /dev/null &!
 	[[ -z "$WGETRC" ]] || touch $WGETRC
-	touch "$FIRST_TIME"
+	touch "$FIRST_INIT"
 fi
