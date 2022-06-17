@@ -1,0 +1,10 @@
+{{ $editor := "" }}
+{{- if lookPath "nvim" -}}
+{{-   $editor := "nvim" -}}
+{{- else -}}
+{{- if lookPath "vim" -}}
+{{-   $editor := "vim" -}}
+{{- end -}}
+{{- end -}}
+
+EDITOR='{{ $editor }}'
