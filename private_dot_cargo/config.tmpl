@@ -1,5 +1,8 @@
 [build]
 jobs = 6
+{{ if lookPath "sccache" -}}
+rustc-wrapper = "/usr/bin/sccache"
+{{- end }}
 
 [profile.release]
 lto = true
