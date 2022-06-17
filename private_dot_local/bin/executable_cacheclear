@@ -1,0 +1,98 @@
+#!/usr/bin/bash
+
+#flags
+all=0
+system=0
+pip_=0
+npm_=0
+compile_cache=0
+lsp=0
+gpu=0
+
+if (($# == 0)); then
+	all=1
+fi
+
+while getopts ":aspngrclGh" opt; do
+	case "$opt" in
+	a) all=1 ;;
+	s) system=1 ;;
+	p) pip_=1 ;;
+	n) npm_=1 ;;
+	g) go=1 ;;
+	c) compile_cache=1 ;;
+	l) lsp=1 ;;
+	G) gpu=1 ;;
+	h | ?)
+		usage
+		exit
+		;;
+	esac
+done
+
+CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}
+
+main() {
+	[[ -f /etc/os-release ]] && . /etc/os-release
+
+	if ((all == 1)); then
+		system=1
+		pip_=1
+		npm_=1
+		go=1
+		compile_cache=1
+		lsp=1
+		gpu=1
+	fi
+
+	if ((system == 1)); then
+		if [[ -n "$ID" ]] && [[ "$ID" == "arch" ]]; then
+			if hash yay 2>/dev/null; then
+				yes | LC_ALL=C yay -Scc
+			else
+				yes | LC_ALL=C pacman -Scc
+			fi
+		fi
+	fi
+	if ((pip_ == 1)); then
+		pip cache purge
+	fi
+	if ((npm_ == 1)); then
+		npm cache clean --force
+	fi
+	if ((go == 1)); then
+		go clean -modcache
+		go clean -cache
+	fi
+	if ((compile_cache == 1)); then
+		ccache -C
+		rm -rf "$CACHE_DIR/sccache"
+	fi
+	if ((lsp == 1)); then
+		rm -rf "$CACHE_DIR/jedi"
+		rm -rf "$CACHE_DIR/clangd"
+	fi
+	if ((gpu == 1)); then
+		rm -rf "$CACHE_DIR/nv"
+		rm -rf "$CACHE_DIR/nvidia"
+		rm -rf "$CACHE_DIR/mesa_shader_cache"
+	fi
+}
+
+usage() {
+	echo "\
+Usage: $0 [options]
+
+Options:
+-a		all
+-s		package manager cache
+-p		pip
+-n		npm
+-g		go
+-r		rust
+-c		ccache, sccache
+-l		lsp
+-G		shader cache
+"
+}
+main

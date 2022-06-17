@@ -557,18 +557,3 @@ french() {
 english() {
 	export LC_ALL=en_US.UTF-8
 }
-
-clearcache() {
-	pip cache purge
-	ccache -C
-	go clean -modecache
-	go clean -cache
-	npm cache clean --force
-	if [[ -n "$XDG_CACHE_HOME" ]]; then
-		rm -rf "$XDG_CACHE_HOME/winetricks"
-		rm -rf "$XDG_CACHE_HOME/mesa_shader_cache"
-	fi
-	if (($+commands[yay])); then
-		yes | yay -Scc
-	fi
-}
