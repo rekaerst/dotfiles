@@ -593,8 +593,32 @@
 			<string>markup.heading</string>
 			<key>settings</key>
 			<dict>
+				<key>fontStyle</key>
+				<string>bold</string>
 				<key>foreground</key>
-				<string>#8BE9FD</string>
+				<string>#e06c75</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Manpage: name</string>
+			<key>scope</key>
+			<string>meta.preprocessor.man</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#61afef</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Manpage: title</string>
+			<key>scope</key>
+			<string>markup.heading.title.man</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#e5c07b</string>
 			</dict>
 		</dict>
 		<dict>
@@ -882,6 +906,28 @@
 			<dict>
 				<key>foreground</key>
 				<string>#e5c07b</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>Entity Name COmmand Line Options</string>
+			<key>scope</key>
+			<string>entity.name.command-line-option</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#e5c07b</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>name</key>
+			<string>For debuggin</string>
+			<key>scope</key>
+			<string>fordebuggin</string>
+			<key>settings</key>
+			<dict>
+				<key>foreground</key>
+				<string>#00ff00</string>
 			</dict>
 		</dict>
 	</array>

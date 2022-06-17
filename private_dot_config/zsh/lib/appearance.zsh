@@ -9,8 +9,16 @@ fi
 # Take advantage of $LS_COLORS for completion as well.
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-# enable applications color
+# diff
 alias diff='diff --color'
+# grep
+export GREP_COLORS="mt=31;1"
+# cht.sh
+export CHTSH_QUERY_OPTIONS="style=paraiso-dark"
+# manpager
+if (( ${+commands[bat]} )); then
+	export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
 
 # grc coloriser
 if [[ -n "$TERM" ]] && [[ ! "$TERM" == "dumb" ]] && (( $+commands[grc] )); then
@@ -63,9 +71,6 @@ if [[ -n "$TERM" ]] && [[ ! "$TERM" == "dumb" ]] && (( $+commands[grc] )); then
 	unset cmd cmds
 fi
 
-
-export GREP_COLORS="mt=31;1"
-export CHTSH_QUERY_OPTIONS="style=paraiso-dark"
 
 setopt multios
 setopt prompt_subst
