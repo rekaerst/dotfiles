@@ -70,7 +70,7 @@ fzf_tab_config() {
 	
 	# generic
 	zstyle ':fzf-tab:complete:*:*' fzf-preview \
-		'if [[ "$group" =~ "file" ]] || [[ "$group" == "[files]" ]]; then
+		'if [[ "$group" =~ "file" ]]; then
 			prv ${(Q)realpath} $FZF_PREVIEW_COLUMNS $FZF_PREVIEW_LINES 2>/dev/null
 		else
 			echo $group
@@ -78,6 +78,12 @@ fzf_tab_config() {
 	# disable preview for command options and subcommands	
 	zstyle ':fzf-tab:complete:*:options' fzf-preview 
 	zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
+	# special cases
+	local disabled_cmd=(go curl npm nvme ping gping httping dig dog)
+	local cmd
+	for cmd in ${disabled_cmd[@]}; do
+		zstyle ":fzf-tab:complete:$cmd:*" fzf-preview
+	done
 
 	# pacman
 	zstyle ':fzf-tab:complete:pacman:*' fzf-preview \
@@ -85,15 +91,18 @@ fzf_tab_config() {
 		if [[ -n "${localf[1]}" ]]; then
 			echo "\033[36;1m[installed]\033[0m"
 			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Qi $word 
+			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Ql $word 
 		else
 			COLUMNS=$FZF_PREVIEW_COLUMNS pacman --color=always -Si $word
 		fi
 		'
 
 	# command
-	zstyle ':fzf-tab:complete:-command-:*' fzf-preview \
-	  '(out=$(MANWIDTH=$FZF_PREVIEW_COLUMNS man "$word") 2>/dev/null && echo $out) \
+	local command_preview='
+	  (out=$(MANWIDTH=$FZF_PREVIEW_COLUMNS man "$word") 2>/dev/null && echo $out) \
 	  || (out=$(which "$word") && echo $out) || echo "${(P)word}"'
+	zstyle ':fzf-tab:complete:-command-:*' fzf-preview $command_preview
+	zstyle ':fzf-tab:complete:sudo:argument-1' fzf-preview $command_preview
 
 	# directory's content with ls when completing cd
 	zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls -1 --color=always $realpath'
