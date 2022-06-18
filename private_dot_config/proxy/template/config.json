@@ -36,7 +36,7 @@
 			"port": 10853,
 			"protocol": "dokodemo-door",
 			"settings": {
-				"address": "1.1.1.1",
+				"address": "8.8.8.8",
 				"network": "tcp,udp",
 				"port": 53
 			}
@@ -101,6 +101,7 @@
 			"domain:googleapis.cn": "googleapis.com"
 		},
 		"servers": [
+			"8.8.8.8",
 			"1.1.1.1"
 		]
 	},
@@ -146,7 +147,8 @@
 					"geosite:cn",
 					"goproxy.io",
 					"gosum.io",
-					"osbeck.com"
+					"osbeck.com",
+					"registry.npm.js"
 				],
 				"type": "field"
 			},
@@ -168,9 +170,9 @@
 			{
 				"outboundTag": "proxy",
 				"ip": [
-					"1.1.1.1",
 					"8.8.8.8",
-					"8.8.4.4"
+					"8.8.4.4",
+					"1.1.1.1"
 				],
 				"port": "53",
 				"type": "field"
