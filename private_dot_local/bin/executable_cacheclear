@@ -13,6 +13,23 @@ if (($# == 0)); then
 	all=1
 fi
 
+usage() {
+	echo "\
+Usage: $0 [options]
+
+Options:
+-a		all
+-s		package manager cache
+-p		pip
+-n		npm
+-g		go
+-r		rust
+-c		ccache, sccache
+-l		lsp
+-G		shader cache
+"
+}
+
 while getopts ":aspngrclGh" opt; do
 	case "$opt" in
 	a) all=1 ;;
@@ -79,20 +96,4 @@ main() {
 	fi
 }
 
-usage() {
-	echo "\
-Usage: $0 [options]
-
-Options:
--a		all
--s		package manager cache
--p		pip
--n		npm
--g		go
--r		rust
--c		ccache, sccache
--l		lsp
--G		shader cache
-"
-}
 main
