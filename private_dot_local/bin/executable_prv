@@ -27,7 +27,12 @@ FILE_EXTENSION_LOWER="$(printf "%s" "${FILE_EXTENSION}" | tr '[:upper:]' '[:lowe
 HIGHLIGHT_SIZE_MAX=4194288 # 4MiB
 HIGHLIGHT_TABWIDTH="${HIGHLIGHT_TABWIDTH:-4}"
 HIGHLIGHT_STYLE="${HIGHLIGHT_STYLE:-onedark}"
-HIGHLIGHT_OPTIONS="--replace-tabs=${HIGHLIGHT_TABWIDTH} --style=${HIGHLIGHT_STYLE} ${HIGHLIGHT_OPTIONS:-}"
+HIGHLIGHT_OPTIONS="--replace-tabs=${HIGHLIGHT_TABWIDTH} \
+	--style=${HIGHLIGHT_STYLE} ${HIGHLIGHT_OPTIONS:-} \
+	--config-file="${XDG_CONFIG_HOME:-$HOME/.config}/lf/highlight.theme" \
+	--line-numbers \
+	--force
+	"
 PYGMENTIZE_STYLE="${PYGMENTIZE_STYLE:-one-dark}"
 
 handle_extension() {
@@ -174,6 +179,9 @@ handle_mime() {
 		xls2csv -- "${FILE_PATH}" && exit
 		exit 1
 		;;
+	text/troff)
+		man "${FILE_PATH}" && exit
+		;;
 
 	## Text
 	text/* | */xml)
@@ -189,18 +197,21 @@ handle_mime() {
 			local pygmentize_format='terminal'
 			local highlight_format='ansi'
 		fi
-		env COLORTERM=truecolor bat \
-			--paging never \
-			--wrap character \
-			--terminal-width "$PV_WIDTH" \
-			--color always \
-			--style numbers \
-			--tabs 4 \
-			-- "${FILE_PATH}" && exit
+		local bat_fallback_ft=(pov)
+
+		# shellcheck disable=2076
+		if [[ ! " ${bat_fallback_ft[*]} " =~ " ${FILE_EXTENSION_LOWER} " ]]; then
+			env COLORTERM=truecolor bat \
+				--paging never \
+				--wrap character \
+				--terminal-width "$PV_WIDTH" \
+				--color always \
+				--style numbers \
+				--tabs 4 \
+				-- "${FILE_PATH}" && exit
+		fi
 		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
-			--out-format="${highlight_format}" \
-			--config-file="${XDG_CONFIG_HOME:-$HOME/.config}/lf/highlight.theme" \
-			--force -- "${FILE_PATH}" && exit
+			--out-format="${highlight_format}" -- "${FILE_PATH}" && exit
 		pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" \
 			-- "${FILE_PATH}" && exit
 		exit 2
