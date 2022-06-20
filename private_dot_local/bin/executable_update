@@ -7,6 +7,7 @@ PYLIBS=(
 	manim
 	pip
 	fake-bpy-module-latest
+	pygments-style-onedarkpro
 )
 
 #flags
