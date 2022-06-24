@@ -1,4 +1,9 @@
 [".config/nvim"]
 type = "git-repo"
 url = "https://github.com/rekaerst/config.nvim"
-refreshPeriod = "24h"
+refreshPeriod = "48h"
+
+[".config/gdb/gdb-dashboard"]
+type = "git-repo"
+url = "https://github.com/cyrus-and/gdb-dashboard"
+refreshPeriod = "48h"
