@@ -6,8 +6,14 @@ PYLIBS=(
 	pyxel
 	manim
 	pip
+	grip
 	fake-bpy-module-latest
 	pygments-style-onedarkpro
+)
+
+GOBINARY=(
+	github.com/cosmos72/gomacro
+	github.com/traefik/yaegi/cmd/yaegi
 )
 
 #flags
@@ -20,12 +26,13 @@ if (($# == 0)); then
 	all=1
 fi
 
-while getopts ":aspnh" opt; do
+while getopts ":aspngh" opt; do
 	case "$opt" in
 	a) all=1 ;;
 	s) system=1 ;;
 	p) pip_=1 ;;
 	n) npm_=1 ;;
+	g) go_=1 ;;
 	h | ?)
 		echo "\
 Usage: $0 [options]
@@ -35,6 +42,7 @@ Options:
 -s		system package
 -p		python package
 -n		npm
+-g		go binary
 "
 		exit
 		;;
@@ -55,18 +63,13 @@ npm_update() {
 	npm -g up
 }
 
-if ((all == 1)); then
-	system=1
-	pip_=1
-	npm_=1
-fi
+go_update() {
+	for p in "${GOBINARY[@]}"; do
+		go install "$p@latest"
+	done
+}
 
-if ((system == 1)); then
-	package
-fi
-if ((pip_ == 1)); then
-	pip_update
-fi
-if ((npm_ == 1)); then
-	npm_update
-fi
+((system)) || ((all)) && package
+((pip_)) || ((all)) && pip_update
+((npm_)) || ((all)) && npm_update
+((go_)) || ((all)) && go_update
