@@ -1,3 +1,4 @@
+# vi:ft=toml
 [flake8]
-ignore = E501, E251, E265, E266
+ignore = E501, E251, E265, E266, W503, D100
 max-line-length = 120
