@@ -1,9 +1,9 @@
 {{ $editor := "" }}
 {{- if lookPath "nvim" -}}
-{{-   $editor := "nvim" -}}
+{{-   $editor = "nvim" -}}
 {{- else -}}
 {{- if lookPath "vim" -}}
-{{-   $editor := "vim" -}}
+{{-   $editor = "vim" -}}
 {{- end -}}
 {{- end -}}
 
