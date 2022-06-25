@@ -79,7 +79,9 @@ fzf_tab_config() {
 	zstyle ':fzf-tab:complete:*:options' fzf-preview 
 	zstyle ':fzf-tab:complete:*:argument-1' fzf-preview
 	# special cases
-	local disabled_cmd=(go curl npm nvme ping gping httping dig dog)
+	local disabled_cmd=(
+		go curl npm nvme ping gping httping dig dog journalctl
+	)
 	local cmd
 	for cmd in ${disabled_cmd[@]}; do
 		zstyle ":fzf-tab:complete:$cmd:*" fzf-preview
@@ -121,15 +123,11 @@ fzf_tab_config() {
 		'git log --color=always $word'
 	zstyle ':fzf-tab:complete:git-help:*' fzf-preview \
 		'git help $word | bat -plman --color=always'
-	zstyle ':fzf-tab:complete:git-show:*' fzf-preview \
-		'case "$group" in
-		"commit tag") git show --color=always $word ;;
-	*) git show --color=always $word | delta ;;
-		esac'
+	zstyle ':fzf-tab:complete:git-show:*' fzf-preview
 	zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview \
 		'case "$group" in
-		"modified file") git diff $word | delta ;;
-		"recent commit object name") git show --color=always $word | delta ;;
+		"[modified file]") git diff $word | delta ;;
+		"[recent commit object name]") git show --color=always $word | delta ;;
 		*) git log --color=always $word ;;
 		esac'
 	zstyle ':fzf-tab:complete:(\\|*/|)man:*' fzf-preview 'MANWIDTH=$FZF_PREVIEW_COLUMNS man $word 2> /dev/null'
