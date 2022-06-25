@@ -58,8 +58,7 @@ source ${ZIM_HOME}/init.zsh
 # first time Initialization
 FIRST_INIT="$ZSH_CACHE_DIR/first_time"
 if [[ ! -f "$FIRST_INIT" ]]; then
-	fast-theme -q base16 &> /dev/null &!
+	fast-theme -q XDG:onedark &> /dev/null &!
 	bat cache --build  &> /dev/null &!
-	[[ -z "$WGETRC" ]] || touch $WGETRC
 	touch "$FIRST_INIT"
 fi
