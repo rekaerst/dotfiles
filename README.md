@@ -1,4 +1,4 @@
-# Rekaerst's dotfiles
+# Dotfiles
 
 ## Install
 

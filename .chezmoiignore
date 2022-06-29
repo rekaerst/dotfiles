@@ -8,11 +8,7 @@ key.age
 .config/proxy
 .config/systemd/user/proxy.service
 .config/zsh/lib/secrets.zsh
-srv
-{{- end }}
-
-{{ if eq .name "rekaerst" -}}
 .config/bookmarks
 .config/borgmatic.d
-.config/gh
+srv
 {{- end }}

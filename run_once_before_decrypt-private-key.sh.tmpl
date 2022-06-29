@@ -32,11 +32,11 @@ if [[ ! -f "$KEY_PATH" ]]; then
 	chmod 600 "$KEY_PATH"
 fi
 
-while ! age -d -o "$HOME/.ssh/id_rsa" -i "$KEY_PATH" "$SOURCE_DIR/private_dot_ssh/encrypted_private_id_rsa.age"; do
+while ! age -d -o "$HOME/.ssh/id_ed25519" -i "$KEY_PATH" "$SOURCE_DIR/private_dot_ssh/encrypted_private_id_ed25519.age"; do
 	echo "Try again"
 	sleep 2
 done
-chmod 600 "$HOME/.ssh/id_rsa"
-cp "$SOURCE_DIR/private_dot_ssh/id_rsa.pub" "$HOME/.ssh/id_rsa.pub"
+chmod 600 "$HOME/.ssh/id_ed25519"
+cp "$SOURCE_DIR/private_dot_ssh/id_ed25519.pub" "$HOME/.ssh/id_ed25519.pub"
 
 {{ end }}
