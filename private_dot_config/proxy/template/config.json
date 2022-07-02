@@ -40,6 +40,22 @@
 				"network": "tcp,udp",
 				"port": 53
 			}
+		},
+		{
+			"tag": "transproxy",
+			"protocol": "dokodemo-door",
+			"port": 12345,
+			"settings": {
+				"network": "tcp,udp",
+				"followRedirect": true
+			},
+			"sniffing": {
+				"enabled": true,
+				"destOverride": [
+					"http",
+					"tls"
+				]
+			}
 		}
 	],
 	"outbounds": [
