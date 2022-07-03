@@ -18,9 +18,8 @@ if (($+commands[chezmoi])); then
 fi
 # git
 alias lg="lazygit"
-# use exa as ls
+# exa
 if (($+commands[exa])) then
-	alias ls="exa"
 	alias ll="exa -l"
 	alias l="exa -la"
 fi

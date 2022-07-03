@@ -26,6 +26,7 @@ Options:
 -r		rust
 -c		ccache, sccache
 -l		lsp
+-m		misc
 -G		shader cache
 "
 }

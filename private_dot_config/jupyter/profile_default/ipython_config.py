@@ -608,7 +608,7 @@ c.TerminalInteractiveShell.editor = "nvim"
 #  Default: traitlets.Undefined
 
 
-c.TerminalInteractiveShell.highlighting_style = "onedarkpro"
+c.TerminalInteractiveShell.highlighting_style = "onedark"
 
 ## Override highlighting format for specific tokens
 #  Default: {}

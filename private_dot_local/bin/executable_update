@@ -8,12 +8,13 @@ PYLIBS=(
 	pip
 	grip
 	fake-bpy-module-latest
-	pygments-style-onedarkpro
+	pygments-style-onedark
 )
 
 GOBINARY=(
 	github.com/cosmos72/gomacro
 	github.com/traefik/yaegi/cmd/yaegi
+	github.com/gopherdata/gophernotes
 )
 
 #flags

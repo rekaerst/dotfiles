@@ -29,7 +29,7 @@ location:
   # the given source directories. Defaults to false. But when a
   # database hook is used, the setting here is ignored and
   # one_file_system is considered true.
-  # one_file_system: true
+  one_file_system: true
 
   # Only store/extract numeric user and group identifiers.
   # Defaults to false.
@@ -37,7 +37,7 @@ location:
 
   # Store atime into archive. Defaults to true in Borg < 1.2,
   # false in Borg 1.2+.
-  # atime: false
+  atime: false
 
   # Store ctime into archive. Defaults to true.
   # ctime: false
@@ -116,17 +116,21 @@ location:
     - '{{ .chezmoi.homeDir }}/.local/share/Zeal'
     - '{{ .chezmoi.homeDir }}/.local/share/godot/templates'
     - '{{ .chezmoi.homeDir }}/.local/share/gradle'
+    - '{{ .chezmoi.homeDir }}/.local/share/irrationalgames/*/*precompiled*'
     - '{{ .chezmoi.homeDir }}/.local/share/nvim'
     - '{{ .chezmoi.homeDir }}/.local/share/torbrowser'
+    - '{{ .chezmoi.homeDir }}/.local/share/virtualenv'
     - '{{ .chezmoi.homeDir }}/.local/state'
     - '{{ .chezmoi.homeDir }}/.m2'
     - '{{ .chezmoi.homeDir }}/.vispy'
     - '{{ .chezmoi.homeDir }}/.vscode'
+    - '{{ .chezmoi.homeDir }}/.wine'
     - '{{ .chezmoi.homeDir }}/Downloads'
     - '{{ .chezmoi.homeDir }}/Pictures/apod'
     - '{{ .chezmoi.homeDir }}/Videos/Movies'
     - '{{ .chezmoi.homeDir }}/go/pkg'
-    - '{{ .chezmoi.homeDir }}/library/doc/godot'
+    - '{{ .chezmoi.homeDir }}/go/bin'
+    - '{{ .chezmoi.homeDir }}/library/zim'
     - '{{ .chezmoi.homeDir }}/opt/Android'
     - '{{ .chezmoi.homeDir }}/opt/games'
     - '{{ .chezmoi.homeDir }}/src/lab'
@@ -153,8 +157,8 @@ location:
 
   # Exclude directories that contain a file with the given
   # filenames. Defaults to not set.
-  # exclude_if_present:
-    # - .nobackup
+  exclude_if_present:
+    - .nobackup
 
   # If true, the exclude_if_present filename is included in
   # backups. Defaults to false, meaning that the
@@ -189,7 +193,7 @@ storage:
   # contains punctuation, so it parses correctly. And backslash
   # any quote or backslash literals as well. Defaults to not
   # set.
-  encryption_passphrase: "eing6VeshReigh"
+  # encryption_passphrase:
 
   # Number of seconds between each checkpoint during a
   # long-running backup. See
@@ -208,7 +212,7 @@ storage:
   # Type of compression to use when creating archives. See
   # http://borgbackup.readthedocs.io/en/stable/usage/create.html
   # for details. Defaults to "lz4".
-  # compression: lz4
+  compression: zstd,6
 
   # Remote network upload rate limit in kiBytes/second. Defaults
   # to unlimited.
@@ -316,13 +320,13 @@ retention:
   # keep_hourly: 24
 
   # Number of daily archives to keep.
-  # keep_daily: 7
+  keep_daily: 1
 
   # Number of weekly archives to keep.
-  keep_weekly: 2
+  # keep_weekly: 3
 
   # Number of monthly archives to keep.
-  # keep_monthly: 6
+  keep_monthly: 3
 
   # Number of yearly archives to keep.
   # keep_yearly: 1

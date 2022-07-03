@@ -5,6 +5,6 @@ echo "
 
 Make sure to install them.
 
->>> install pygments-style-onedarkpro from pypi or
+>>> install pygments-style-onedark from pypi or
 	IPython won't work
 "
