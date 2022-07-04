@@ -4,6 +4,8 @@ key.age
 {{ if (not .trusted) -}}
 .ssh
 .pypirc
+.netrc
+.cargo/credentials
 .config/gh
 .config/proxy
 .config/systemd/user/proxy.service
