@@ -13,8 +13,8 @@ alias sudo='sudo '
 alias taskui="taskwarrior-tui"
 # dotfiles
 if (($+commands[chezmoi])); then
-	alias dflg="chezmoi re-add;lazygit -p $(chezmoi source-path)"
-	alias dotfiles="cd $(chezmoi source-path)"
+	alias dflg='chezmoi re-add;lazygit -p $(chezmoi source-path)'
+	alias dotfiles='cd $(chezmoi source-path)'
 fi
 # git
 alias lg="lazygit"
