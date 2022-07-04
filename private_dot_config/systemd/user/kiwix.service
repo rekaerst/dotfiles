@@ -1,9 +1,0 @@
-[Unit]
-Description=A standalone HTTP server for serving ZIM file over the network
-Documentation=man:kiwix-serve
-
-[Service]
-ExecStart=/usr/bin/kiwix-serve --library ${HOME}/library/zim/library.xml -p 8001
-
-[Install]
-WantedBy=default.target
