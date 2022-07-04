@@ -1,15 +1,16 @@
 #!/usr/bin/bash
 PYLIBS=(
-	taichi
+	taichi # high-performance numerical computation
 	vispy
 	litecli
-	pyxel
-	manim
+	pyxel # retro game engine
+	manim # animation library
 	pip
-	grip
-	fake-bpy-module-latest
+	grpi                   # markdown server
+	fake-bpy-module-latest # blender stubs
 	pygments-style-onedark
 	tinydb
+	dash # analytical web apps
 )
 
 GOBINARY=(
