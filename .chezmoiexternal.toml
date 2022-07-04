@@ -7,3 +7,8 @@ refreshPeriod = "48h"
 type = "git-repo"
 url = "https://github.com/cyrus-and/gdb-dashboard"
 refreshPeriod = "48h"
+
+[".config/tmux/plugins/tpm"]
+type = "git-repo"
+url = "https://github.com/tmux-plugins/tpm"
+refreshPeriod = "48h"
