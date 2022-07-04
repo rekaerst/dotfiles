@@ -35,100 +35,106 @@ HIGHLIGHT_OPTIONS="--replace-tabs=${HIGHLIGHT_TABWIDTH} \
 	"
 PYGMENTIZE_STYLE="${PYGMENTIZE_STYLE:-one-dark}"
 
+run() {
+	if hash "$1" >/dev/null 2>&1; then
+		$* && exit
+	fi
+}
+
 handle_extension() {
 	case "${FILE_EXTENSION_LOWER}" in
 	## Archive
 	a | ace | alz | arc | arj | bz | bz2 | cab | cpio | deb | gz | jar | lha | lz | lzh | lzma | lzo | \
 		rpm | rz | t7z | tar | tbz | tbz2 | tgz | tlz | txz | tZ | tzo | war | xpi | xz | Z | zip)
-		atool --list -- "${FILE_PATH}" && exit
-		bsdtar --list --file "${FILE_PATH}" && exit
-		exit 1
+		run atool --list -- "${FILE_PATH}"
+		run bsdtar --list --file "${FILE_PATH}"
+		exit 2
 		;;
 	rar)
 		## Avoid password prompt by providing empty password
-		unrar lt -p- -- "${FILE_PATH}" && exit
-		exit 1
+		run unrar lt -p- -- "${FILE_PATH}"
+		exit 2
 		;;
 	7z)
 		## Avoid password prompt by providing empty password
-		7z l -p -- "${FILE_PATH}" && exit
-		exit 1
+		run 7z l -p -- "${FILE_PATH}"
+		exit 2
 		;;
 
 	## PDF
 	pdf)
 		## Preview as text conversion
-		pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - |
-			fmt -w "${PV_WIDTH}" && exit
-		mutool draw -F txt -i -- "${FILE_PATH}" 1-10 |
-			fmt -w "${PV_WIDTH}" && exit
-		exiftool "${FILE_PATH}" && exit
-		exit 1
+		run pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - |
+			fmt -w "${PV_WIDTH}"
+		run mutool draw -F txt -i -- "${FILE_PATH}" 1-10 |
+			fmt -w "${PV_WIDTH}"
+		run exiftool "${FILE_PATH}"
+		exit 2
 		;;
 
 	## BitTorrent
 	torrent)
-		transmission-show -- "${FILE_PATH}" && exit
-		exit 1
+		run transmission-show -- "${FILE_PATH}"
+		exit 2
 		;;
 
 	## OpenDocument
 	odt | sxw)
 		## Preview as text conversion
-		odt2txt "${FILE_PATH}" && exit
+		run odt2txt "${FILE_PATH}"
 		## Preview as markdown conversion
-		glow -w "${PV_WIDTH}" -s dark \
-			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
-		exit 1
+		run glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}")
+		exit 2
 		;;
 	ods | odp)
 		## Preview as text conversion (unsupported by pandoc for markdown)
-		odt2txt "${FILE_PATH}" && exit
-		exit 1
+		run odt2txt "${FILE_PATH}"
+		exit 2
 		;;
 
 	## XLSX
 	xlsx)
 		## Preview as csv conversion
 		## Uses: https://github.com/dilshod/xlsx2csv
-		xlsx2csv -- "${FILE_PATH}" && exit
-		exit 1
+		run xlsx2csv -- "${FILE_PATH}"
+		exit 2
 		;;
 
 	## HTML
 	htm | html | xhtml)
 		## Preview as text conversion
-		w3m -dump "${FILE_PATH}" && exit
-		lynx -dump -- "${FILE_PATH}" && exit
-		elinks -dump "${FILE_PATH}" && exit
-		glow -w "${PV_WIDTH}" -s dark \
-			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
+		run w3m -dump "${FILE_PATH}"
+		run lynx -dump -- "${FILE_PATH}"
+		run elinks -dump "${FILE_PATH}"
+		run glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}")
 		;;
 
 	## JSON
 	json)
-		jq --color-output . "${FILE_PATH}" && exit
-		python -m json.tool -- "${FILE_PATH}" && exit
+		run jq --color-output . "${FILE_PATH}"
+		run python -m json.tool -- "${FILE_PATH}"
 		;;
 
 	## Jupyter Notebooks
 	ipynb)
-		glow <(jupyter nbconvert --to markdown "${FILE_PATH}" --stdout) && exit
-		jupyter nbconvert --to markdown "${FILE_PATH}" --stdout && exit
-		jq --color-output . "${FILE_PATH}" && exit
-		python -m json.tool -- "${FILE_PATH}" && exit
+		run glow <(jupyter nbconvert --to markdown "${FILE_PATH}" --stdout)
+		run jupyter nbconvert --to markdown "${FILE_PATH}" --stdout
+		run jq --color-output . "${FILE_PATH}"
+		run python -m json.tool -- "${FILE_PATH}"
 		;;
 
 	## Markdown
 	md)
-		glow -w "${PV_WIDTH}" -s dark "${FILE_PATH}"
+		run glow -w "${PV_WIDTH}" -s dark "${FILE_PATH}"
 		;;
 
 	## Direct Stream Digital/Transfer (DSDIFF) and wavpack aren't detected
 	## by file(1).
 	dff | dsf | wv | wvc)
-		mediainfo "${FILE_PATH}" && exit
-		exiftool "${FILE_PATH}" && exit
+		run mediainfo "${FILE_PATH}"
+		run exiftool "${FILE_PATH}"
 		;; # Continue with next handler on failure
 	esac
 }
@@ -150,8 +156,8 @@ handle_mime() {
 		## Preview as text conversion
 		## note: catdoc does not always work for .doc files
 		## catdoc: http://www.wagner.pp.ru/~vitus/software/catdoc/
-		catdoc -- "${FILE_PATH}" && exit
-		exit 1
+		run catdoc -- "${FILE_PATH}"
+		exit 2
 		;;
 
 	## DOCX, ePub, FB2 (using markdown)
@@ -159,16 +165,16 @@ handle_mime() {
 	## uncommented other methods to preview those formats
 	*wordprocessingml.document | */epub+zip | */x-fictionbook+xml)
 		## Preview as markdown conversion
-		glow -w "${PV_WIDTH}" -s dark \
-			<(pandoc -s -t markdown -- "${FILE_PATH}") && exit
-		exit 1
+		run glow -w "${PV_WIDTH}" -s dark \
+			<(pandoc -s -t markdown -- "${FILE_PATH}")
+		exit 2
 		;;
 
 	## E-mails
 	message/rfc822)
 		## Parsing performed by mu: https://github.com/djcb/mu
-		mu view -- "${FILE_PATH}" && exit
-		exit 1
+		run mu view -- "${FILE_PATH}"
+		exit 2
 		;;
 
 	## XLS
@@ -176,11 +182,11 @@ handle_mime() {
 		## Preview as csv conversion
 		## xls2csv comes with catdoc:
 		##   http://www.wagner.pp.ru/~vitus/software/catdoc/
-		xls2csv -- "${FILE_PATH}" && exit
-		exit 1
+		run xls2csv -- "${FILE_PATH}"
+		exit 2
 		;;
 	text/troff)
-		man "${FILE_PATH}" && exit
+		run man "${FILE_PATH}"
 		;;
 
 	## Text
@@ -210,45 +216,45 @@ handle_mime() {
 				--tabs 4 \
 				-- "${FILE_PATH}" && exit
 		fi
-		env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
-			--out-format="${highlight_format}" -- "${FILE_PATH}" && exit
-		pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" \
-			-- "${FILE_PATH}" && exit
+		run env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
+			--out-format="${highlight_format}" -- "${FILE_PATH}"
+		run pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" \
+			-- "${FILE_PATH}"
 		exit 2
 		;;
 
 	## DjVu
 	image/vnd.djvu)
 		## Preview as text conversion (requires djvulibre)
-		djvutxt "${FILE_PATH}" | fmt -w "${PV_WIDTH}" && exit
-		exiftool "${FILE_PATH}" && exit
-		exit 1
+		run djvutxt "${FILE_PATH}" | fmt -w "${PV_WIDTH}"
+		run exiftool "${FILE_PATH}"
+		exit 2
 		;;
 
 	## Image
 	image/*)
 		## show information about image
-		mediainfo "${FILE_PATH}" && exit
-		exit 1
+		run mediainfo "${FILE_PATH}"
+		exit 2
 		;;
 
 	## Video and audio
 	video/* | audio/*)
-		mediainfo "${FILE_PATH}" && exit
-		exiftool "${FILE_PATH}" && exit
-		exit 1
+		run mediainfo "${FILE_PATH}"
+		run exiftool "${FILE_PATH}"
+		exit 2
 		;;
 
 	## ELF files (executables and shared objects)
 	application/x-executable | application/x-pie-executable | application/x-sharedlib)
-		readelf -WCa "${FILE_PATH}" && exit
-		exit 1
+		run readelf -WCa "${FILE_PATH}"
+		exit 2
 		;;
 
 	## Inodes
 	inode/*)
-		exa --color=always "${FILE_PATH}" 2>/dev/null && exit
-		ls --color=always "${FILE_PATH}" 2>/dev/null && exit
+		run ls --color=always "${FILE_PATH}" 2>/dev/null
+		exit 2
 		;;
 
 	esac
@@ -256,7 +262,7 @@ handle_mime() {
 
 handle_fallback() {
 	echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && exit
-	exit 1
+	exit 2
 }
 
 MIMETYPE="$(file --dereference --brief --mime-type -- "${FILE_PATH}")"
@@ -267,4 +273,4 @@ handle_extension
 handle_mime "${MIMETYPE}"
 handle_fallback
 
-exit 1
+exit 2
