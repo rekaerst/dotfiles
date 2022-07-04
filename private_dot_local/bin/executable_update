@@ -9,6 +9,7 @@ PYLIBS=(
 	grip
 	fake-bpy-module-latest
 	pygments-style-onedark
+	tinydb
 )
 
 GOBINARY=(
