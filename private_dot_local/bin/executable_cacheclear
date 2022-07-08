@@ -63,18 +63,18 @@ main() {
 			fi
 		fi
 	fi
-	if ((pip_)) || ((all)); then
+	if ((pip_)) || ((all)) && hash go 2>/dev/null; then
 		pip cache purge
 	fi
-	if ((npm_)) || ((all)); then
+	if ((npm_)) || ((all)) && hash go 2>/dev/null; then
 		npm cache clean --force
 	fi
-	if ((go)) || ((all)); then
+	if ((go)) || ((all)) && hash go 2>/dev/null; then
 		go clean -modcache
 		go clean -cache
 	fi
 	if ((compile_cache)) || ((all)); then
-		ccache -C
+		hash ccache 2>/dev/null && ccache -C
 		rm -rf "$CACHE_DIR/sccache"
 	fi
 	if ((lsp)) || ((all)); then
