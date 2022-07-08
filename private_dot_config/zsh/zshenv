@@ -16,10 +16,6 @@ fi
 if (( ! ${path[(I)$HOME/.local/bin]} )); then
 	path=($HOME/.local/bin $HOME/go/bin $HOME/.cargo/bin $HOME/.cabal/bin $path)
 fi
-# use ccache installed
-if (( ${+commands[ccache]} )) && (( ! ${path[(I)/usr/lib/ccache/bin]} )) && [[ -d /usr/lib/ccache/bin ]]; then
-	path=(/usr/lib/ccache/bin $path)
-fi
 export PATH
 
 # environment.d
