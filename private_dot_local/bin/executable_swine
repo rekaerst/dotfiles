@@ -15,11 +15,14 @@ args=(
 )
 
 bind /run/media
+bind "$HOME/downloads"
 bind "$HOME/Downloads"
+bind "$HOME/documents"
 bind "$HOME/Documents"
 bind "$HOME/tmp"
 bind "$HOME/opt"
 bind "$HOME/.config/MangoHud"
 bind "$HOME/.wine"
+bind "/run/user/1000/bus"
 
-exec sandbox "${args[@]}" mangohud wine "$@"
+exec sandbox -k "${args[@]}" gamemoderun wine "$@"

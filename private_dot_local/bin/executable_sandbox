@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 if [[ "$#" == "0" ]]; then
-	echo "Usage $0 <command> [args]"
+	echo "Usage: $0 [-k] [bwrap args] <command> [args]"
+	echo "use -k option to ensure child process run after parent process dies"
 	exit
 fi
 
@@ -35,10 +36,8 @@ args=(
 	# runtime dir
 	--tmpfs /run/user/$UID
 
-	# zsh
 	--unshare-all
 	--share-net
-	--die-with-parent
 )
 # dns
 ro-bind /run/systemd/resolve
@@ -58,6 +57,12 @@ if [[ -e /dev/nvidia0 ]]; then
 	for f in /dev/nvidia*; do
 		args+=(--dev-bind "$f" "$f")
 	done
+fi
+
+if [[ "$1" != "-k" ]]; then
+	args+=(--die-with-parent)
+else
+	shift
 fi
 
 exec bwrap "${args[@]}" "$@"
