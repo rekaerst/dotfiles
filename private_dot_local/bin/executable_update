@@ -6,7 +6,7 @@ PYLIBS=(
 	pyxel # retro game engine
 	manim # animation library
 	pip
-	grpi                   # markdown server
+	grip                   # markdown server
 	fake-bpy-module-latest # blender stubs
 	pygments-style-onedark
 	tinydb
