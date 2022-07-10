@@ -99,7 +99,7 @@ location:
     - '{{ .chezmoi.homeDir }}/.cache'
     - '{{ .chezmoi.homeDir }}/.cache/torbrowser'
     - '{{ .chezmoi.homeDir }}/.cargo/registry'
-    - '{{ .chezmoi.homeDir }}/.config/**/*[Cc]ache*'
+    - '{{ .chezmoi.homeDir }}/.config/**/*[Cc]ache*/'
     - '{{ .chezmoi.homeDir }}/.config/Code/logs'
     - '{{ .chezmoi.homeDir }}/.config/gpodder/Downloads'
     - '{{ .chezmoi.homeDir }}/.config/torbrowser'
@@ -108,7 +108,7 @@ location:
     - '{{ .chezmoi.homeDir }}/.java'
     - '{{ .chezmoi.homeDir }}/.jd'
     - '{{ .chezmoi.homeDir }}/.local/lib'
-    - '{{ .chezmoi.homeDir }}/.local/share/**/*[Cc]ache*'
+    - '{{ .chezmoi.homeDir }}/.local/share/**/*[Cc]ache*/'
     - '{{ .chezmoi.homeDir }}/.local/share/CKAN/downloads'
     - '{{ .chezmoi.homeDir }}/.local/share/QtProject/Assistant'
     - '{{ .chezmoi.homeDir }}/.local/share/Steam'
@@ -118,6 +118,7 @@ location:
     - '{{ .chezmoi.homeDir }}/.local/share/gradle'
     - '{{ .chezmoi.homeDir }}/.local/share/irrationalgames/*/*precompiled*'
     - '{{ .chezmoi.homeDir }}/.local/share/nvim'
+    - '{{ .chezmoi.homeDir }}/.local/share/proton'
     - '{{ .chezmoi.homeDir }}/.local/share/torbrowser'
     - '{{ .chezmoi.homeDir }}/.local/share/virtualenv'
     - '{{ .chezmoi.homeDir }}/.local/state'
@@ -125,9 +126,9 @@ location:
     - '{{ .chezmoi.homeDir }}/.vispy'
     - '{{ .chezmoi.homeDir }}/.vscode'
     - '{{ .chezmoi.homeDir }}/.wine'
-    - '{{ .chezmoi.homeDir }}/Downloads'
-    - '{{ .chezmoi.homeDir }}/Pictures/apod'
-    - '{{ .chezmoi.homeDir }}/Videos/Movies'
+    - '{{ .chezmoi.homeDir }}/[Dd]ownloads'
+    - '{{ .chezmoi.homeDir }}/[Pp]ictures/apod'
+    - '{{ .chezmoi.homeDir }}/[Vv]ideos/Movies'
     - '{{ .chezmoi.homeDir }}/go/pkg'
     - '{{ .chezmoi.homeDir }}/go/bin'
     - '{{ .chezmoi.homeDir }}/library/zim'
@@ -311,13 +312,13 @@ retention:
   # keep_within: 3H
 
   # Number of secondly archives to keep.
-  # keep_secondly: 60
+  keep_secondly: 0
 
   # Number of minutely archives to keep.
-  # keep_minutely: 60
+  keep_minutely: 0
 
   # Number of hourly archives to keep.
-  # keep_hourly: 24
+  keep_hourly: 0
 
   # Number of daily archives to keep.
   keep_daily: 7
