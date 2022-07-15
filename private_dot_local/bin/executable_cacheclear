@@ -5,9 +5,12 @@ all=0
 system=0
 pip_=0
 npm_=0
+go_=0
+rust=0
 compile_cache=0
 lsp=0
 gpu=0
+misc=0
 
 if (($# == 0)); then
 	all=1
@@ -37,7 +40,8 @@ while getopts ":aspngrclGmh" opt; do
 	s) system=1 ;;
 	p) pip_=1 ;;
 	n) npm_=1 ;;
-	g) go=1 ;;
+	g) go_=1 ;;
+	r) rust=1 ;;
 	c) compile_cache=1 ;;
 	l) lsp=1 ;;
 	G) gpu=1 ;;
@@ -69,9 +73,12 @@ main() {
 	if ((npm_)) || ((all)) && hash go 2>/dev/null; then
 		npm cache clean --force
 	fi
-	if ((go)) || ((all)) && hash go 2>/dev/null; then
+	if ((go_)) || ((all)) && hash go 2>/dev/null; then
 		go clean -modcache
 		go clean -cache
+	fi
+	if ((rust)) || ((all)) && hash go 2>/dev/null; then
+		cargo cache -a
 	fi
 	if ((compile_cache)) || ((all)); then
 		hash ccache 2>/dev/null && ccache -C
@@ -96,6 +103,10 @@ main() {
 		rm -rf "$XDG_CONFIG_HOME/Code/CachedData"
 		# packages
 		rm -rf "$HOME/srv/build/pkg/*"
+		# perf
+		rm -rf "$HOME/.debug"
+		# maven
+		rm -rf "$HOME/.m2/repository"
 	fi
 }
 
